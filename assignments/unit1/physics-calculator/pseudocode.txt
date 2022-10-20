@@ -3,7 +3,6 @@ Create a menu that works through several physics calculations
 Solve for velocity, acceleration, 4 motion equations, NSL, weight, and momentum 
 Show the steps to solve (like showing your work)
 
-Fake Wanna Be Pretend Code: 
 
 Display a Main Menu
     What would you like to calculate?
@@ -14,10 +13,12 @@ Display a Main Menu
         5. Weight
         6. Momentum
 
-        0. EXIT
+        E. EXIT 
+        L: Clear 
     
-    User will input an integer from 0-6. Validate the input. 
-    
+    User will input an integer from 1-6. Validate the input. 
+    If the user inputs a string or character for the exit, then validate that and then exit. 
+    If the user types out velocity, accceleration, or whatever string - validate it, make sure the user isn't trying to exit, and then progress through the menu.
 
 Until the user hits exit (Do, While(not pressing exit)
 
@@ -25,7 +26,7 @@ Clear the Screen.
 
 1. Velocity Menu
     Velocity
-    Return to the main menu at any time by typing "Menu!" (Case sensitive)
+    Return to the main menu at any time by typing "E"
     Velocity is the change in position divided by the change in time.
     What is the change in position?
     *User inputs a double. Validate. *
@@ -48,6 +49,50 @@ Clear the Screen.
         m/s*s or meters / second times second == (m/s)/s or m/s^2
         do this one: meters/(s*s) to be as accurate as possible. We shouldn't assume the user will use conventional units or best practices. 
 
+Main Function: 
+    Loop until the user exits
+        Display the Main Menu, as shown above. (as a function call, make the main menu itself a function.)
+        Query the User for an option. 
+        Perform input validation on the option
+        clear the screen
+        call the menu builder helper function, unless option is motion. 
+        if the option is motion then
+            Display a new menu going over the 4 available sub-options. (as a function call, making this menu itself a function)
+            Query the user for an option 
+            perform input validation 
+            compare the option to the mtion calculations available.
+            clear the screen
+            call the respective function for whatever motion equation was queried from the user.
+
+On Exit: Say Goodbye.
+    
+
+
+Menu Builder function
+    this function will help us to build the menus for our stuff, since we're gonna have a lot of menus.
+
+function menu builder helper (string whatCalculation, string formula, string thing1, string thing2)
+Display a menu like this: 
+    whatCalculation
+    formula
+    What is this value of the thing1?
+    *user inputs. validate double.*
+    What units?
+    *user inputs. validate string.*
+    What is the value of the thing2?
+    *user inputs. validate double.*
+    What are the units? 
+    *user inputs. validate string*
+    formula
+    ** manipulate the string such that the signs are separated out, and we figure out what operations need to be done. from the string. ** 
+    example
+        v = deltaPos / deltaTime
+        *break apart the string* 
+        "v =" + deltaPos + mathOperation + deltaTime
+        *do some comparisons, check what the math operation is.*
+        *call the physics multiplier function to do the math.*
+        v = physicsMultiplier(variables)
+
 //Just return a string that does the calculations for us
 string physicsMultiplier(bunch of variables))
 
@@ -56,21 +101,36 @@ string physicsMultiplier(bunch of variables))
     string units2 
     double value1
     double value2
-    double result
-    
+    bool multiply 
+
     if multiply is true then 
-        result = value 1 * value 2
-        return "" + result + " " + units1 * units 2
+        double result = value 1 * value 2
+        make result have only 4 decimal places
+        return "" + result + " " + units1 + " * " + units 2
     else   
-        result = value 1 / value 2
+        double result = value 1 / value 2
+        make result have only 4 decimal places
         return "" + result + " " + units1 / units 2
 
     return "Error. No deets sorry you're your own" (jk provide some explanation if something goes wrong, but nothing should.)
 
-Usage for the physicsMultiplaction function: 
-    Go through the whole menu and then this just does the calculation for you
 
 
-Menu Builder function
-    this function will help us to build the menus for our stuff, since we're gonna have a lot of menus.
+
+//Motion Functions
+
+function pos(pos0, vel0, acceleration, time)
+    Display a menu, similar to the one built in the above menu builder function. 
+    Query the user for the initial position, initial velocity, acceleration, and time. 
+    Display the equation. 
+    Display the first step, second step, third step, etc.
+    Display the result. 
+    Query the user if they want to move back to the main menu. 
+    Clear the screen.
+
+We can actually really easily create a function that takes the given data, and as long as it has enough data, can fill in the gaps and give you any info you need. 
+Physics and Math are really cool. 
+However, that is beyond the scope of this project, so instead just create 4 functions - one for each motion equation.
+Each other motion equation will basically be the same as the one above. Just display a basic menu - query the user - validate - perform the calculation - display the result - wait for exit (validate input, clear, go back to main menu) 
+
 
