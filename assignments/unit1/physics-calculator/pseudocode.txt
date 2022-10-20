@@ -1,0 +1,76 @@
+Objectives: 
+Create a menu that works through several physics calculations
+Solve for velocity, acceleration, 4 motion equations, NSL, weight, and momentum 
+Show the steps to solve (like showing your work)
+
+Fake Wanna Be Pretend Code: 
+
+Display a Main Menu
+    What would you like to calculate?
+        1. Velocity 
+        2. Acceleration 
+        3. Motion
+        4. Force
+        5. Weight
+        6. Momentum
+
+        0. EXIT
+    
+    User will input an integer from 0-6. Validate the input. 
+    
+
+Until the user hits exit (Do, While(not pressing exit)
+
+Clear the Screen.
+
+1. Velocity Menu
+    Velocity
+    Return to the main menu at any time by typing "Menu!" (Case sensitive)
+    Velocity is the change in position divided by the change in time.
+    What is the change in position?
+    *User inputs a double. Validate. *
+    What units? 
+    *User inputs a string. Validate.*
+    What is the change in time?
+    *User inputs a double. Validate.*
+    What units? 
+    *User inputs a string. Validate*
+    units = posUnits + " / " + timeUnits
+    v=ds/dt (use the delta symbol if possible)
+    v=*plug in for the users inputs*
+    v= *the result after doing calculations* *units, but after calculations*
+
+    When you are ready to return to the main menu, type 0.
+
+2. Acceleration
+    This uses the same exact logic as above, but with some different words.
+    When displaying the units, do this:
+        m/s*s or meters / second times second == (m/s)/s or m/s^2
+        do this one: meters/(s*s) to be as accurate as possible. We shouldn't assume the user will use conventional units or best practices. 
+
+//Just return a string that does the calculations for us
+string physicsMultiplier(bunch of variables))
+
+    //the bunch of variables
+    string units1
+    string units2 
+    double value1
+    double value2
+    double result
+    
+    if multiply is true then 
+        result = value 1 * value 2
+        return "" + result + " " + units1 * units 2
+    else   
+        result = value 1 / value 2
+        return "" + result + " " + units1 / units 2
+
+    return "Error. No deets sorry you're your own" (jk provide some explanation if something goes wrong, but nothing should.)
+
+Usage for the physicsMultiplaction function: 
+    Go through the whole menu and then this just does the calculation for you
+
+
+Menu Builder function
+    this function will help us to build the menus for our stuff, since we're gonna have a lot of menus.
+
