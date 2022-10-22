@@ -18,7 +18,7 @@ void physicsCalculator(string operation, string equation); //perform any basic p
 void equationSeperator(string equation, string (&equationArr)[4]); //break apart a simple physics equation into individual components, so above function can work.
 string stringToLower(string word); //convert a string to all lowercase letters
 string stringToUpper(string word); //convert a string to all uppercase letters
-
+void enterToContinue(); //'freeze' the terminal until the user presses the enter key.
 
 int main()
 {
@@ -58,10 +58,11 @@ void mainMenu()
     cout << "Physics Calculator" << endl
         << "Please choose from the following menu options." << endl
         << "Type the letter E to exit the program." << endl
+        << "Type the letter X to clear the screen." << endl
         << "1. Velocity" << endl
         << "2. Acceleration" << endl
         << "3. Motion" << endl
-        << "4. Newton's Second Law" << endl
+        << "4. Newton's Second Law (NSL)" << endl
         << "5. Weight" << endl
         << "6. Momentum" << endl;
 }
@@ -74,6 +75,10 @@ void mainMenu()
 //go to sleep for now lmao be back later
 void calculationChooser(string menuInput)
 {
+    if (menuInput == "x"){
+        system("clear");
+        return;
+    }
     //Motion is the only complicated thing. Exclude motion from this.
     if (menuInput == "motion"){
         //call a motion specific helper function. not made yet.
@@ -85,7 +90,7 @@ void calculationChooser(string menuInput)
     string options[5] = {
         "velocity",
         "acceleration",
-        "newton's second law",
+        "nsl",
         "weight",
         "momentum"
     };
@@ -130,18 +135,19 @@ void physicsCalculator(string operation, string equation)
 
     //output the name of the operation we are performing
     cout << stringToUpper(operation) << endl;
+
     //output the equation
     cout << equation << endl;
-
     //create a menu to query the user for information
     cout << "What is the value of " << equationPieces[1] << "?" << endl;
     pieceOne = validateDouble(pieceOne);
-    cout << endl << "What are the units?" << endl;
+    cout << "What are the units?" << endl;
     unitOne = validateString(unitOne);
-    cout << "What is the value of " << equationPieces[3] << "?" << endl;
+    cout << endl << "What is the value of " << equationPieces[3] << "?" << endl;
     pieceTwo = validateDouble(pieceTwo);
-    cout << endl << "What are the units?" << endl;
+    cout << "What are the units?" << endl;
     unitTwo = validateString(unitTwo);
+    cout << endl;
 
     //ok, time to do the math. 
     if(equationPieces[2] == "*"){
@@ -155,10 +161,11 @@ void physicsCalculator(string operation, string equation)
         << "Here is the solution." << endl
         << stringToUpper(operation) << endl
         << equation << endl
-        << equationPieces[0] << " = " << pieceOne << " " << unitOne << " " << equationPieces[2] << pieceTwo << " " << unitTwo << endl
-        << equationPieces[0] << " = " << result << " " << unitOne << " " << equationPieces[2] << unitTwo << endl;
+        << equationPieces[0] << " = " << pieceOne << " " << unitOne << " " << equationPieces[2] << " " << pieceTwo << " " << unitTwo << endl
+        << equationPieces[0] << " = " << result << " " << unitOne << " " << equationPieces[2] << " " << unitTwo << endl;
 
-    //add a pause button here so the user can read their solution until they are ready to proceed back to the main menu. 
+    enterToContinue(); //hold up the user until he hits enter. Give him time to record his answer and ponder the solution.
+    //you could clear the screen here. But what if the user wants to scroll up and review his answer again?
 }
 
 // separates out a given equation into a specfic array
@@ -226,4 +233,19 @@ string stringToUpper(string word)
     stack[length] = '\0'; //null terminator - marks end of string
 
     return string(stack);
+}
+
+//tell the user to press enter to continue 
+//"freeze" the program until the user hits enter
+void enterToContinue()
+{
+    cout << "Press ENTER to continue." << endl;
+    while(getchar() != '\n');
+    //impossible to accomplish my goals if we validate the input to disallow escaping
+    /* 
+    char didYouTypeEnter = '0';
+    while(didYouTypeEnter != '\n'){
+        didYouTypeEnter = validateChar(didYouTypeEnter);
+    }
+    */
 }
