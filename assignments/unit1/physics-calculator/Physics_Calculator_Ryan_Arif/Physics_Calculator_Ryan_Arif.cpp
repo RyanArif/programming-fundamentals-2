@@ -11,6 +11,17 @@
 
 //using namespace std; //already part of input validation
 
+//GLOBAL VARIABLES
+const string RESET = "\x1b[0m"; //reset formatting
+const string COLORS[6] = {
+    "\x1b[31;1m", //red bold
+    "\x1b[32;1m", //green bold
+    "\x1b[33;1m", //yellow bold
+    "\x1b[34;1m", //indigo bold
+    "\x1b[35;1m", //purple bold
+    "\x1b[36;1m" //light blue bold
+};
+
 //prototypes
 void mainMenu(); //display the main menu
 void calculationChooser(string menuInput); //take in a validated user input, and decide how to calculate the answer.
@@ -36,7 +47,7 @@ int main()
 
         //exit the program if the user wants to
         if (menuInput == "e"){
-            cout << "Goodbye!" << endl;
+            cout << COLORS[1] << "Goodbye!" << RESET << endl;
             loopMenu = false;
             break;
         }
@@ -55,16 +66,16 @@ int main()
 void mainMenu()
 {
     //Main Menu
-    cout << "Physics Calculator" << endl
+    cout << COLORS[1] << "Physics Calculator" << RESET << endl
         << "Please choose from the following menu options." << endl
-        << "Type the letter E to exit the program." << endl
-        << "Type the letter X to clear the screen." << endl
-        << "1. Velocity" << endl
-        << "2. Acceleration" << endl
-        << "3. Motion" << endl
-        << "4. Newton's Second Law (NSL)" << endl
-        << "5. Weight" << endl
-        << "6. Momentum" << endl;
+        << "Type the letter " << COLORS[2] << "E" << RESET <<" to exit the program." << endl
+        << "Type the letter " << COLORS[2] << "X" << RESET <<" to clear the screen." << endl
+        << "1. " << COLORS[2] << "Velocity" << RESET << endl
+        << "2. "  << COLORS[2] << "Acceleration" << RESET << endl
+        << "3. "  << COLORS[2] << "Motion" << RESET << endl
+        << "4. Newton's Second Law (" << COLORS[2] << "NSL" << RESET << ")" << endl
+        << "5. "  << COLORS[2] << "Weight" << RESET << endl
+        << "6. "  << COLORS[2] << "Momentum" << RESET << endl;
 }
 
 //makes the decision on which calculation to perform.
@@ -108,7 +119,7 @@ void calculationChooser(string menuInput)
             return physicsCalculator(options[i], equations[i]); //start the physics calculation.
         }else if (i == (sizeof(options) - 1)){ //if the user chooses some dumb thing that isn't real...
             i = -1;
-            cout << "ERROR: Invalid option. Try again." << endl; //Tell them they are stupid
+            cout << COLORS[0] << "ERROR: Invalid option. Try again." << RESET << endl; //Tell them they are stupid
             menuInput = validateString(menuInput); //and then make them choose again. 
             menuInput = stringToLower(menuInput);
         }
@@ -138,19 +149,19 @@ void physicsCalculator(string operation, string equation)
         unitTwo = "meters/s^2";
     }
     //output the name of the operation we are performing
-    cout << endl << stringToUpper(operation) << endl;
+    cout << endl << COLORS[4] << stringToUpper(operation) << RESET << endl;
 
     //output the equation
     cout << equation << endl;
     //create a menu to query the user for information
-    cout << "What is the value of " << equationPieces[1] << "?" << endl;
+    cout << "What is the value of " << COLORS[4] << equationPieces[1] << RESET << "?" << endl;
     pieceOne = validateDouble(pieceOne);
-    cout << "What are the units?" << endl;
+    cout << "What are the " << COLORS[4] << "units" << RESET << "?" << endl;
     unitOne = validateString(unitOne);
     if(operation != "weight"){ //weight already has this filled out. just need the mass to calculate.
-        cout << endl << "What is the value of " << equationPieces[3] << "?" << endl;
+        cout << endl << "What is the value of " << COLORS[4] << equationPieces[3] << RESET << "?" << endl;
         pieceTwo = validateDouble(pieceTwo);
-        cout << "What are the units?" << endl;
+        cout << "What are the " << COLORS[4] << "units" << RESET << "?" << endl;
         unitTwo = validateString(unitTwo);
         cout << endl;
     }
@@ -158,8 +169,8 @@ void physicsCalculator(string operation, string equation)
     //ok, time to do the math. 
     //first -- dividing by zero is undefined. 
     if(pieceTwo == 0.0){
-        cout << endl << "ERROR: DIVIDE BY ZERO" << endl
-            << "Would you like to try again? (y/n)" << endl;
+        cout << endl << COLORS[0] << "ERROR: DIVIDE BY ZERO" << RESET << endl
+            << "Would you like to try again? " << COLORS[2] << "(y/n)" << RESET << endl;
         char yesorno = 'a';
         yesorno = validateChar(yesorno);
         if (yesorno == 'y')
@@ -176,10 +187,10 @@ void physicsCalculator(string operation, string equation)
     cout << "Wow. That was really, really hard." << endl
         << "Somehow, I managed to solve this problem for you." << endl
         << "Here is the solution." << endl
-        << stringToUpper(operation) << endl
-        << equation << endl
-        << equationPieces[0] << " = " << pieceOne << " " << unitOne << " " << equationPieces[2] << " " << pieceTwo << " " << unitTwo << endl
-        << equationPieces[0] << " = " << result << " " << unitOne << " " << equationPieces[2] << " " << unitTwo << endl;
+        << COLORS[4] << stringToUpper(operation) << endl
+        << equation << RESET << endl
+        << COLORS[4] << equationPieces[0] << RESET << " = " << COLORS[5] << pieceOne << RESET << " " << COLORS[3] << unitOne << RESET << " " << equationPieces[2] << " " << COLORS[5] << pieceTwo << RESET << " " << COLORS[3] << unitTwo << RESET << endl
+        << COLORS[1] << equationPieces[0] << " = " << result << " " << unitOne << " " << equationPieces[2] << " " << unitTwo << RESET << endl;
 
     enterToContinue(); //hold up the user until he hits enter. Give him time to record his answer and ponder the solution.
     //you could clear the screen here. But what if the user wants to scroll up and review his answer again?
@@ -256,7 +267,7 @@ string stringToUpper(string word)
 //"freeze" the program until the user hits enter
 void enterToContinue()
 {
-    cout << "Press ENTER to continue." << endl;
+    cout << "Press " << COLORS[2] << "ENTER" << RESET << " to continue." << endl;
     while(getchar() != '\n');
     //impossible to accomplish my goals if we validate the input to disallow escaping
     //tested inputting many different escape characters'
