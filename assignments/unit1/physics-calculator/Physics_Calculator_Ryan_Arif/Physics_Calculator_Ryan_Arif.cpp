@@ -5,18 +5,20 @@
 //using namespace std; //already part of input validation
 
 //prototypes
-void mainMenu();
-void calculationChooser(string menuInput);
-void physicsCalculator(string operation, string equation);
-void equationSeperator(string equation, string (&equationArr)[4]);
-string stringToLower(string word);
-string stringToUpper(string word);
+void mainMenu(); //display the main menu
+void calculationChooser(string menuInput); //take in a validated user input, and decide how to calculate the answer.
+void physicsCalculator(string operation, string equation); //perform any basic physics calculation (multiplication and division of two numbers ONLY.)
+void equationSeperator(string equation, string (&equationArr)[4]); //break apart a simple physics equation into individual components, so above function can work.
+string stringToLower(string word); //convert a string to all lowercase letters
+string stringToUpper(string word); //convert a string to all uppercase letters
 
 
 int main()
 {
     string menuInput = "";
     bool loopMenu = true;
+
+    //loop through the program until the user types e or E
     do{
         //display the main menu
         mainMenu();
@@ -36,6 +38,7 @@ int main()
         calculationChooser(menuInput);
 
     }while(loopMenu);
+
     return 0;
 }
 
@@ -45,7 +48,7 @@ int main()
 void mainMenu()
 {
     //Main Menu
-    cout << "Physics Calculator ver 0" << endl
+    cout << "Physics Calculator" << endl
         << "Please choose from the following menu options." << endl
         << "Type the letter E to exit the program." << endl
         << "1. Velocity" << endl
@@ -57,14 +60,20 @@ void mainMenu()
 }
 
 //makes the decision on which calculation to perform.
+//paramater menuInput: a validated a string of the input from the user
+
+//NOTE: Perhaps this logic is a bit TOO nested, like there's functions instead of functions inside of functions at this point
+//think of a change to improve readability of the code
+//go to sleep for now lmao be back later
 void calculationChooser(string menuInput)
 {
     //Motion is the only complicated thing. Exclude motion from this.
     if (menuInput == "motion"){
-        //call a motion specific helper function.
+        //call a motion specific helper function. not made yet.
         return;
     }
     
+    //pair of arrays for determing the name of an option and the corresponding equation
     //array of available options
     string options[5] = {
         "velocity",
@@ -84,18 +93,21 @@ void calculationChooser(string menuInput)
 
     //loop through the options until we find the right one
     for(int i = 0; i < sizeof(options); i++){
-        if (options[i] == menuInput){
-            return physicsCalculator(options[i], equations[i]);
-        }else if (i == (sizeof(options) - 1)){
+        if (options[i] == menuInput){ //if the user chose a valid menu option ...
+            return physicsCalculator(options[i], equations[i]); //start the physics calculation.
+        }else if (i == (sizeof(options) - 1)){ //if the user chooses some dumb thing that isn't real...
             i = -1;
-            cout << "ERROR: Invalid option. Try again." << endl;
-            menuInput = validateString(menuInput);
+            cout << "ERROR: Invalid option. Try again." << endl; //Tell them they are stupid
+            menuInput = validateString(menuInput); //and then make them choose again. 
             menuInput = stringToLower(menuInput);
         }
     }
     
 }
 
+//outputs information to the screen about what basic physics problem is being done
+//walks through all of the steps
+//and queries the user for some input to perform said calculations
 void physicsCalculator(string operation, string equation)
 {
     double pieceOne = 0.0; //first number from the user
@@ -114,6 +126,7 @@ void physicsCalculator(string operation, string equation)
     //output the equation
     cout << equation << endl;
 
+    //create a menu to query the user for information
     cout << "What is the value of " << equationPieces[1] << "?" << endl;
     pieceOne = validateDouble(pieceOne);
     cout << endl << "What are the units?" << endl;
@@ -127,7 +140,7 @@ void physicsCalculator(string operation, string equation)
     if(equationPieces[2] == "*"){
         result = pieceOne * pieceTwo;
     }else{
-        result = pieceOne + pieceTwo;
+        result = pieceOne / pieceTwo;
     }
 
     cout << "Wow. That was really, really hard." << endl
@@ -137,6 +150,8 @@ void physicsCalculator(string operation, string equation)
         << equation << endl
         << equationPieces[0] << " = " << pieceOne << " " << unitOne << " " << equationPieces[2] << pieceTwo << " " << unitTwo << endl
         << equationPieces[0] << " = " << result << " " << unitOne << " " << equationPieces[2] << unitTwo << endl;
+
+    //add a pause button here so the user can read their solution until they are ready to proceed back to the main menu. 
 }
 
 // separates out a given equation into a specfic array
@@ -149,10 +164,12 @@ void equationSeperator(string equation, string (&equationArr)[4])
     //create a substring that starts at the pos of the last space
     //save substring to equation arry
     //repeat until gone over whole equation 
-
-    int seperator = 0;
-    for(int i = 0; i < 4; i++){
-        int newSeperator = -1;
+    //each basic physics equation is formatted in the same exact way. If it isn't, then this won't work. So, format it correctly. 
+    
+    int seperator = 0; //each " " or "=" is a seperator in our given list of equations. Start at 0 to start off at the beginning of the string.
+    //for each possible value within the parameter equationArr...
+    for(int i = 0; i < 4; i++){ //for some reason sizeof(equationArr) was throwing out some astronomically large number breaking the program when we tried to add info to it, because we'd quickly go out of bounds. For now - hard coded.
+        int newSeperator = -1; //start at -1. Should never be -1. If it is, we can figure out something horrible happened and fix the bug.
         string tempString = equation.substr(seperator);
 
         //filter out the equals sign & spaces!
@@ -169,38 +186,6 @@ void equationSeperator(string equation, string (&equationArr)[4])
         equationArr[i] = tempString;
         seperator = newSeperator;
     }
-
-    /*At first, I started thinking like "OK OMG Gotta break apart the string into an array of characters, and then like break those down to separate arrays of characters to differentiate sections of the string to make a really really cool thing"
-    And then, like an hour or so into the process...
-    I recalled string.substring and string.find so like haha 
-    hahahaha
-    This is way easier now. But I'm not deleting this. I want this to stand as a warning to future me. 
-    jk this will be deleted in like a commit, I just wanted to leave it here for a while.
-
-    int length = equation.length();
-    char stack[length];
-    int wordSeperator = 0;
-
-    //dump the string into an array of characters
-    for(int i = 0; i < length; i++){
-        stack[i] = equation.at(i);
-    }
-
-    for(int i = 0; i < sizeof(equationArr); i++){
-        string tempString;
-        //loop through the stack
-        //starts at position 0, then with each iterations, picks up at the next 'word' or 'piece' of the equation
-        for(int j = wordSeperator; j < sizeof(stack); j++){
-            if(stack[j] == ' ' || stack[j] == '=')
-            {
-                wordSeperator = j + 1; //next time, start at the character after our word seperator
-                break; // leave this loop
-            }
-            
-        }
-
-        equationArr[i] = string(tempStack);
-     } */
 
 }
 
