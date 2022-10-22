@@ -78,10 +78,9 @@ void calculationChooser(string menuInput)
     if (menuInput == "x"){
         system("clear");
         return;
-    }
-    //Motion is the only complicated thing. Exclude motion from this.
-    if (menuInput == "motion"){
+    } else if (menuInput == "motion"){     //Motion is the only complicated thing. Exclude motion from this.
         //call a motion specific helper function. not made yet.
+        cout << endl << "Not yet implemented." << endl;
         return;
     }
     
@@ -132,9 +131,14 @@ void physicsCalculator(string operation, string equation)
 
     //break apart the equation into pieces
     equationSeperator(equation, equationPieces);
-
+    
+    //weight check (weight assumes gravity is 9.81)
+    if (operation == "weight"){
+        pieceTwo = 9.80665;
+        unitTwo = "meters/s^2";
+    }
     //output the name of the operation we are performing
-    cout << stringToUpper(operation) << endl;
+    cout << endl << stringToUpper(operation) << endl;
 
     //output the equation
     cout << equation << endl;
@@ -143,11 +147,13 @@ void physicsCalculator(string operation, string equation)
     pieceOne = validateDouble(pieceOne);
     cout << "What are the units?" << endl;
     unitOne = validateString(unitOne);
-    cout << endl << "What is the value of " << equationPieces[3] << "?" << endl;
-    pieceTwo = validateDouble(pieceTwo);
-    cout << "What are the units?" << endl;
-    unitTwo = validateString(unitTwo);
-    cout << endl;
+    if(operation != "weight"){ //weight already has this filled out. just need the mass to calculate.
+        cout << endl << "What is the value of " << equationPieces[3] << "?" << endl;
+        pieceTwo = validateDouble(pieceTwo);
+        cout << "What are the units?" << endl;
+        unitTwo = validateString(unitTwo);
+        cout << endl;
+    }
 
     //ok, time to do the math. 
     if(equationPieces[2] == "*"){
@@ -242,6 +248,8 @@ void enterToContinue()
     cout << "Press ENTER to continue." << endl;
     while(getchar() != '\n');
     //impossible to accomplish my goals if we validate the input to disallow escaping
+    //tested inputting many different escape characters'
+    //nothing seems to do anything
     /* 
     char didYouTypeEnter = '0';
     while(didYouTypeEnter != '\n'){
