@@ -12,6 +12,8 @@
 //using namespace std; //already part of input validation
 
 //GLOBAL VARIABLES
+//floating point precision 
+const int PRECISION = 4;
 //text formatting
 const string RESET = "\x1b[0m"; //reset formatting
 const string COLORS[6] = {
@@ -22,6 +24,7 @@ const string COLORS[6] = {
     "\x1b[35;1m", //purple bold
     "\x1b[36;1m" //light blue bold
 };
+
 //menu options and, if exists, corresponding menu options 
 //always leave motion at the bottom. 
 //doing it this way means we could add as many *simple* physics operations as possible
@@ -33,7 +36,7 @@ const string OPERATIONS[6] = {
     "nsl",
     "weight",
     "momentum",
-    "motion"
+    "motion" //leave at the end! This should ALWAYS be last.
 };
 //motion will be handeled separately. 
 //FORMAT SHOULD ALWAYS FOLLOW: 
@@ -195,14 +198,17 @@ void physicsCalculator(string operation, string equation)
     }else{
         result = pieceOne / pieceTwo;
     }
-
     cout << "Wow. That was really, really hard." << endl
         << "Somehow, I managed to solve this problem for you." << endl
         << "Here is the solution." << endl
         << COLORS[4] << stringToUpper(operation) << endl
         << equation << RESET << endl
-        << COLORS[4] << equationPieces[0] << RESET << " = " << COLORS[5] << pieceOne << RESET << " " << COLORS[3] << unitOne << RESET << " " << equationPieces[2] << " " << COLORS[5] << pieceTwo << RESET << " " << COLORS[3] << unitTwo << RESET << endl
-        << COLORS[1] << equationPieces[0] << " = " << result << " " << unitOne << " " << equationPieces[2] << " " << unitTwo << RESET << endl;
+        << COLORS[4] << equationPieces[0] << RESET << " = " << COLORS[5] << pieceOne << RESET << " " << COLORS[3] << unitOne << RESET << " " << equationPieces[2] << " " << COLORS[5] << pieceTwo << RESET << " " << COLORS[3] << unitTwo << RESET << endl;
+    //set the precision to display for our final answer
+    cout.precision(PRECISION);
+    cout.setf( ios::fixed, ios::floatfield );
+    //final answer
+    cout << COLORS[1] << equationPieces[0] << " = " << result << " " << unitOne << " " << equationPieces[2] << " " << unitTwo << RESET << endl;
 
     enterToContinue(); //hold up the user until he hits enter. Give him time to record his answer and ponder the solution.
     //you could clear the screen here. But what if the user wants to scroll up and review his answer again?
