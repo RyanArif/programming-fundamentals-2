@@ -156,6 +156,17 @@ void physicsCalculator(string operation, string equation)
     }
 
     //ok, time to do the math. 
+    //first -- dividing by zero is undefined. 
+    if(pieceTwo == 0.0){
+        cout << endl << "ERROR: DIVIDE BY ZERO" << endl
+            << "Would you like to try again? (y/n)" << endl;
+        char yesorno = 'a';
+        yesorno = validateChar(yesorno);
+        if (yesorno == 'y')
+            return physicsCalculator(operation, equation);
+        else
+            return;
+    }
     if(equationPieces[2] == "*"){
         result = pieceOne * pieceTwo;
     }else{
