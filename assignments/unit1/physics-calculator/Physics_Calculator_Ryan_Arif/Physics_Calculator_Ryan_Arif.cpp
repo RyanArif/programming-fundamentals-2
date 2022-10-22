@@ -53,6 +53,8 @@ const string EQUATIONS[5] = {
 //prototypes
 void mainMenu(); //display the main menu
 void calculationChooser(string menuInput); //take in a validated user input, and decide how to calculate the answer.
+void motionMenu(); //menu specific to motion problems
+void motionHandler(char menuInput); //handles the user inputting the dreaded motion problems.
 void physicsCalculator(string operation, string equation); //perform any basic physics calculation (multiplication and division of two numbers ONLY.)
 void equationSeperator(string equation, string (&equationArr)[4]); //break apart a simple physics equation into individual components, so above function can work.
 string stringToLower(string word); //convert a string to all lowercase letters
@@ -122,10 +124,8 @@ void calculationChooser(string menuInput)
     if (menuInput == "x"){
         system("clear");
         return;
-    } else if (menuInput == "motion"){     //Motion is the only complicated thing. Exclude motion from this.
-        //call a motion specific helper function. not made yet.
-        cout << endl << "Not yet implemented." << endl;
-        return;
+    } else if (menuInput == "motion"){     //Motion handled by a separate function
+        return motionMenu();
     }
 
     //loop through the options until we find the right one
@@ -140,6 +140,45 @@ void calculationChooser(string menuInput)
         }
     }
     
+}
+
+//displays the menu for the motion problems
+void motionMenu()
+{
+    bool loopMenu = true;
+    do{
+        //display the menu
+        cout << COLORS[1] << "Motion Equations" << RESET << endl
+            << "Type the letter" << COLORS[2] << " E " << RESET << "to return to the main menu." << endl
+            << "Type the letter" << COLORS[2] << " X " << RESET << "to clear the screen." << endl
+            << "A. " << COLORS[2] << "v = v0 + at" << RESET << endl
+            << "B. " << COLORS[2] << "s = s0 + v0t + ½at2" << RESET << endl
+            << "C. " << COLORS[2] << "v2 = v02 + 2a(s - s0)" << RESET << endl
+            << "D. " << COLORS[2] << "v̅ = ½(v + v0)" << RESET << endl;
+
+        //query the user for a menu input
+        char menuInput = 'a';
+        menuInput = validateChar(menuInput);
+        menuInput = toupper(menuInput);
+
+        //exit the menu if the user wants to
+        if (menuInput == 'E'){
+            cout << COLORS[1] << "Returning to main menu..." << RESET << endl;
+            loopMenu = false;
+            break;
+        }else if (menuInput == 'X'){
+            system("clear");
+        }
+
+        motionHandler(menuInput);
+
+    }while(loopMenu);
+}
+
+//handles the 4 motion problems
+void motionHandler(char menuInput)
+{
+
 }
 
 //outputs information to the screen about what basic physics problem is being done
@@ -206,10 +245,11 @@ void physicsCalculator(string operation, string equation)
         << COLORS[4] << equationPieces[0] << RESET << " = " << COLORS[5] << pieceOne << RESET << " " << COLORS[3] << unitOne << RESET << " " << equationPieces[2] << " " << COLORS[5] << pieceTwo << RESET << " " << COLORS[3] << unitTwo << RESET << endl;
     //set the precision to display for our final answer
     cout.precision(PRECISION);
-    cout.setf( ios::fixed, ios::floatfield );
+    cout.setf(ios::fixed, ios::floatfield);
     //final answer
     cout << COLORS[1] << equationPieces[0] << " = " << result << " " << unitOne << " " << equationPieces[2] << " " << unitTwo << RESET << endl;
-
+    //unset the precision
+    cout.unsetf(ios::floatfield);
     enterToContinue(); //hold up the user until he hits enter. Give him time to record his answer and ponder the solution.
     //you could clear the screen here. But what if the user wants to scroll up and review his answer again?
 }
