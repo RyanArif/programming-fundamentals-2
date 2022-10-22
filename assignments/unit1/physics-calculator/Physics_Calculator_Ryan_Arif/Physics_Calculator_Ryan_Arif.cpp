@@ -12,6 +12,7 @@
 //using namespace std; //already part of input validation
 
 //GLOBAL VARIABLES
+//text formatting
 const string RESET = "\x1b[0m"; //reset formatting
 const string COLORS[6] = {
     "\x1b[31;1m", //red bold
@@ -21,6 +22,30 @@ const string COLORS[6] = {
     "\x1b[35;1m", //purple bold
     "\x1b[36;1m" //light blue bold
 };
+//menu options and, if exists, corresponding menu options 
+//always leave motion at the bottom. 
+//doing it this way means we could add as many *simple* physics operations as possible
+//without having to re-code the whole thing.
+//ALWAYS LOWERCASE. ALWAYS ONE WORD.
+const string OPERATIONS[6] = {
+    "velocity",
+    "acceleration",
+    "nsl",
+    "weight",
+    "momentum",
+    "motion"
+};
+//motion will be handeled separately. 
+//FORMAT SHOULD ALWAYS FOLLOW: 
+//SOMETHING = SOMETHING */ SOMETHING
+const string EQUATIONS[5] = {
+    "v = Δs / Δt",
+    "a = Δv / Δt",
+    "F = m * a",
+    "W = m * g",
+    "p = m * v"
+};
+
 
 //prototypes
 void mainMenu(); //display the main menu
@@ -65,25 +90,30 @@ int main()
 //Prints the main menu out to the terminal
 void mainMenu()
 {
-    //Main Menu
     cout << COLORS[1] << "Physics Calculator" << RESET << endl
         << "Please choose from the following menu options." << endl
         << "Type the letter " << COLORS[2] << "E" << RESET <<" to exit the program." << endl
-        << "Type the letter " << COLORS[2] << "X" << RESET <<" to clear the screen." << endl
-        << "1. " << COLORS[2] << "Velocity" << RESET << endl
-        << "2. "  << COLORS[2] << "Acceleration" << RESET << endl
-        << "3. "  << COLORS[2] << "Motion" << RESET << endl
-        << "4. Newton's Second Law (" << COLORS[2] << "NSL" << RESET << ")" << endl
-        << "5. "  << COLORS[2] << "Weight" << RESET << endl
-        << "6. "  << COLORS[2] << "Momentum" << RESET << endl;
+        << "Type the letter " << COLORS[2] << "X" << RESET <<" to clear the screen." << endl;
+
+    //dnamic main menu
+    //sizeof returns the size in memory of some data
+    //so, because arrays are like several somethings in memory, the size of the array is
+    //the size of the data type * the number of stuff in the array
+    //how_many_pieces = total_size_of_array / size_of_one_piece
+    //https://en.cppreference.com/w/cpp/language/sizeof
+    //because each array may hold a different data type, I'm not sure how to incorporate this into a function for easy repeatability.
+    //also i'm not smart enough to pretend to go look at the documentation for C++ when something weird happens
+    //found on stack overflow https://stackoverflow.com/questions/4108313/how-do-i-find-the-length-of-an-array
+    //just wanted to write an explanation to demonstrate understanding
+    for(int i = 0; i < (sizeof(OPERATIONS)/sizeof(*OPERATIONS)); i++) 
+    {
+        cout << i + 1 << ". " << COLORS[2] << stringToUpper(OPERATIONS[i]) << RESET << endl;
+    }
+
 }
 
 //makes the decision on which calculation to perform.
 //paramater menuInput: a validated a string of the input from the user
-
-//NOTE: Perhaps this logic is a bit TOO nested, like there's functions instead of functions inside of functions at this point
-//think of a change to improve readability of the code
-//go to sleep for now lmao be back later
 void calculationChooser(string menuInput)
 {
     if (menuInput == "x"){
@@ -94,30 +124,12 @@ void calculationChooser(string menuInput)
         cout << endl << "Not yet implemented." << endl;
         return;
     }
-    
-    //pair of arrays for determing the name of an option and the corresponding equation
-    //array of available options
-    string options[5] = {
-        "velocity",
-        "acceleration",
-        "nsl",
-        "weight",
-        "momentum"
-    };
-    //array of corresponding equations
-    string equations[5] = {
-        "v = Δs / Δt",
-        "a = Δv / Δt",
-        "F = m * a",
-        "W = m * g",
-        "p = m * v"
-    };
 
     //loop through the options until we find the right one
-    for(int i = 0; i < sizeof(options); i++){
-        if (options[i] == menuInput){ //if the user chose a valid menu option ...
-            return physicsCalculator(options[i], equations[i]); //start the physics calculation.
-        }else if (i == (sizeof(options) - 1)){ //if the user chooses some dumb thing that isn't real...
+    for(int i = 0; i < (sizeof(EQUATIONS)/sizeof(*EQUATIONS)); i++){
+        if (OPERATIONS[i] == menuInput){ //if the user chose a valid menu option ...
+            return physicsCalculator(OPERATIONS[i], EQUATIONS[i]); //start the physics calculation.
+        }else if (i == ((sizeof(EQUATIONS)/sizeof(*EQUATIONS)) - 1)){ //if the user chooses some dumb thing that isn't real...
             i = -1;
             cout << COLORS[0] << "ERROR: Invalid option. Try again." << RESET << endl; //Tell them they are stupid
             menuInput = validateString(menuInput); //and then make them choose again. 
@@ -210,7 +222,7 @@ void equationSeperator(string equation, string (&equationArr)[4])
     
     int seperator = 0; //each " " or "=" is a seperator in our given list of equations. Start at 0 to start off at the beginning of the string.
     //for each possible value within the parameter equationArr...
-    for(int i = 0; i < 4; i++){ //for some reason sizeof(equationArr) was throwing out some astronomically large number breaking the program when we tried to add info to it, because we'd quickly go out of bounds. For now - hard coded.
+    for(int i = 0; i < (sizeof(equationArr)/sizeof(*equationArr)); i++){ 
         int newSeperator = -1; //start at -1. Should never be -1. If it is, we can figure out something horrible happened and fix the bug.
         string tempString = equation.substr(seperator);
 
