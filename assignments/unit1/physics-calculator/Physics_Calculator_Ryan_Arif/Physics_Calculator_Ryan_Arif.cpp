@@ -1,3 +1,10 @@
+/**
+ * Student: Ryan Arif
+ * Professor: Dr. Tyson McMillan
+ * Class: 2022FL COSC-1437-58001
+ * Date Completed: lol it's not done yet
+**/
+
 //#include <iostream> //already included with input validation
 //#include <string> //already included with input validation
 #include "./Input_Validation_Extended.h"
