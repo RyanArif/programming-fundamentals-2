@@ -36,7 +36,7 @@ const string OPERATIONS[6] = {
     "nsl",
     "weight",
     "momentum",
-    "motion" //leave at the end! This should ALWAYS be last.
+    "motion" //leave at the end! motion should ALWAYS be last.
 };
 //motion will be handeled separately. 
 //FORMAT SHOULD ALWAYS FOLLOW: 
@@ -60,6 +60,7 @@ void equationSeperator(string equation, string (&equationArr)[4]); //break apart
 string stringToLower(string word); //convert a string to all lowercase letters
 string stringToUpper(string word); //convert a string to all uppercase letters
 void enterToContinue(); //'freeze' the terminal until the user presses the enter key.
+
 
 int main()
 {
@@ -110,6 +111,8 @@ void mainMenu()
     //also i'm not smart enough to pretend to go look at the documentation for C++ when something weird happens
     //found on stack overflow https://stackoverflow.com/questions/4108313/how-do-i-find-the-length-of-an-array
     //just wanted to write an explanation to demonstrate understanding
+    //when i find something on stack overflow, i use it as a resource to learn about a new function or operator to help me go back
+    //and read the documentation to properly learn how something can work best for me
     for(int i = 0; i < (sizeof(OPERATIONS)/sizeof(*OPERATIONS)); i++) 
     {
         cout << i + 1 << ". " << COLORS[2] << stringToUpper(OPERATIONS[i]) << RESET << endl;
@@ -176,6 +179,7 @@ void motionMenu()
 }
 
 //handles the 4 motion problems
+//parameter: menuInput is a validadated char
 void motionHandler(char menuInput)
 {
 
@@ -199,7 +203,7 @@ void physicsCalculator(string operation, string equation)
     
     //weight check (weight assumes gravity is 9.81)
     if (operation == "weight"){
-        pieceTwo = 9.80665;
+        pieceTwo = 9.80665; //acceleration from gravity on Earth
         unitTwo = "meters/s^2";
     }
     //output the name of the operation we are performing
