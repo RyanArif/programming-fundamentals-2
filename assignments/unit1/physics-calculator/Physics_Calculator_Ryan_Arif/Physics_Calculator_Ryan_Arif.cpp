@@ -10,6 +10,8 @@ void calculationChooser(string menuInput);
 void physicsCalculator(string operation, string equation);
 void equationSeperator(string equation, string (&equationArr)[4]);
 string stringToLower(string word);
+string stringToUpper(string word);
+
 
 int main()
 {
@@ -108,7 +110,7 @@ void physicsCalculator(string operation, string equation)
     equationSeperator(equation, equationPieces);
 
     //output the name of the operation we are performing
-    cout << operation << endl;
+    cout << stringToUpper(operation) << endl;
     //output the equation
     cout << equation << endl;
 
@@ -131,7 +133,7 @@ void physicsCalculator(string operation, string equation)
     cout << "Wow. That was really, really hard." << endl
         << "Somehow, I managed to solve this problem for you." << endl
         << "Here is the solution." << endl
-        << operation << endl
+        << stringToUpper(operation) << endl
         << equation << endl
         << equationPieces[0] << " = " << pieceOne << " " << unitOne << " " << equationPieces[2] << pieceTwo << " " << unitTwo << endl
         << equationPieces[0] << " = " << result << " " << unitOne << " " << equationPieces[2] << unitTwo << endl;
@@ -152,15 +154,15 @@ void equationSeperator(string equation, string (&equationArr)[4])
     for(int i = 0; i < 4; i++){
         int newSeperator = -1;
         string tempString = equation.substr(seperator);
-        cout << "tempstring 1: " << tempString << endl;
+
         //filter out the equals sign & spaces!
         if( tempString.find("=") != string::npos){
             int tempSep = tempString.find("=");
+            tempString = tempString.erase(tempSep); //cut off everything after the =
             newSeperator = seperator + tempSep + 2; //a space will always follow the equals sign. Get rid of that one too. 
-            tempString = tempString.substr(0, tempSep - 1); //
         }else if (tempString.find(" ") != string::npos){
             int tempSep = tempString.find(" ");
-            tempString = tempString.erase(tempSep);
+            tempString = tempString.erase(tempSep); //throw out everything after the first " "
             newSeperator = seperator + tempSep + 1;
         }
 
@@ -211,6 +213,22 @@ string stringToLower(string word)
     for(int i = 0; i < length; i++){
         stack[i] = word.at(i); //if a string is an array, then this is like word[i].
         stack[i] = tolower(stack[i]); //make the character lowercase
+    }
+
+    stack[length] = '\0'; //null terminator - marks end of string
+
+    return string(stack);
+}
+
+//convert a string into all uppercase
+string stringToUpper(string word)
+{
+    int length = word.length();
+    char stack[length]; //create an array of characters to store our broken up string into
+
+    for(int i = 0; i < length; i++){
+        stack[i] = word.at(i); //if a string is an array, then this is like word[i].
+        stack[i] = toupper(stack[i]); //make the character uppercase
     }
 
     stack[length] = '\0'; //null terminator - marks end of string
