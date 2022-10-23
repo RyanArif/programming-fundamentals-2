@@ -7,8 +7,8 @@
 
 //#include <iostream> //already included with input validation
 //#include <string> //already included with input validation
-#include "./Input_Validation_Extended.h"
-
+#include "Input_Validation_Extended.h"
+#include "String_Manipulation.h"
 //using namespace std; //already part of input validation
 
 //GLOBAL VARIABLES
@@ -56,8 +56,6 @@ void motionMenu(); //menu specific to motion problems
 void motionHandler(char menuInput); //handles the user inputting the dreaded motion problems.
 void physicsCalculator(string operation, string equation); //perform any basic physics calculation (multiplication and division of two numbers ONLY.)
 void equationSeperator(string equation, string (&equationArr)[4]); //break apart a simple physics equation into individual components, so above function can work.
-string stringToLower(string word); //convert a string to all lowercase letters
-string stringToUpper(string word); //convert a string to all uppercase letters
 void enterToContinue(); //'freeze' the terminal until the user presses the enter key.
 
 
@@ -478,51 +476,4 @@ void equationSeperator(string equation, string (&equationArr)[4])
 
 }
 
-//convert a string into all lowercase
-string stringToLower(string word)
-{
-    int length = word.length();
-    char stack[length]; //create an array of characters to store our broken up string into
 
-    for(int i = 0; i < length; i++){
-        stack[i] = word.at(i); //if a string is an array, then this is like word[i].
-        stack[i] = tolower(stack[i]); //make the character lowercase
-    }
-
-    stack[length] = '\0'; //null terminator - marks end of string
-
-    return string(stack);
-}
-
-//convert a string into all uppercase
-string stringToUpper(string word)
-{
-    int length = word.length();
-    char stack[length]; //create an array of characters to store our broken up string into
-
-    for(int i = 0; i < length; i++){
-        stack[i] = word.at(i); //if a string is an array, then this is like word[i].
-        stack[i] = toupper(stack[i]); //make the character uppercase
-    }
-
-    stack[length] = '\0'; //null terminator - marks end of string
-
-    return string(stack);
-}
-
-//tell the user to press enter to continue 
-//"freeze" the program until the user hits enter
-void enterToContinue()
-{
-    cout << "Press " << COLORS[2] << "ENTER" << RESET << " to continue." << endl;
-    while(getchar() != '\n');
-    //impossible to accomplish my goals if we validate the input to disallow escaping
-    //tested inputting many different escape characters'
-    //nothing seems to do anything
-    /* 
-    char didYouTypeEnter = '0';
-    while(didYouTypeEnter != '\n'){
-        didYouTypeEnter = validateChar(didYouTypeEnter);
-    }
-    */
-}
