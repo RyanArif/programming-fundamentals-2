@@ -150,7 +150,7 @@ void motionMenu()
     string motionEquations [4] = {
         "s = s0 + v0t + ½at^2",
         "v = v0 + at",
-        "v2 = v02 + 2a(s - s0)",
+        "v^2 = v0^2 + 2a(s - s0)",
         "v̅ = ½(v + v0)"
     };
 
@@ -178,8 +178,7 @@ void motionMenu()
             cout << COLORS[1] << "Returning to main menu..." << RESET << endl;
             loopMenu = false;
             break;
-        }else if (menuInput == 'x'){
-            system("clear");
+        }else if (menuInput == 'x'){ //clear the screen...
         }
 
         motionHandler(menuInput);
@@ -198,14 +197,23 @@ void motionHandler(char menuInput)
     string posUnits = "";
     double iVel = 0.0;
     string iVelUnits = "";
+    double vel = 0.0;
+    string velUnits = "";
     double accel = 0.0;
     string accelUnits = "";
     double time = 0.0;
     string timeUnits = "";
     double result = 0.0;
 
+    //holy crap this is a huge freaking mess. 
+    //What I would like to do, and do not know how, is to:
+    //do the same exact thin I do to break down other functions, 
+    //but with these motions functions, 
+    //which get more complicated and each have a different amount of pieces and mathematical operations
+    //and I don't know how to make like a "dynamic" array that doesn't have to be immediately told how big it is
+    //does that make sense? I know there's a data type that exists that can help me. I don't know what it is.
     switch(menuInput){
-        case 'a':
+        case 'a': //position
             //output text and query the user 
             cout << COLORS[4] << "POSITION" << RESET << endl
                 << "s = s0 + v0t + ½at^2" << endl;
@@ -234,7 +242,7 @@ void motionHandler(char menuInput)
                 << "Here is the solution." << endl
                 << COLORS[4] << "POSITION" << endl
                 << "s = s0 + v0t + ½at^2" << RESET << endl
-                << COLORS[4] << "s" << RESET << " = " << COLORS[5] << iPos << RESET << " " << posUnits << " + (" << COLORS[5] << iVel << RESET << " " << iVelUnits << " * " << COLORS[5] << time << RESET << " " << timeUnits << ") +  (½" << COLORS[5] << accel << RESET << accelUnits << " * (" << COLORS[5] << time << RESET << " " << timeUnits << ")^2)" << endl;
+                << COLORS[4] << "s" << RESET << " = " << COLORS[5] << iPos << RESET << " " << COLORS[3] << posUnits << RESET << " + (" << COLORS[5] << iVel << RESET << " " << COLORS[3] << iVelUnits << RESET << " * " << COLORS[5] << time << RESET << " " << COLORS[3] << timeUnits << RESET << ") +  (½" << COLORS[5] << accel << RESET << " " << COLORS[3] << accelUnits << RESET << " * (" << COLORS[5] << time << RESET << " " << COLORS[3] << timeUnits << RESET << ")^2)" << endl;
             //set the precision to display for our final answer
             cout.precision(PRECISION);
             cout.setf(ios::fixed, ios::floatfield);
@@ -269,7 +277,7 @@ void motionHandler(char menuInput)
                 << "Here is the solution." << endl
                 << COLORS[4] << "VELOCITY" << endl
                 << "v = v0 + at" << RESET << endl
-                << COLORS[4] << "v" << RESET << " = " << COLORS[5] << iVel << RESET << " " << iVelUnits << " + (" << COLORS[5] << accel << RESET << " " << accelUnits << " * " << COLORS[5] << time << RESET << ") " << timeUnits << endl;
+                << COLORS[4] << "v" << RESET << " = " << COLORS[5] << iVel << RESET << " " << COLORS[3] << iVelUnits << RESET << " + (" << COLORS[5] << accel << RESET << " " << COLORS[3] << accelUnits << RESET << " * " << COLORS[5] << time << RESET << ") " << COLORS[3] << timeUnits << RESET << endl;
             //set the precision to display for our final answer
             cout.precision(PRECISION);
             cout.setf(ios::fixed, ios::floatfield);
@@ -280,6 +288,84 @@ void motionHandler(char menuInput)
             enterToContinue(); //hold up the user until he hits enter. Give him time to record his answer and ponder the solution.
             //you could clear the screen here. But what if the user wants to scroll up and review his answer again?
             break;
+        case 'c': // v^2
+            //output text and query the user 
+            cout << COLORS[4] << "VELOCITY SQUARED" << RESET << endl
+                << "v^2 = v0^2 + 2a(s - s0)" << endl;
+            cout << "What is the value of " << COLORS[4] << "v0" << RESET << "?" << endl;
+            iVel = validateDouble(iVel);
+            cout << "What are the " << COLORS[4] << "units" << RESET << "?" << endl;
+            iVelUnits = validateString(iVelUnits);
+            cout << endl << "What is the value of " << COLORS[4] << "a" << RESET << "?" << endl;
+            accel = validateDouble(accel);
+            cout << "What are the " << COLORS[4] << "units" << RESET << "?" << endl;
+            accelUnits = validateString(accelUnits);
+            cout << endl << "What is the value of " << COLORS[4] << "s" << RESET << "?" << endl;
+            pos = validateDouble(pos);
+            cout << "What are the " << COLORS[4] << "units" << RESET << "?" << endl;
+            posUnits = validateString(posUnits);
+            cout << endl << "What is the value of " << COLORS[4] << "s0" << RESET << "?" << endl;
+            iPos = validateDouble(iPos);
+            cout << "What are the " << COLORS[4] << "units" << RESET << "?" << endl;
+            iPosUnits = validateString(iPosUnits);
+            //perform the computation
+            result = (iVel * iVel) + ((2 * accel) * (pos - iPos));
+
+            cout << "Wow. That was really, really hard." << endl
+                << "Somehow, I managed to solve this problem for you." << endl
+                << "Here is the solution." << endl
+                << COLORS[4] << "VELOCITY SQUARED" << endl
+                << "v^2 = v0^2 + 2a(s - s0)" << RESET << endl
+                << COLORS[4] << "v^2" << RESET << " = (" << COLORS[5] << iVel << RESET << " " << COLORS[3] << iVelUnits << RESET << ")^2 + (2 * " << COLORS[5] << accel << RESET << " " << COLORS[3] << accelUnits << RESET << ") * (" << COLORS[5] << pos << RESET << " " << COLORS[3] << posUnits << RESET << " - " << COLORS[5] << iPos << RESET << " " << COLORS[3] << iPosUnits << RESET << ")" << endl;
+            //set the precision to display for our final answer
+            cout.precision(PRECISION);
+            cout.setf(ios::fixed, ios::floatfield);
+            //final answer
+            cout << COLORS[1] << "v^2 = " << result << " (" << iVelUnits << ")^2" << RESET << endl;
+            //unset the precision
+            cout.unsetf(ios::floatfield);
+            enterToContinue(); //hold up the user until he hits enter. Give him time to record his answer and ponder the solution.
+            //you could clear the screen here. But what if the user wants to scroll up and review his answer again?
+            break;
+        case 'd': // average velocity
+            //output text and query the user 
+            cout << COLORS[4] << "AVERAGE VELOCITY" << RESET << endl
+                << "v̅ = ½(v + v0)" << endl;
+            cout << "What is the value of " << COLORS[4] << "v" << RESET << "?" << endl;
+            vel = validateDouble(vel);
+            cout << "What are the " << COLORS[4] << "units" << RESET << "?" << endl;
+            velUnits = validateString(velUnits);
+            cout << endl << "What is the value of " << COLORS[4] << "v0" << RESET << "?" << endl;
+            iVel = validateDouble(iVel);
+            cout << "What are the " << COLORS[4] << "units" << RESET << "?" << endl;
+            iVelUnits = validateString(iVelUnits);
+            //perform the computation
+            result = 0.5 * (vel + iVel);
+
+            cout << "Wow. That was really, really hard." << endl
+                << "Somehow, I managed to solve this problem for you." << endl
+                << "Here is the solution." << endl
+                << COLORS[4] << "AVERAGE VELOCITY" << endl
+                << "v̅ = ½(v + v0)" << RESET << endl
+                << COLORS[4] << "v̅" << RESET << " = ½(" << COLORS[5] << vel << RESET << " " << COLORS[3] << velUnits << RESET << " + " << COLORS[5] << iVel << RESET << " " << COLORS[3] << iVelUnits << RESET << ")" << endl;
+            //set the precision to display for our final answer
+            cout.precision(PRECISION);
+            cout.setf(ios::fixed, ios::floatfield);
+            //final answer
+            cout << COLORS[1] << "v̅ = " << result << " " << velUnits << RESET << endl;
+            //unset the precision
+            cout.unsetf(ios::floatfield);
+            enterToContinue(); //hold up the user until he hits enter. Give him time to record his answer and ponder the solution.
+            //you could clear the screen here. But what if the user wants to scroll up and review his answer again?
+            break;
+        case 'x' : //clear screen
+            system("clear");
+            break;
+        default : //ERROR. User input an invalid option.
+            cout << COLORS[0] << "ERROR: Invalid option. Try again." << RESET << endl;
+            char tempChar = 'z';
+            tempChar = validateChar(tempChar);
+            return motionHandler(tempChar);
     }
 
 }
