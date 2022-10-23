@@ -154,22 +154,22 @@ void motionMenu()
         cout << COLORS[1] << "Motion Equations" << RESET << endl
             << "Type the letter" << COLORS[2] << " E " << RESET << "to return to the main menu." << endl
             << "Type the letter" << COLORS[2] << " X " << RESET << "to clear the screen." << endl
-            << "A. " << COLORS[2] << "v = v0 + at" << RESET << endl
-            << "B. " << COLORS[2] << "s = s0 + v0t + ½at2" << RESET << endl
+            << "A. " << COLORS[2] << "s = s0 + v0t + ½at^2" << RESET << endl
+            << "B. " << COLORS[2] << "v = v0 + at" << RESET << endl
             << "C. " << COLORS[2] << "v2 = v02 + 2a(s - s0)" << RESET << endl
             << "D. " << COLORS[2] << "v̅ = ½(v + v0)" << RESET << endl;
 
         //query the user for a menu input
-        char menuInput = 'a';
+        char menuInput = 'z';
         menuInput = validateChar(menuInput);
-        menuInput = toupper(menuInput);
-
+        menuInput = tolower(menuInput);
+    
         //exit the menu if the user wants to
-        if (menuInput == 'E'){
+        if (menuInput == 'e'){
             cout << COLORS[1] << "Returning to main menu..." << RESET << endl;
             loopMenu = false;
             break;
-        }else if (menuInput == 'X'){
+        }else if (menuInput == 'x'){
             system("clear");
         }
 
@@ -182,6 +182,56 @@ void motionMenu()
 //parameter: menuInput is a validadated char
 void motionHandler(char menuInput)
 {
+    switch(menuInput){
+        case 'a':
+            //output text and query the user 
+            cout << COLORS[4] << "POSITION" << RESET << endl
+                << "s = s0 + v0t + ½at^2" << endl;
+            cout << "What is the value of " << COLORS[4] << "s0" << RESET << "?" << endl;
+            double posNaught = 0.0;
+            posNaught = validateDouble(posNaught);
+            cout << endl << "What are the " << COLORS[4] << "units" << RESET << "?" << endl;
+            string posUnits = "NO UNIT";
+            posUnits = validateString(posUnits);
+            cout << endl << "What is the value of " << COLORS[4] << "v0" << RESET << "?" << endl;
+            double velNaught = 0.0;
+            velNaught = validateDouble(velNaught);
+            cout << endl << "What are the " << COLORS[4] << "units" << RESET << "?" << endl;
+            string velUnits = "NO UNIT";
+            velUnits = validateString(velUnits);
+            cout << endl << "What is the value of " << COLORS[4] << "a" << RESET << "?" << endl;
+            double accel = 0.0;
+            accel = validateDouble(accel);
+            cout << endl << "What are the " << COLORS[4] << "units" << RESET << "?" << endl;
+            string accelUnits= "NO UNIT";
+            accelUnits = validateString(accelUnits);
+            cout << endl << "What is the value of " << COLORS[4] << "t" << RESET << "?" << endl;
+            double theTime = 0.0;
+            theTime = validateDouble(theTime);
+            cout << endl << "What are the " << COLORS[4] << "units" << RESET << "?" << endl;
+            string timeUnits = "NO UNIT";
+            timeUnits = validateString(timeUnits);
+            
+            //perform the computation
+            double result = posNaught + (velNaught*theTime) + (0.5 * accel * (theTime * theTime));
+
+            cout << "Wow. That was really, really hard." << endl
+                << "Somehow, I managed to solve this problem for you." << endl
+                << "Here is the solution." << endl
+                << COLORS[4] << "POSITION" << endl
+                << "s = s0 + v0t + ½at^2" << RESET << endl
+                << COLORS[4] << "s" << RESET << " = " << COLORS[5] << posNaught << RESET << " " << posUnits << " + " << COLORS[5] << velNaught << RESET << " " << velUnits << " * " << COLORS[5] << theTime << RESET << " " << timeUnits << " +  ½" << COLORS[5] << accel << RESET << accelUnits << " * (" << COLORS[5] << theTime << RESET << " " << timeUnits << ")^2" << endl;
+            //set the precision to display for our final answer
+            cout.precision(PRECISION);
+            cout.setf(ios::fixed, ios::floatfield);
+            //final answer
+            cout << COLORS[1] << "s = " << result << " " << posUnits << RESET << endl;
+            //unset the precision
+            cout.unsetf(ios::floatfield);
+            enterToContinue(); //hold up the user until he hits enter. Give him time to record his answer and ponder the solution.
+            //you could clear the screen here. But what if the user wants to scroll up and review his answer again?
+            break;
+    }
 
 }
 
