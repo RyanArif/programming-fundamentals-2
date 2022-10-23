@@ -49,7 +49,6 @@ const string EQUATIONS[5] = {
     "p = m * v"
 };
 
-
 //prototypes
 void mainMenu(); //display the main menu
 void calculationChooser(string menuInput); //take in a validated user input, and decide how to calculate the answer.
@@ -136,10 +135,10 @@ void calculationChooser(string menuInput)
         if (OPERATIONS[i] == menuInput){ //if the user chose a valid menu option ...
             return physicsCalculator(OPERATIONS[i], EQUATIONS[i]); //start the physics calculation.
         }else if (i == ((sizeof(EQUATIONS)/sizeof(*EQUATIONS)) - 1)){ //if the user chooses some dumb thing that isn't real...
-            i = -1;
             cout << COLORS[0] << "ERROR: Invalid option. Try again." << RESET << endl; //Tell them they are stupid
             menuInput = validateString(menuInput); //and then make them choose again. 
             menuInput = stringToLower(menuInput);
+            return calculationChooser(menuInput);
         }
     }
     
@@ -147,17 +146,27 @@ void calculationChooser(string menuInput)
 
 //displays the menu for the motion problems
 void motionMenu()
-{
+{   
+    string motionEquations [4] = {
+        "s = s0 + v0t + ½at^2",
+        "v = v0 + at",
+        "v2 = v02 + 2a(s - s0)",
+        "v̅ = ½(v + v0)"
+    };
+
     bool loopMenu = true;
     do{
         //display the menu
         cout << COLORS[1] << "Motion Equations" << RESET << endl
             << "Type the letter" << COLORS[2] << " E " << RESET << "to return to the main menu." << endl
-            << "Type the letter" << COLORS[2] << " X " << RESET << "to clear the screen." << endl
-            << "A. " << COLORS[2] << "s = s0 + v0t + ½at^2" << RESET << endl
-            << "B. " << COLORS[2] << "v = v0 + at" << RESET << endl
-            << "C. " << COLORS[2] << "v2 = v02 + 2a(s - s0)" << RESET << endl
-            << "D. " << COLORS[2] << "v̅ = ½(v + v0)" << RESET << endl;
+            << "Type the letter" << COLORS[2] << " X " << RESET << "to clear the screen." << endl;
+        
+        //loop through the equations to list them
+        char i = 'A';
+        for (string eq : motionEquations){
+            cout << COLORS[2] << i << RESET << ". " << eq << endl;
+            i++;
+        }
 
         //query the user for a menu input
         char menuInput = 'z';
@@ -181,51 +190,91 @@ void motionMenu()
 //handles the 4 motion problems
 //parameter: menuInput is a validadated char
 void motionHandler(char menuInput)
-{
+{   
+    //different variables to match the equations
+    double iPos = 0.0;
+    string iPosUnits = "";
+    double pos = 0.0;
+    string posUnits = "";
+    double iVel = 0.0;
+    string iVelUnits = "";
+    double accel = 0.0;
+    string accelUnits = "";
+    double time = 0.0;
+    string timeUnits = "";
+    double result = 0.0;
+
     switch(menuInput){
         case 'a':
             //output text and query the user 
             cout << COLORS[4] << "POSITION" << RESET << endl
                 << "s = s0 + v0t + ½at^2" << endl;
             cout << "What is the value of " << COLORS[4] << "s0" << RESET << "?" << endl;
-            double posNaught = 0.0;
-            posNaught = validateDouble(posNaught);
-            cout << endl << "What are the " << COLORS[4] << "units" << RESET << "?" << endl;
-            string posUnits = "NO UNIT";
+            iPos = validateDouble(iPos);
+            cout << "What are the " << COLORS[4] << "units" << RESET << "?" << endl;
             posUnits = validateString(posUnits);
             cout << endl << "What is the value of " << COLORS[4] << "v0" << RESET << "?" << endl;
-            double velNaught = 0.0;
-            velNaught = validateDouble(velNaught);
-            cout << endl << "What are the " << COLORS[4] << "units" << RESET << "?" << endl;
-            string velUnits = "NO UNIT";
-            velUnits = validateString(velUnits);
+            iVel = validateDouble(iVel);
+            cout << "What are the " << COLORS[4] << "units" << RESET << "?" << endl;
+            iVelUnits = validateString(iVelUnits);
             cout << endl << "What is the value of " << COLORS[4] << "a" << RESET << "?" << endl;
-            double accel = 0.0;
             accel = validateDouble(accel);
-            cout << endl << "What are the " << COLORS[4] << "units" << RESET << "?" << endl;
-            string accelUnits= "NO UNIT";
+            cout << "What are the " << COLORS[4] << "units" << RESET << "?" << endl;
             accelUnits = validateString(accelUnits);
             cout << endl << "What is the value of " << COLORS[4] << "t" << RESET << "?" << endl;
-            double theTime = 0.0;
-            theTime = validateDouble(theTime);
-            cout << endl << "What are the " << COLORS[4] << "units" << RESET << "?" << endl;
-            string timeUnits = "NO UNIT";
+            time = validateDouble(time);
+            cout << "What are the " << COLORS[4] << "units" << RESET << "?" << endl;
             timeUnits = validateString(timeUnits);
             
             //perform the computation
-            double result = posNaught + (velNaught*theTime) + (0.5 * accel * (theTime * theTime));
+            result = iPos + (iVel*time) + (0.5 * accel * (time * time));
 
             cout << "Wow. That was really, really hard." << endl
                 << "Somehow, I managed to solve this problem for you." << endl
                 << "Here is the solution." << endl
                 << COLORS[4] << "POSITION" << endl
                 << "s = s0 + v0t + ½at^2" << RESET << endl
-                << COLORS[4] << "s" << RESET << " = " << COLORS[5] << posNaught << RESET << " " << posUnits << " + " << COLORS[5] << velNaught << RESET << " " << velUnits << " * " << COLORS[5] << theTime << RESET << " " << timeUnits << " +  ½" << COLORS[5] << accel << RESET << accelUnits << " * (" << COLORS[5] << theTime << RESET << " " << timeUnits << ")^2" << endl;
+                << COLORS[4] << "s" << RESET << " = " << COLORS[5] << iPos << RESET << " " << posUnits << " + (" << COLORS[5] << iVel << RESET << " " << iVelUnits << " * " << COLORS[5] << time << RESET << " " << timeUnits << ") +  (½" << COLORS[5] << accel << RESET << accelUnits << " * (" << COLORS[5] << time << RESET << " " << timeUnits << ")^2)" << endl;
             //set the precision to display for our final answer
             cout.precision(PRECISION);
             cout.setf(ios::fixed, ios::floatfield);
             //final answer
             cout << COLORS[1] << "s = " << result << " " << posUnits << RESET << endl;
+            //unset the precision
+            cout.unsetf(ios::floatfield);
+            enterToContinue(); //hold up the user until he hits enter. Give him time to record his answer and ponder the solution.
+            //you could clear the screen here. But what if the user wants to scroll up and review his answer again?
+            break;
+        case 'b': // velocity
+            //output text and query the user 
+            cout << COLORS[4] << "VELOCITY" << RESET << endl
+                << "v = v0 + at" << endl;
+            cout << "What is the value of " << COLORS[4] << "v0" << RESET << "?" << endl;
+            iVel = validateDouble(iVel);
+            cout << "What are the " << COLORS[4] << "units" << RESET << "?" << endl;
+            iVelUnits = validateString(iVelUnits);
+            cout << endl << "What is the value of " << COLORS[4] << "a" << RESET << "?" << endl;
+            accel = validateDouble(accel);
+            cout << "What are the " << COLORS[4] << "units" << RESET << "?" << endl;
+            accelUnits = validateString(accelUnits);
+            cout << endl << "What is the value of " << COLORS[4] << "t" << RESET << "?" << endl;
+            time = validateDouble(time);
+            cout << "What are the " << COLORS[4] << "units" << RESET << "?" << endl;
+            timeUnits = validateString(timeUnits);            
+            //perform the computation
+            result = iVel + (accel*time);
+
+            cout << "Wow. That was really, really hard." << endl
+                << "Somehow, I managed to solve this problem for you." << endl
+                << "Here is the solution." << endl
+                << COLORS[4] << "VELOCITY" << endl
+                << "v = v0 + at" << RESET << endl
+                << COLORS[4] << "v" << RESET << " = " << COLORS[5] << iVel << RESET << " " << iVelUnits << " + (" << COLORS[5] << accel << RESET << " " << accelUnits << " * " << COLORS[5] << time << RESET << ") " << timeUnits << endl;
+            //set the precision to display for our final answer
+            cout.precision(PRECISION);
+            cout.setf(ios::fixed, ios::floatfield);
+            //final answer
+            cout << COLORS[1] << "s = " << result << " " << iVelUnits << RESET << endl;
             //unset the precision
             cout.unsetf(ios::floatfield);
             enterToContinue(); //hold up the user until he hits enter. Give him time to record his answer and ponder the solution.
