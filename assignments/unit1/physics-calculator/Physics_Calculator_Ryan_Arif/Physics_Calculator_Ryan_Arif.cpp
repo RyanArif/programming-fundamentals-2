@@ -9,6 +9,7 @@
 //#include <string> //already included with input validation
 #include "Input_Validation_Extended.h"
 #include "String_Manipulation.h"
+#include <vector>
 //using namespace std; //already part of input validation
 
 //GLOBAL VARIABLES
@@ -55,7 +56,7 @@ void calculationChooser(string menuInput); //take in a validated user input, and
 void motionMenu(); //menu specific to motion problems
 void motionHandler(char menuInput); //handles the user inputting the dreaded motion problems.
 void physicsCalculator(string operation, string equation); //perform any basic physics calculation (multiplication and division of two numbers ONLY.)
-void equationSeperator(string equation, string (&equationArr)[4]); //break apart a simple physics equation into individual components, so above function can work.
+void equationSeperator(string equation, vector<string>& equationVector); //break apart a simple physics equation into individual components, so above function can work.
 void enterToContinue(); //'freeze' the terminal until the user presses the enter key.
 
 
@@ -373,68 +374,87 @@ void motionHandler(char menuInput)
 //and queries the user for some input to perform said calculations
 void physicsCalculator(string operation, string equation)
 {
-    double pieceOne = 0.0; //first number from the user
-    double pieceTwo = 0.0; // second number from the user 
-    string unitOne = ""; // units for the first number
-    string unitTwo = ""; //units for the second number
+    vector<string> equationPieces; //holds the values for the below function
+    vector<double> userNums; //doubles the user inputs 
+    vector<string> userUnits; //strings the user inputs
     double result = 0.0; //result
-
-    string equationPieces[4];
 
     //break apart the equation into pieces
     equationSeperator(equation, equationPieces);
     
-    //weight check (weight assumes gravity is 9.81)
-    if (operation == "weight"){
-        pieceTwo = 9.80665; //acceleration from gravity on Earth
-        unitTwo = "meters/s^2";
-    }
     //output the name of the operation we are performing
     cout << endl << COLORS[4] << stringToUpper(operation) << RESET << endl;
-
     //output the equation
     cout << equation << endl;
+
     //create a menu to query the user for information
-    cout << "What is the value of " << COLORS[4] << equationPieces[1] << RESET << "?" << endl;
-    pieceOne = validateDouble(pieceOne);
-    cout << "What are the " << COLORS[4] << "units" << RESET << "?" << endl;
-    unitOne = validateString(unitOne);
-    if(operation != "weight"){ //weight already has this filled out. just need the mass to calculate.
-        cout << endl << "What is the value of " << COLORS[4] << equationPieces[3] << RESET << "?" << endl;
-        pieceTwo = validateDouble(pieceTwo);
+    for(int i = 2; i < equationPieces.size(); i++){ //always start at position 2. pos 0 is the thing we solve for, pos 1 is equals sign. 
+        cout << "What is the value of " << COLORS[4] << equationPieces[i] << RESET << "?" << endl;
+        userNums.push_back(0.0);
+        userNums[i-2] = validateDouble(userNums[i-2]);
         cout << "What are the " << COLORS[4] << "units" << RESET << "?" << endl;
-        unitTwo = validateString(unitTwo);
+        userUnits.push_back("");
+        userUnits[i-2] = validateString(userUnits[i-2]);
         cout << endl;
     }
 
-    //ok, time to do the math. 
-    //first -- dividing by zero is undefined. 
-    if(pieceTwo == 0.0){
-        cout << endl << COLORS[0] << "ERROR: DIVIDE BY ZERO" << RESET << endl
-            << "Would you like to try again? " << COLORS[2] << "(y/n)" << RESET << endl;
-        char yesorno = 'a';
-        yesorno = validateChar(yesorno);
-        if (yesorno == 'y')
-            return physicsCalculator(operation, equation);
-        else
-            return;
+    //math time
+    for(int i = 2; i < equationPieces.size(); i++){ //start after the equals sign, same as above
+        string eqPiece = equationPieces[i];
+        int userNumesPos = i-2;
+
+        //mathematical operators
+        //follows PEMDAS
+
+        //taking a break HERE. the math is gonna be really fun.
+        // TO DO: 
+        // 1) Implement PEMDAS. 
+        //      Perhaps make some sort of PEMDAS Sort algorythm or something? 
+        // 2) Perform the calculation, according to pemdas.
+        // 3) Implement Units Math. 
+        //      This might prove to be tricky. 
+        //      Applying math to strings. I mean, it shouldn't be that bad to be honest, and I think it would be really cool to auto-cancel out units n stuff
+        //      Obviously if the user inputs something really dumb like rocks/cat for dV and dogs for dT when calculating acceleration, he's gonna get a dumb input, but that's on the user. 
+
+        if (eqPiece == "("){ //paranthesis
+
+        }
+        else if (eqPiece.find("^") != string::npos){ //exponent
+
+        }
+        else if(eqPiece == "*"){ //multiply
+            
+        }else if(eqPiece == "/"){ //divide
+
+        }else if(eqPiece == "+"){ //add
+
+        }else if(eqPiece == "-"){ //subtract
+
+        }
     }
-    if(equationPieces[2] == "*"){
-        result = pieceOne * pieceTwo;
-    }else{
-        result = pieceOne / pieceTwo;
-    }
+
+
     cout << "Wow. That was really, really hard." << endl
         << "Somehow, I managed to solve this problem for you." << endl
         << "Here is the solution." << endl
         << COLORS[4] << stringToUpper(operation) << endl
         << equation << RESET << endl
-        << COLORS[4] << equationPieces[0] << RESET << " = " << COLORS[5] << pieceOne << RESET << " " << COLORS[3] << unitOne << RESET << " " << equationPieces[2] << " " << COLORS[5] << pieceTwo << RESET << " " << COLORS[3] << unitTwo << RESET << endl;
+        << COLORS[4] << equationPieces[0] << RESET << " " << equationPieces[1] << " ";
+    for(int i = 0; i < userNums.size(); i++){
+        int eqPiecePos = i+2;
+        //if we need to output a mathematical operator, do that.
+        if (equationPieces[eqPiecePos] == "(" || equationPieces[eqPiecePos] == "^" || 
+        equationPieces[eqPiecePos] == "*" || equationPieces[eqPiecePos] == "/" || 
+        equationPieces[eqPiecePos] == "+" || equationPieces[eqPiecePos] == "-" || equationPieces [eqPiecePos] == ")"){ 
+            cout << equationPieces[eqPiecePos] << " ";
+        }
+        cout << COLORS[5] << userNums[i] << RESET << " " << COLORS[3] << userUnits[i] << RESET << " ";
+    }
     //set the precision to display for our final answer
     cout.precision(PRECISION);
     cout.setf(ios::fixed, ios::floatfield);
     //final answer
-    cout << COLORS[1] << equationPieces[0] << " = " << result << " " << unitOne << " " << equationPieces[2] << " " << unitTwo << RESET << endl;
+    cout << COLORS[1] << "LOL I NEED TO RE-IMPLEMENT THIS, THIS IS IN THE TO-DO LIST!" << endl;
     //unset the precision
     cout.unsetf(ios::floatfield);
     enterToContinue(); //hold up the user until he hits enter. Give him time to record his answer and ponder the solution.
@@ -442,38 +462,22 @@ void physicsCalculator(string operation, string equation)
 }
 
 // separates out a given equation into a specfic array
-// paramater equation is the equation 
-// equationArr is a reference to an existing array
-// returning an array in C++ seems complicated, so instead of returning an array, we can reference the existing array to modify the data within
-void equationSeperator(string equation, string (&equationArr)[4])
-{
-    //find where the space is
-    //create a substring that starts at the pos of the last space
-    //save substring to equation arry
-    //repeat until gone over whole equation 
-    //each basic physics equation is formatted in the same exact way. If it isn't, then this won't work. So, format it correctly. 
-    
-    int seperator = 0; //each " " or "=" is a seperator in our given list of equations. Start at 0 to start off at the beginning of the string.
-    //for each possible value within the parameter equationArr...
-    for(int i = 0; i < (sizeof(equationArr)/sizeof(*equationArr)); i++){ 
-        int newSeperator = -1; //start at -1. Should never be -1. If it is, we can figure out something horrible happened and fix the bug.
-        string tempString = equation.substr(seperator);
-
-        //filter out the equals sign & spaces!
-        if( tempString.find("=") != string::npos){
-            int tempSep = tempString.find("=");
-            tempString = tempString.erase(tempSep); //cut off everything after the =
-            newSeperator = seperator + tempSep + 2; //a space will always follow the equals sign. Get rid of that one too. 
-        }else if (tempString.find(" ") != string::npos){
-            int tempSep = tempString.find(" ");
-            tempString = tempString.erase(tempSep); //throw out everything after the first " "
-            newSeperator = seperator + tempSep + 1;
+// paramater equation is a string for the equation we want to break down
+// paramater equationVector is a reference to a vector containing strings
+// modifies equationVector to hold all of the pieces of a given equation
+void equationSeperator(string equation, vector<string>& equationVector)
+{   
+    //experiencing weird stuff with this, come back and fix
+    int spaceTracker = 0;
+    for (int i = 0; i < equation.length(); i++){
+        if(equation.at(i) == ' '){
+            string tempString = equation.substr(spaceTracker);
+            spaceTracker = i+1;
+            tempString = tempString.erase(tempString.find(" "));
+            equationVector.push_back(tempString);
+            cout << i << " " << tempString << endl << spaceTracker << endl; 
         }
-
-        equationArr[i] = tempString;
-        seperator = newSeperator;
     }
-
 }
 
 
