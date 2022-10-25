@@ -58,6 +58,7 @@ void motionHandler(char menuInput); //handles the user inputting the dreaded mot
 void physicsCalculator(string operation, string equation); //perform any basic physics calculation (multiplication and division of two numbers ONLY.)
 void equationSeperator(string equation, vector<string>& equationVector); //break apart a simple physics equation into individual components, so above function can work.
 bool isMathOperator(string thing); //check if something is a math operator
+double numberCalculator(vector<string> equationVector, vector<double> userNums); //takes in some info, and performs complicated (not really but kind of actually) math
 
 int main()
 {
@@ -401,42 +402,6 @@ void physicsCalculator(string operation, string equation)
         }
     }
 
-    //math time
-    for(int i = 2; i < equationPieces.size(); i++){ //start after the equals sign, same as above
-        string eqPiece = equationPieces[i];
-        int userNumesPos = i-2;
-
-        //mathematical operators
-        //follows PEMDAS
-
-        //taking a break HERE. the math is gonna be really fun.
-        // TO DO: 
-        // 1) Implement PEMDAS. 
-        //      Perhaps make some sort of PEMDAS Sort algorythm or something? 
-        // 2) Perform the calculation, according to pemdas.
-        // 3) Implement Units Math. 
-        //      This might prove to be tricky. 
-        //      Applying math to strings. I mean, it shouldn't be that bad to be honest, and I think it would be really cool to auto-cancel out units n stuff
-        //      Obviously if the user inputs something really dumb like rocks/cat for dV and dogs for dT when calculating acceleration, he's gonna get a dumb input, but that's on the user. 
-
-        if (eqPiece == "("){ //paranthesis
-
-        }
-        else if (eqPiece.find("^") != string::npos){ //exponent
-
-        }
-        else if(eqPiece == "*"){ //multiply
-            
-        }else if(eqPiece == "/"){ //divide
-
-        }else if(eqPiece == "+"){ //add
-
-        }else if(eqPiece == "-"){ //subtract
-
-        }
-    }
-
-
     cout << "Wow. That was really, really hard." << endl
         << "Somehow, I managed to solve this problem for you." << endl
         << "Here is the solution." << endl
@@ -462,6 +427,49 @@ void physicsCalculator(string operation, string equation)
     //you could clear the screen here. But what if the user wants to scroll up and review his answer again?
 }
 
+double numberCalculator(vector<string> equationVector, vector<double> userNums)
+{
+    double result = 0.0;
+    //ok i have to actually do math now which is going to be really so much fun, trust me
+    //math time
+    for(int i = 2; i < equationVector.size(); i++){ //start after the equals sign, same as above
+        string eqPiece = equationVector[i];
+        int userNumsPos = i-2;
+
+        //mathematical operators
+        //follows PEMDAS
+
+        //taking a break HERE. the math is gonna be really fun.
+        // TO DO: 
+        // 1) Implement PEMDAS. 
+        //      Perhaps make some sort of PEMDAS Sort algorythm or something? 
+        // 2) Perform the calculation, according to pemdas.
+        // 3) Implement Units Math. 
+        //      This might prove to be tricky. 
+        //      Applying math to strings. I mean, it shouldn't be that bad to be honest, and I think it would be really cool to auto-cancel out units n stuff
+        //      Obviously if the user inputs something really dumb like rocks/cat for dV and dogs for dT when calculating acceleration, he's gonna get a dumb input, but that's on the user. 
+
+        if (eqPiece == "("){ //paranthesis
+
+        }
+        else if (eqPiece.find("^")){ //exponent
+
+        }
+        else if(eqPiece == "*"){ //multiply
+            
+        }else if(eqPiece == "/"){ //divide
+
+        }else if(eqPiece == "+"){ //add
+
+        }else if(eqPiece == "-"){ //subtract
+
+        }
+    }
+
+
+    return result;
+}
+
 // separates out a given equation into a specfic array
 // paramater equation is a string for the equation we want to break down
 // paramater equationVector is a reference to a vector containing strings
@@ -485,5 +493,8 @@ void equationSeperator(string equation, vector<string>& equationVector)
 
 bool isMathOperator(string thing)
 {
-    return (thing == "*" || thing == "/" || thing == "+" || thing == "-" || thing == "(" || thing == ")" || thing == "^");
+    return (thing == "*" || thing == "/" || 
+        thing == "+" || thing == "-" || 
+        thing == "(" || thing == ")" || 
+        thing.find("^"));
 }
