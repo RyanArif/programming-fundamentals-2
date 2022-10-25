@@ -43,8 +43,8 @@ const string OPERATIONS[6] = {
 //FORMAT SHOULD ALWAYS FOLLOW: 
 //SOMETHING = SOMETHING */ SOMETHING
 const string EQUATIONS[5] = {
-    "v = Δs / Δt",
-    "a = Δv / Δt",
+    "v = ds / dt",
+    "a = dv / dt",
     "F = m * a",
     "W = m * g",
     "p = m * v"
@@ -57,8 +57,7 @@ void motionMenu(); //menu specific to motion problems
 void motionHandler(char menuInput); //handles the user inputting the dreaded motion problems.
 void physicsCalculator(string operation, string equation); //perform any basic physics calculation (multiplication and division of two numbers ONLY.)
 void equationSeperator(string equation, vector<string>& equationVector); //break apart a simple physics equation into individual components, so above function can work.
-void enterToContinue(); //'freeze' the terminal until the user presses the enter key.
-
+bool isMathOperator(string thing); //check if something is a math operator
 
 int main()
 {
@@ -389,13 +388,17 @@ void physicsCalculator(string operation, string equation)
 
     //create a menu to query the user for information
     for(int i = 2; i < equationPieces.size(); i++){ //always start at position 2. pos 0 is the thing we solve for, pos 1 is equals sign. 
-        cout << "What is the value of " << COLORS[4] << equationPieces[i] << RESET << "?" << endl;
-        userNums.push_back(0.0);
-        userNums[i-2] = validateDouble(userNums[i-2]);
-        cout << "What are the " << COLORS[4] << "units" << RESET << "?" << endl;
-        userUnits.push_back("");
-        userUnits[i-2] = validateString(userUnits[i-2]);
-        cout << endl;
+        if (!isMathOperator(equationPieces[i])){
+            cout << "What is the value of " << COLORS[4] << equationPieces[i] << RESET << "?" << endl;
+            double tempDouble = 0.0;
+            tempDouble = validateDouble(tempDouble);
+            userNums.push_back(tempDouble);
+            cout << "What are the " << COLORS[4] << "units" << RESET << "?" << endl;
+            string tempString = "";
+            tempString = validateString(tempString);
+            userUnits.push_back(tempString);
+            cout << endl;
+        }
     }
 
     //math time
@@ -443,9 +446,7 @@ void physicsCalculator(string operation, string equation)
     for(int i = 0; i < userNums.size(); i++){
         int eqPiecePos = i+2;
         //if we need to output a mathematical operator, do that.
-        if (equationPieces[eqPiecePos] == "(" || equationPieces[eqPiecePos] == "^" || 
-        equationPieces[eqPiecePos] == "*" || equationPieces[eqPiecePos] == "/" || 
-        equationPieces[eqPiecePos] == "+" || equationPieces[eqPiecePos] == "-" || equationPieces [eqPiecePos] == ")"){ 
+        if (isMathOperator(equationPieces[eqPiecePos])){ 
             cout << equationPieces[eqPiecePos] << " ";
         }
         cout << COLORS[5] << userNums[i] << RESET << " " << COLORS[3] << userUnits[i] << RESET << " ";
@@ -454,7 +455,7 @@ void physicsCalculator(string operation, string equation)
     cout.precision(PRECISION);
     cout.setf(ios::fixed, ios::floatfield);
     //final answer
-    cout << COLORS[1] << "LOL I NEED TO RE-IMPLEMENT THIS, THIS IS IN THE TO-DO LIST!" << endl;
+    cout << endl << COLORS[1] << "LOL I NEED TO RE-IMPLEMENT THIS, THIS IS IN THE TO-DO LIST!" << RESET << endl;
     //unset the precision
     cout.unsetf(ios::floatfield);
     enterToContinue(); //hold up the user until he hits enter. Give him time to record his answer and ponder the solution.
@@ -470,14 +471,19 @@ void equationSeperator(string equation, vector<string>& equationVector)
     //experiencing weird stuff with this, come back and fix
     int spaceTracker = 0;
     for (int i = 0; i < equation.length(); i++){
+        string tempString = equation.substr(spaceTracker);
         if(equation.at(i) == ' '){
-            string tempString = equation.substr(spaceTracker);
             spaceTracker = i+1;
             tempString = tempString.erase(tempString.find(" "));
             equationVector.push_back(tempString);
-            cout << i << " " << tempString << endl << spaceTracker << endl; 
+        }else if (i == equation.length() -1){ //end of loop
+            equationVector.push_back(tempString);
         }
     }
 }
 
 
+bool isMathOperator(string thing)
+{
+    return (thing == "*" || thing == "/" || thing == "+" || thing == "-" || thing == "(" || thing == ")" || thing == "^");
+}
