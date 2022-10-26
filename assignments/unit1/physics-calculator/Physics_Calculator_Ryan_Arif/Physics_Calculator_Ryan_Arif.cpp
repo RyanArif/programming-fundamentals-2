@@ -402,6 +402,8 @@ void physicsCalculator(string operation, string equation)
         }
     }
 
+    //math go brrr
+
     cout << "Wow. That was really, really hard." << endl
         << "Somehow, I managed to solve this problem for you." << endl
         << "Here is the solution." << endl
@@ -430,11 +432,9 @@ void physicsCalculator(string operation, string equation)
 double numberCalculator(vector<string> equationVector, vector<double> userNums)
 {
     double result = 0.0;
-    //ok i have to actually do math now which is going to be really so much fun, trust me
     //math time
-    for(int i = 2; i < equationVector.size(); i++){ //start after the equals sign, same as above
+    for(int i = 2; i < equationVector.size(); i++){ //start after the equals sign
         string eqPiece = equationVector[i];
-        int userNumsPos = i-2;
 
         //mathematical operators
         //follows PEMDAS
@@ -450,7 +450,7 @@ double numberCalculator(vector<string> equationVector, vector<double> userNums)
         //      Obviously if the user inputs something really dumb like rocks/cat for dV and dogs for dT when calculating acceleration, he's gonna get a dumb input, but that's on the user. 
 
         if (eqPiece == "("){ //paranthesis
-
+        
         }
         else if (eqPiece.find("^")){ //exponent
 
@@ -496,5 +496,5 @@ bool isMathOperator(string thing)
     return (thing == "*" || thing == "/" || 
         thing == "+" || thing == "-" || 
         thing == "(" || thing == ")" || 
-        thing.find("^"));
+        thing.find("^") != string::npos);
 }
