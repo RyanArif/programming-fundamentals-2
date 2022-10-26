@@ -15,6 +15,9 @@
 //GLOBAL VARIABLES
 //floating point precision 
 const int PRECISION = 4;
+const double LITTLE_G = 9.80665; //SI standard for little g
+const string LITTLE_G_UNITS = "m/s^2"; //SI unit for little g
+
 //text formatting
 const string RESET = "\x1b[0m"; //reset formatting
 const string COLORS[6] = {
@@ -34,7 +37,7 @@ const string COLORS[6] = {
 const string OPERATIONS[6] = {
     "velocity",
     "acceleration",
-    "nsl",
+    "nsl", //Newton's Second Law
     "weight",
     "momentum",
     "motion" //leave at the end! motion should ALWAYS be last.
@@ -487,14 +490,19 @@ vector<string> physicsMenuQuery(string operation, string equation, vector<double
     //create a menu to query the user for information
     for(int i = 2; i < equationPieces.size(); i++){ //always start at position 2. pos 0 is the thing we solve for, pos 1 is equals sign. 
         if (!isMathOperator(equationPieces[i])){
-            cout << "What is the value of " << COLORS[4] << equationPieces[i] << RESET << "?" << endl;
-            double tempDouble = 0.0;
-            tempDouble = validateDouble(tempDouble);
-            userNums.push_back(tempDouble);
-            cout << "What are the " << COLORS[4] << "units" << RESET << "?" << endl;
-            string tempString = "";
-            tempString = validateString(tempString);
-            userUnits.push_back(tempString);
+            if(equationPieces[i] == "g"){ //little g is always the same.
+                userNums.push_back(LITTLE_G); //SI standard for acceleration from gravity on Earth
+                userUnits.push_back(LITTLE_G_UNITS); //SI Unit for Acceleration
+            }else{
+                cout << "What is the value of " << COLORS[4] << equationPieces[i] << RESET << "?" << endl;
+                double tempDouble = 0.0;
+                tempDouble = validateDouble(tempDouble);
+                userNums.push_back(tempDouble);
+                cout << "What are the " << COLORS[4] << "units" << RESET << "?" << endl;
+                string tempString = "";
+                tempString = validateString(tempString);
+                userUnits.push_back(tempString);
+            }
             cout << endl;
         }
     }
@@ -544,11 +552,9 @@ void equationSeperator(string equation, vector<string>& equationVector)
         if(equation.at(i) == ' '){
             spaceTracker = i+1;
             tempString = tempString.erase(tempString.find(" "));
-            cout << tempString << endl;
             equationVector.push_back(tempString);
         }else if (i == equation.length() -1){ //end of loop
             equationVector.push_back(tempString);
-            cout << tempString << endl;
         }
     }
 }
