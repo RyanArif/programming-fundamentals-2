@@ -55,7 +55,9 @@ void mainMenu(); //display the main menu
 void calculationChooser(string menuInput); //take in a validated user input, and decide how to calculate the answer.
 void motionMenu(); //menu specific to motion problems
 void motionHandler(char menuInput); //handles the user inputting the dreaded motion problems.
-void physicsCalculator(string operation, string equation); //queries the user for inputs, and puts together the cute display for the outputs.
+vector<string> physicsMenuQuery(string operation, string equation, vector<double>& userNums, vector<string>& userUnits); //query the user for a bunch of info and return a broken up string
+void simplePhysicsCalculator(string operation, string equation); //queries the user for inputs, and puts together the cute display for the outputs.
+void solutionMenu(string operation, string equation, vector<string> equationPieces, vector<double> userNums, vector<string> userUnits, double result, string units); //displays the final solution
 double simpleCalculator(vector<string> equationVector, vector<double> userNums); //perform any basic physics calculation (multiplication and division of two numbers ONLY.)
 string simpeUnitsCalculator(vector<string> equationVector, vector<string> userUnits); //performs basic physics calulations on the units. Literally just combines two strings lol.
 void equationSeperator(string equation, vector<string>& equationVector); //break apart a simple physics equation into individual components, so above function can work.
@@ -134,7 +136,7 @@ void calculationChooser(string menuInput)
     //loop through the options until we find the right one
     for(int i = 0; i < (sizeof(EQUATIONS)/sizeof(*EQUATIONS)); i++){
         if (OPERATIONS[i] == menuInput){ //if the user chose a valid menu option ...
-            return physicsCalculator(OPERATIONS[i], EQUATIONS[i]); //start the physics calculation.
+            return simplePhysicsCalculator(OPERATIONS[i], EQUATIONS[i]); //start the physics calculation.
         }else if (i == ((sizeof(EQUATIONS)/sizeof(*EQUATIONS)) - 1)){ //if the user chooses some dumb thing that isn't real...
             cout << COLORS[0] << "ERROR: Invalid option. Try again." << RESET << endl; //Tell them they are stupid
             menuInput = validateString(menuInput); //and then make them choose again. 
@@ -371,16 +373,12 @@ void motionHandler(char menuInput)
 
 }
 
-//outputs information to the screen about what basic physics problem is being done
-//walks through all of the steps
-//and queries the user for some input to perform said calculations
-void physicsCalculator(string operation, string equation)
+
+//will ask the user for a bunch of info regarding a specific equation
+//works for any equation, not just the simple ones.
+vector<string> physicsMenuQuery(string operation, string equation, vector<double>& userNums, vector<string>& userUnits)
 {
     vector<string> equationPieces; //holds the values for the below function
-    vector<double> userNums; //doubles the user inputs 
-    vector<string> userUnits; //strings the user inputs
-    double result = 0.0; //result
-    string units = ""; //final units
 
     //break apart the equation into pieces
     equationSeperator(equation, equationPieces);
@@ -405,6 +403,25 @@ void physicsCalculator(string operation, string equation)
         }
     }
 
+    return equationPieces;
+    
+}
+
+//outputs information to the screen about what basic physics problem is being done
+//walks through all of the steps
+//and queries the user for some input to perform said calculations
+void simplePhysicsCalculator(string operation, string equation)
+{
+    vector<double> userNums;
+    vector<string> userUnits;
+    double result = 0.0; //result
+    string units = ""; //final units
+    vector<string> equationPieces;
+
+    //query the user for a bunch of info
+    //also, so we don't have to do it twice, go ahead and break up the equation into pieces of a vector
+    equationPieces = physicsMenuQuery(operation, equation, userNums, userUnits);
+
     //do the (SIMPLE) math
     try{
         result = simpleCalculator(equationPieces, userNums);
@@ -416,13 +433,22 @@ void physicsCalculator(string operation, string equation)
             yesorno = validateChar(yesorno);
         } while(!(yesorno == 'y' || yesorno == 'n'));
         if(yesorno == 'y')
-            return physicsCalculator(operation, equation);
+            return simplePhysicsCalculator(operation, equation);
         else
             return;
     }
 
+    //and for the units
     units = simpeUnitsCalculator(equationPieces, userUnits);
 
+    //finally, display the result.
+    solutionMenu(operation, equation, equationPieces, userNums, userUnits, result, units);
+
+
+}
+
+void solutionMenu(string operation, string equation, vector<string> equationPieces, vector<double> userNums, vector<string> userUnits, double result, string units)
+{
     cout << "Wow. That was really, really hard." << endl
         << "Somehow, I managed to solve this problem for you." << endl
         << "Here is the solution." << endl
