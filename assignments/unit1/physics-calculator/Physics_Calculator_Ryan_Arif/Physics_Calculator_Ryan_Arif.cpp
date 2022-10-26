@@ -55,7 +55,7 @@ void mainMenu(); //display the main menu
 void calculationChooser(string menuInput); //take in a validated user input, and decide how to calculate the answer.
 void motionMenu(); //menu specific to motion problems
 void motionHandler(char menuInput, string motionEq[]); //handles the user inputting the dreaded motion problems.
-void motionMenuQuery(string operation, string equation, vector<double>& userNums, vector<string>& userUnits, vector<string> equationPieces, vector<string> whatsNeeded);
+void motionMenuQuery(string operation, string equation, vector<double>& userNums, vector<string>& userUnits, vector<string> equationPieces, vector<string> whatsNeeded); //based on physicsMenuQuery, but for motion problems.
 vector<string> physicsMenuQuery(string operation, string equation, vector<double>& userNums, vector<string>& userUnits); //query the user for a bunch of info and return a broken up string
 void simplePhysicsCalculator(string operation, string equation); //queries the user for inputs, and puts together the cute display for the outputs.
 void solutionMenu(string operation, string equation, vector<string> equationPieces, vector<double> userNums, vector<string> userUnits, double result, string units); //displays the final solution
@@ -63,7 +63,6 @@ double simpleCalculator(vector<string> equationVector, vector<double> userNums);
 string simpeUnitsCalculator(vector<string> equationVector, vector<string> userUnits); //performs basic physics calulations on the units. Literally just combines two strings lol.
 void equationSeperator(string equation, vector<string>& equationVector); //break apart a simple physics equation into individual components, so above function can work.
 bool isMathOperator(string thing); //check if something is a math operator
-double numberCalculator(vector<string> equationVector, vector<double> userNums); //takes in some info, and performs complicated (not really but kind of actually) math
 
 int main()
 {
@@ -192,25 +191,18 @@ void motionMenu()
 }
 
 //handles the 4 motion problems
-//parameter: menuInput is a validadated char
+//is a super big mess to be honest, but I can't figure out how to implement this better and cleaner within the allotted time
 void motionHandler(char menuInput, string motionEq[])
 {   
-    vector<double> userNums;
-    vector<string> userUnits;
-    double result = 0.0; //result
+    vector<double> userNums; //numbers we get from the user
+    vector<string> userUnits; //units gotten from the user
+    double result = 0.0; //final result
     string units = ""; //final units
-    vector<string> equationPieces;
-    string equation = "";
-    string operation = "";
-    vector<string> whatDoWeNeed;
-    string showWork = "";
+    vector<string> equationPieces; //broken up equation
+    string equation = ""; //the equation in question
+    string operation = ""; //what operation are we doing
+    vector<string> whatDoWeNeed; //what info should we query the user for
 
-    string motionEquations [4] = {
-        "s = s0 + v0t + ½at^2",
-        "v = v0 + at",
-        "v^2 = v0^2 + 2a(s - s0)",
-        "v̅ = ½(v + v0)"
-    };
 
     switch (menuInput){
         case 'a':{
@@ -242,9 +234,9 @@ void motionHandler(char menuInput, string motionEq[])
                 "t"
             };
 
-            motionMenuQuery(operation, equation, userNums, userUnits, equationPieces, whatDoWeNeed);
-            result = userNums[0] + (userNums[1] * userNums[2]) + (0.5 * userNums[3] * (userNums[2] * userNums[2]));
-            units = userUnits[0];
+            motionMenuQuery(operation, equation, userNums, userUnits, equationPieces, whatDoWeNeed); //display a menu and get info from the user
+            result = userNums[0] + (userNums[1] * userNums[2]) + (0.5 * userNums[3] * (userNums[2] * userNums[2])); //do the math
+            units = userUnits[0]; 
 
             //finally, display the result.
             cout << "Here is the solution." << endl
@@ -411,11 +403,11 @@ void motionMenuQuery(string operation, string equation, vector<double>& userNums
 //and queries the user for some input to perform said calculations
 void simplePhysicsCalculator(string operation, string equation)
 {
-    vector<double> userNums;
-    vector<string> userUnits;
+    vector<double> userNums; //list of numbers from the user
+    vector<string> userUnits; //list of units gotten from the user
     double result = 0.0; //result
     string units = ""; //final units
-    vector<string> equationPieces;
+    vector<string> equationPieces; //broken up equation
 
     //query the user for a bunch of info
     //also, so we don't have to do it twice, go ahead and break up the equation into pieces of a vector
@@ -451,7 +443,7 @@ void simplePhysicsCalculator(string operation, string equation)
 //anything else won't work with this, you would need the below, unfinished function
 double simpleCalculator(vector<string> equationVector, vector<double> userNums)
 {
-    double result = 0.0;
+    double result = 0.0; //the result of the maffs
 
     if(equationVector[3] == "*"){
         result = userNums[0] * userNums[1];
@@ -511,6 +503,7 @@ vector<string> physicsMenuQuery(string operation, string equation, vector<double
     
 }
 
+//display the final solution in a cute little menu
 void solutionMenu(string operation, string equation, vector<string> equationPieces, vector<double> userNums, vector<string> userUnits, double result, string units)
 {
     cout << "Wow. That was really, really hard." << endl
@@ -560,7 +553,7 @@ void equationSeperator(string equation, vector<string>& equationVector)
     }
 }
 
-
+//checks if a string is a mathematical operator
 bool isMathOperator(string thing)
 {
     return (thing == "*" || thing == "/" || 
