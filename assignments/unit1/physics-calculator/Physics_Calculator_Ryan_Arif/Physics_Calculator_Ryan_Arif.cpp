@@ -54,7 +54,7 @@ const string EQUATIONS[5] = {
 void mainMenu(); //display the main menu
 void calculationChooser(string menuInput); //take in a validated user input, and decide how to calculate the answer.
 void motionMenu(); //menu specific to motion problems
-void motionHandler(char menuInput); //handles the user inputting the dreaded motion problems.
+void motionHandler(char menuInput, string motionEq[]); //handles the user inputting the dreaded motion problems.
 vector<string> physicsMenuQuery(string operation, string equation, vector<double>& userNums, vector<string>& userUnits); //query the user for a bunch of info and return a broken up string
 void simplePhysicsCalculator(string operation, string equation); //queries the user for inputs, and puts together the cute display for the outputs.
 void solutionMenu(string operation, string equation, vector<string> equationPieces, vector<double> userNums, vector<string> userUnits, double result, string units); //displays the final solution
@@ -151,7 +151,7 @@ void calculationChooser(string menuInput)
 void motionMenu()
 {   
     string motionEquations [4] = {
-        "s = s0 + v0t + ½at^2",
+        "s = s0 + v0t + 0.5at^2",
         "v = v0 + at",
         "v^2 = v0^2 + 2a(s - s0)",
         "v̅ = ½(v + v0)"
@@ -182,197 +182,95 @@ void motionMenu()
             loopMenu = false;
             break;
         }else if (menuInput == 'x'){ //clear the screen...
+            system("clear");
         }
 
-        motionHandler(menuInput);
+        motionHandler(menuInput, motionEquations);
 
     }while(loopMenu);
 }
 
 //handles the 4 motion problems
 //parameter: menuInput is a validadated char
-void motionHandler(char menuInput)
+void motionHandler(char menuInput, string motionEq[])
 {   
-    //different variables to match the equations
-    double iPos = 0.0;
-    string iPosUnits = "";
-    double pos = 0.0;
-    string posUnits = "";
-    double iVel = 0.0;
-    string iVelUnits = "";
-    double vel = 0.0;
-    string velUnits = "";
-    double accel = 0.0;
-    string accelUnits = "";
-    double time = 0.0;
-    string timeUnits = "";
-    double result = 0.0;
+    vector<double> userNums;
+    vector<string> userUnits;
+    double result = 0.0; //result
+    string units = ""; //final units
+    vector<string> equationPieces;
+    string equation = "";
+    string operation = "";
 
-    //holy crap this is a huge freaking mess. 
-    //What I would like to do, and do not know how, is to:
-    //do the same exact thin I do to break down other functions, 
-    //but with these motions functions, 
-    //which get more complicated and each have a different amount of pieces and mathematical operations
-    //and I don't know how to make like a "dynamic" array that doesn't have to be immediately told how big it is
-    //does that make sense? I know there's a data type that exists that can help me. I don't know what it is.
-    switch(menuInput){
-        case 'a': //position
-            //output text and query the user 
-            cout << COLORS[4] << "POSITION" << RESET << endl
-                << "s = s0 + v0t + ½at^2" << endl;
-            cout << "What is the value of " << COLORS[4] << "s0" << RESET << "?" << endl;
-            iPos = validateDouble(iPos);
-            cout << "What are the " << COLORS[4] << "units" << RESET << "?" << endl;
-            posUnits = validateString(posUnits);
-            cout << endl << "What is the value of " << COLORS[4] << "v0" << RESET << "?" << endl;
-            iVel = validateDouble(iVel);
-            cout << "What are the " << COLORS[4] << "units" << RESET << "?" << endl;
-            iVelUnits = validateString(iVelUnits);
-            cout << endl << "What is the value of " << COLORS[4] << "a" << RESET << "?" << endl;
-            accel = validateDouble(accel);
-            cout << "What are the " << COLORS[4] << "units" << RESET << "?" << endl;
-            accelUnits = validateString(accelUnits);
-            cout << endl << "What is the value of " << COLORS[4] << "t" << RESET << "?" << endl;
-            time = validateDouble(time);
-            cout << "What are the " << COLORS[4] << "units" << RESET << "?" << endl;
-            timeUnits = validateString(timeUnits);
-            
-            //perform the computation
-            result = iPos + (iVel*time) + (0.5 * accel * (time * time));
-
-            cout << "Wow. That was really, really hard." << endl
-                << "Somehow, I managed to solve this problem for you." << endl
-                << "Here is the solution." << endl
-                << COLORS[4] << "POSITION" << endl
-                << "s = s0 + v0t + ½at^2" << RESET << endl
-                << COLORS[4] << "s" << RESET << " = " << COLORS[5] << iPos << RESET << " " << COLORS[3] << posUnits << RESET << " + (" << COLORS[5] << iVel << RESET << " " << COLORS[3] << iVelUnits << RESET << " * " << COLORS[5] << time << RESET << " " << COLORS[3] << timeUnits << RESET << ") +  (½" << COLORS[5] << accel << RESET << " " << COLORS[3] << accelUnits << RESET << " * (" << COLORS[5] << time << RESET << " " << COLORS[3] << timeUnits << RESET << ")^2)" << endl;
-            //set the precision to display for our final answer
-            cout.precision(PRECISION);
-            cout.setf(ios::fixed, ios::floatfield);
-            //final answer
-            cout << COLORS[1] << "s = " << result << " " << posUnits << RESET << endl;
-            //unset the precision
-            cout.unsetf(ios::floatfield);
-            enterToContinue(); //hold up the user until he hits enter. Give him time to record his answer and ponder the solution.
-            //you could clear the screen here. But what if the user wants to scroll up and review his answer again?
+    switch (menuInput){
+        case 'a':{
+            operation = "POSITION";
+            equation = motionEq[0];
+            //query the user for a bunch of info
+            //also, so we don't have to do it twice, go ahead and break up the equation into pieces of a vector
+            equationPieces = physicsMenuQuery(operation, equation, userNums, userUnits);
+            result = userNums[0] + (userNums[1] * userNums[2]) + (0.5 * userNums[3] * (userNums[2] * userNums[2]));
+            units = userUnits[0];
             break;
-        case 'b': // velocity
-            //output text and query the user 
-            cout << COLORS[4] << "VELOCITY" << RESET << endl
-                << "v = v0 + at" << endl;
-            cout << "What is the value of " << COLORS[4] << "v0" << RESET << "?" << endl;
-            iVel = validateDouble(iVel);
-            cout << "What are the " << COLORS[4] << "units" << RESET << "?" << endl;
-            iVelUnits = validateString(iVelUnits);
-            cout << endl << "What is the value of " << COLORS[4] << "a" << RESET << "?" << endl;
-            accel = validateDouble(accel);
-            cout << "What are the " << COLORS[4] << "units" << RESET << "?" << endl;
-            accelUnits = validateString(accelUnits);
-            cout << endl << "What is the value of " << COLORS[4] << "t" << RESET << "?" << endl;
-            time = validateDouble(time);
-            cout << "What are the " << COLORS[4] << "units" << RESET << "?" << endl;
-            timeUnits = validateString(timeUnits);            
-            //perform the computation
-            result = iVel + (accel*time);
-
-            cout << "Wow. That was really, really hard." << endl
-                << "Somehow, I managed to solve this problem for you." << endl
-                << "Here is the solution." << endl
-                << COLORS[4] << "VELOCITY" << endl
-                << "v = v0 + at" << RESET << endl
-                << COLORS[4] << "v" << RESET << " = " << COLORS[5] << iVel << RESET << " " << COLORS[3] << iVelUnits << RESET << " + (" << COLORS[5] << accel << RESET << " " << COLORS[3] << accelUnits << RESET << " * " << COLORS[5] << time << RESET << ") " << COLORS[3] << timeUnits << RESET << endl;
-            //set the precision to display for our final answer
-            cout.precision(PRECISION);
-            cout.setf(ios::fixed, ios::floatfield);
-            //final answer
-            cout << COLORS[1] << "s = " << result << " " << iVelUnits << RESET << endl;
-            //unset the precision
-            cout.unsetf(ios::floatfield);
-            enterToContinue(); //hold up the user until he hits enter. Give him time to record his answer and ponder the solution.
-            //you could clear the screen here. But what if the user wants to scroll up and review his answer again?
+        }
+        case 'b':{
+            operation = "VELOCITY";
+            equation = motionEq[1];
+            //query the user for a bunch of info
+            //also, so we don't have to do it twice, go ahead and break up the equation into pieces of a vector
+            equationPieces = physicsMenuQuery(operation, equation, userNums, userUnits);
             break;
-        case 'c': // v^2
-            //output text and query the user 
-            cout << COLORS[4] << "VELOCITY SQUARED" << RESET << endl
-                << "v^2 = v0^2 + 2a(s - s0)" << endl;
-            cout << "What is the value of " << COLORS[4] << "v0" << RESET << "?" << endl;
-            iVel = validateDouble(iVel);
-            cout << "What are the " << COLORS[4] << "units" << RESET << "?" << endl;
-            iVelUnits = validateString(iVelUnits);
-            cout << endl << "What is the value of " << COLORS[4] << "a" << RESET << "?" << endl;
-            accel = validateDouble(accel);
-            cout << "What are the " << COLORS[4] << "units" << RESET << "?" << endl;
-            accelUnits = validateString(accelUnits);
-            cout << endl << "What is the value of " << COLORS[4] << "s" << RESET << "?" << endl;
-            pos = validateDouble(pos);
-            cout << "What are the " << COLORS[4] << "units" << RESET << "?" << endl;
-            posUnits = validateString(posUnits);
-            cout << endl << "What is the value of " << COLORS[4] << "s0" << RESET << "?" << endl;
-            iPos = validateDouble(iPos);
-            cout << "What are the " << COLORS[4] << "units" << RESET << "?" << endl;
-            iPosUnits = validateString(iPosUnits);
-            //perform the computation
-            result = (iVel * iVel) + ((2 * accel) * (pos - iPos));
-
-            cout << "Wow. That was really, really hard." << endl
-                << "Somehow, I managed to solve this problem for you." << endl
-                << "Here is the solution." << endl
-                << COLORS[4] << "VELOCITY SQUARED" << endl
-                << "v^2 = v0^2 + 2a(s - s0)" << RESET << endl
-                << COLORS[4] << "v^2" << RESET << " = (" << COLORS[5] << iVel << RESET << " " << COLORS[3] << iVelUnits << RESET << ")^2 + (2 * " << COLORS[5] << accel << RESET << " " << COLORS[3] << accelUnits << RESET << ") * (" << COLORS[5] << pos << RESET << " " << COLORS[3] << posUnits << RESET << " - " << COLORS[5] << iPos << RESET << " " << COLORS[3] << iPosUnits << RESET << ")" << endl;
-            //set the precision to display for our final answer
-            cout.precision(PRECISION);
-            cout.setf(ios::fixed, ios::floatfield);
-            //final answer
-            cout << COLORS[1] << "v^2 = " << result << " (" << iVelUnits << ")^2" << RESET << endl;
-            //unset the precision
-            cout.unsetf(ios::floatfield);
-            enterToContinue(); //hold up the user until he hits enter. Give him time to record his answer and ponder the solution.
-            //you could clear the screen here. But what if the user wants to scroll up and review his answer again?
+        }
+        case 'c':{
+            operation = "VELOCITY SQUARED";
+            equation = motionEq[2];
+            //query the user for a bunch of info
+            //also, so we don't have to do it twice, go ahead and break up the equation into pieces of a vector
+            equationPieces = physicsMenuQuery(operation, equation, userNums, userUnits);
             break;
-        case 'd': // average velocity
-            //output text and query the user 
-            cout << COLORS[4] << "AVERAGE VELOCITY" << RESET << endl
-                << "v̅ = ½(v + v0)" << endl;
-            cout << "What is the value of " << COLORS[4] << "v" << RESET << "?" << endl;
-            vel = validateDouble(vel);
-            cout << "What are the " << COLORS[4] << "units" << RESET << "?" << endl;
-            velUnits = validateString(velUnits);
-            cout << endl << "What is the value of " << COLORS[4] << "v0" << RESET << "?" << endl;
-            iVel = validateDouble(iVel);
-            cout << "What are the " << COLORS[4] << "units" << RESET << "?" << endl;
-            iVelUnits = validateString(iVelUnits);
-            //perform the computation
-            result = 0.5 * (vel + iVel);
-
-            cout << "Wow. That was really, really hard." << endl
-                << "Somehow, I managed to solve this problem for you." << endl
-                << "Here is the solution." << endl
-                << COLORS[4] << "AVERAGE VELOCITY" << endl
-                << "v̅ = ½(v + v0)" << RESET << endl
-                << COLORS[4] << "v̅" << RESET << " = ½(" << COLORS[5] << vel << RESET << " " << COLORS[3] << velUnits << RESET << " + " << COLORS[5] << iVel << RESET << " " << COLORS[3] << iVelUnits << RESET << ")" << endl;
-            //set the precision to display for our final answer
-            cout.precision(PRECISION);
-            cout.setf(ios::fixed, ios::floatfield);
-            //final answer
-            cout << COLORS[1] << "v̅ = " << result << " " << velUnits << RESET << endl;
-            //unset the precision
-            cout.unsetf(ios::floatfield);
-            enterToContinue(); //hold up the user until he hits enter. Give him time to record his answer and ponder the solution.
-            //you could clear the screen here. But what if the user wants to scroll up and review his answer again?
+        }
+        case 'd':{
+            operation = "AVERAGE VELOCITY";
+            equation = motionEq[3];
+            //query the user for a bunch of info
+            //also, so we don't have to do it twice, go ahead and break up the equation into pieces of a vector
+            equationPieces = physicsMenuQuery(operation, equation, userNums, userUnits);
             break;
-        case 'x' : //clear screen
-            system("clear");
-            break;
-        default : //ERROR. User input an invalid option.
-            cout << COLORS[0] << "ERROR: Invalid option. Try again." << RESET << endl;
-            char tempChar = 'z';
-            tempChar = validateChar(tempChar);
-            return motionHandler(tempChar);
+        }
     }
+
+    //finally, display the result.
+    solutionMenu(operation, equation, equationPieces, userNums, userUnits, result, units);
+
 
 }
 
+void solutionMenu(string operation, string equation, vector<string> equationPieces, vector<double> userNums, vector<string> userUnits, double result, string units)
+{
+    cout << "Wow. That was really, really hard." << endl
+        << "Somehow, I managed to solve this problem for you." << endl
+        << "Here is the solution." << endl
+        << COLORS[4] << stringToUpper(operation) << endl
+        << equation << RESET << endl
+        << COLORS[4] << equationPieces[0] << RESET << " " << equationPieces[1] << " ";
+    for(int i = 0; i < userNums.size(); i++){
+        int eqPiecePos = i+2;
+        //if we need to output a mathematical operator, do that.
+        if (isMathOperator(equationPieces[eqPiecePos])){ 
+            cout << equationPieces[eqPiecePos] << " ";
+        }
+        cout << COLORS[5] << userNums[i] << RESET << " " << COLORS[3] << userUnits[i] << RESET << " ";
+    }
+    //set the precision to display for our final answer
+    cout.precision(PRECISION);
+    cout.setf(ios::fixed, ios::floatfield);
+    //final answer
+    cout << endl << COLORS[1] << equationPieces[0] << " = " << result << " " << units << RESET << endl;
+    //unset the precision
+    cout.unsetf(ios::floatfield);
+    enterToContinue(); //hold up the user until he hits enter. Give him time to record his answer and ponder the solution.
+    //you could clear the screen here. But what if the user wants to scroll up and review his answer again?
+}
 
 //will ask the user for a bunch of info regarding a specific equation
 //works for any equation, not just the simple ones.
@@ -447,32 +345,6 @@ void simplePhysicsCalculator(string operation, string equation)
 
 }
 
-void solutionMenu(string operation, string equation, vector<string> equationPieces, vector<double> userNums, vector<string> userUnits, double result, string units)
-{
-    cout << "Wow. That was really, really hard." << endl
-        << "Somehow, I managed to solve this problem for you." << endl
-        << "Here is the solution." << endl
-        << COLORS[4] << stringToUpper(operation) << endl
-        << equation << RESET << endl
-        << COLORS[4] << equationPieces[0] << RESET << " " << equationPieces[1] << " ";
-    for(int i = 0; i < userNums.size(); i++){
-        int eqPiecePos = i+2;
-        //if we need to output a mathematical operator, do that.
-        if (isMathOperator(equationPieces[eqPiecePos])){ 
-            cout << equationPieces[eqPiecePos] << " ";
-        }
-        cout << COLORS[5] << userNums[i] << RESET << " " << COLORS[3] << userUnits[i] << RESET << " ";
-    }
-    //set the precision to display for our final answer
-    cout.precision(PRECISION);
-    cout.setf(ios::fixed, ios::floatfield);
-    //final answer
-    cout << endl << COLORS[1] << equationPieces[0] << " = " << result << " " << units << RESET << endl;
-    //unset the precision
-    cout.unsetf(ios::floatfield);
-    enterToContinue(); //hold up the user until he hits enter. Give him time to record his answer and ponder the solution.
-    //you could clear the screen here. But what if the user wants to scroll up and review his answer again?
-}
 
 //performs simple multiplication or division
 //only to be used on simple x * y or x / y equations
@@ -505,32 +377,6 @@ string simpeUnitsCalculator(vector<string> equationVector, vector<string> userUn
 
     return units;
 }
-
-//I was going to make a really sophisticated calculator 
-//it would be able to just look at an equation, and apply PEMDAS and instantly know what to do.
-//However... it was getting really complicated. Like, too much for me to think about and finish in time for the due date.
-//So ... I'll just handle the regular stuff and motion separately.
-// double numberCalculator(vector<string> equationVector, vector<double> userNums)
-// {
-//     double result = 0.0;
-
-//     //iterate through the equation
-//     for(int i = 2; i < equationVector.size(); i++){ //skip everything before the equals sign
-//         //PEMDAS!
-//         if(equationVector[i] == "("){ //Paranthesis
-//             double pResult = 0.0;
-//             vector<string> tempEqVector; //create a temp vector...
-//             for(int j = i+1; j < equationVector.size(); j++){ 
-//                 tempEqVector.push_back(equationVector[j]); //...and fill it up.
-//             }
-//             pResult = numberCalculator(tempEqVector, userNums); //Call the calculator recursively, to find nested paranthesis. 2(2+2+(2*2))
-//         }else if(equationVector[i].find("^") != string::npos){ //Exponent
-            
-//         }
-//     }
-
-//     return result;
-// }
 
 // separates out a given equation into a specfic array
 // paramater equation is a string for the equation we want to break down
