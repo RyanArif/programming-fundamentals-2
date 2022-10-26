@@ -2,7 +2,7 @@
  * Student: Ryan Arif
  * Professor: Dr. Tyson McMillan
  * Class: 2022FL COSC-1437-58001
- * Date Completed: 10/26/2022 @ 12:43pm
+ * Date Completed: 10/26/2022 @ 1:09pm
 **/
 
 //#include <iostream> //already included with input validation
