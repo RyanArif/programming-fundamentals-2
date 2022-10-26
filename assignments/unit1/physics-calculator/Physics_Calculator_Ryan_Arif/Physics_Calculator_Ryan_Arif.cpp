@@ -55,7 +55,9 @@ void mainMenu(); //display the main menu
 void calculationChooser(string menuInput); //take in a validated user input, and decide how to calculate the answer.
 void motionMenu(); //menu specific to motion problems
 void motionHandler(char menuInput); //handles the user inputting the dreaded motion problems.
-void physicsCalculator(string operation, string equation); //perform any basic physics calculation (multiplication and division of two numbers ONLY.)
+void physicsCalculator(string operation, string equation); //queries the user for inputs, and puts together the cute display for the outputs.
+double simpleCalculator(vector<string> equationVector, vector<double> userNums); //perform any basic physics calculation (multiplication and division of two numbers ONLY.)
+string simpeUnitsCalculator(vector<string> equationVector, vector<string> userUnits); //performs basic physics calulations on the units. Literally just combines two strings lol.
 void equationSeperator(string equation, vector<string>& equationVector); //break apart a simple physics equation into individual components, so above function can work.
 bool isMathOperator(string thing); //check if something is a math operator
 double numberCalculator(vector<string> equationVector, vector<double> userNums); //takes in some info, and performs complicated (not really but kind of actually) math
@@ -378,6 +380,7 @@ void physicsCalculator(string operation, string equation)
     vector<double> userNums; //doubles the user inputs 
     vector<string> userUnits; //strings the user inputs
     double result = 0.0; //result
+    string units = ""; //final units
 
     //break apart the equation into pieces
     equationSeperator(equation, equationPieces);
@@ -402,7 +405,23 @@ void physicsCalculator(string operation, string equation)
         }
     }
 
-    //math go brrr
+    //do the (SIMPLE) math
+    try{
+        result = simpleCalculator(equationPieces, userNums);
+    } catch (const char* errorMsg){
+        cout << endl << COLORS[0] << errorMsg << RESET << endl;
+        cout << "Would you like to try again?" << COLORS[2] << "(y/n)" << RESET << endl;
+        char yesorno = 'z';
+        do{
+            yesorno = validateChar(yesorno);
+        } while(!(yesorno == 'y' || yesorno == 'n'));
+        if(yesorno == 'y')
+            return physicsCalculator(operation, equation);
+        else
+            return;
+    }
+
+    units = simpeUnitsCalculator(equationPieces, userUnits);
 
     cout << "Wow. That was really, really hard." << endl
         << "Somehow, I managed to solve this problem for you." << endl
@@ -422,53 +441,70 @@ void physicsCalculator(string operation, string equation)
     cout.precision(PRECISION);
     cout.setf(ios::fixed, ios::floatfield);
     //final answer
-    cout << endl << COLORS[1] << "LOL I NEED TO RE-IMPLEMENT THIS, THIS IS IN THE TO-DO LIST!" << RESET << endl;
+    cout << endl << COLORS[1] << equationPieces[0] << " = " << result << " " << units << RESET << endl;
     //unset the precision
     cout.unsetf(ios::floatfield);
     enterToContinue(); //hold up the user until he hits enter. Give him time to record his answer and ponder the solution.
     //you could clear the screen here. But what if the user wants to scroll up and review his answer again?
 }
 
-double numberCalculator(vector<string> equationVector, vector<double> userNums)
+//performs simple multiplication or division
+//only to be used on simple x * y or x / y equations
+//anything else won't work with this, you would need the below, unfinished function
+double simpleCalculator(vector<string> equationVector, vector<double> userNums)
 {
     double result = 0.0;
-    //math time
-    for(int i = 2; i < equationVector.size(); i++){ //start after the equals sign
-        string eqPiece = equationVector[i];
 
-        //mathematical operators
-        //follows PEMDAS
-
-        //taking a break HERE. the math is gonna be really fun.
-        // TO DO: 
-        // 1) Implement PEMDAS. 
-        //      Perhaps make some sort of PEMDAS Sort algorythm or something? 
-        // 2) Perform the calculation, according to pemdas.
-        // 3) Implement Units Math. 
-        //      This might prove to be tricky. 
-        //      Applying math to strings. I mean, it shouldn't be that bad to be honest, and I think it would be really cool to auto-cancel out units n stuff
-        //      Obviously if the user inputs something really dumb like rocks/cat for dV and dogs for dT when calculating acceleration, he's gonna get a dumb input, but that's on the user. 
-
-        if (eqPiece == "("){ //paranthesis
-        
+    if(equationVector[3] == "*"){
+        result = userNums[0] * userNums[1];
+    }else{ //must be division
+        if(userNums[1] == 0){ //cannot divide by zero.
+            throw "ERROR: Divide by 0.";        
         }
-        else if (eqPiece.find("^")){ //exponent
-
-        }
-        else if(eqPiece == "*"){ //multiply
-            
-        }else if(eqPiece == "/"){ //divide
-
-        }else if(eqPiece == "+"){ //add
-
-        }else if(eqPiece == "-"){ //subtract
-
-        }
+        result = userNums[0] / userNums[1];
     }
-
 
     return result;
 }
+
+string simpeUnitsCalculator(vector<string> equationVector, vector<string> userUnits)
+{
+    string units = "";
+
+    if(equationVector[3] == "*"){
+        units = userUnits[0] + " * " + userUnits[1];
+    }else{ //must be division
+        units = userUnits[0] + " / " + userUnits[1];
+    }
+
+    return units;
+}
+
+//I was going to make a really sophisticated calculator 
+//it would be able to just look at an equation, and apply PEMDAS and instantly know what to do.
+//However... it was getting really complicated. Like, too much for me to think about and finish in time for the due date.
+//So ... I'll just handle the regular stuff and motion separately.
+// double numberCalculator(vector<string> equationVector, vector<double> userNums)
+// {
+//     double result = 0.0;
+
+//     //iterate through the equation
+//     for(int i = 2; i < equationVector.size(); i++){ //skip everything before the equals sign
+//         //PEMDAS!
+//         if(equationVector[i] == "("){ //Paranthesis
+//             double pResult = 0.0;
+//             vector<string> tempEqVector; //create a temp vector...
+//             for(int j = i+1; j < equationVector.size(); j++){ 
+//                 tempEqVector.push_back(equationVector[j]); //...and fill it up.
+//             }
+//             pResult = numberCalculator(tempEqVector, userNums); //Call the calculator recursively, to find nested paranthesis. 2(2+2+(2*2))
+//         }else if(equationVector[i].find("^") != string::npos){ //Exponent
+            
+//         }
+//     }
+
+//     return result;
+// }
 
 // separates out a given equation into a specfic array
 // paramater equation is a string for the equation we want to break down
