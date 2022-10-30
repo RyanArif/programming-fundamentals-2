@@ -136,7 +136,17 @@ int main()
     objThree.print();
 
     /****2022FL COSC-1437-58001***STL_Iterators*/ 
-    
+    cout << endl << "STL_Iterators" << endl;
+    vector<int> vint(10); //vector with 10 integer numbers
+    for(int i = 0; i < 10; i++){ //fill it up
+        vint[i] = ((i+1) * 10); //10, 20, 30... 100
+    }
+
+    //output the elements of the vector
+    vector<int>::iterator it;
+    for (it  = vint.begin(); it != vint.end(); ++it){
+        cout << *it << " ";
+    }
 
     /****2022FL COSC-1437-58001*** Stack*/
 
