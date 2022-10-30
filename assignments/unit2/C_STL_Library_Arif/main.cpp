@@ -9,6 +9,8 @@ create a single main.cpp that contains code samples and implementations of each 
 #include <vector>
 #include <algorithm> 
 #include <string>
+#include <cassert>
+#include <stack>
 using namespace std; 
 
 //Credit https://www.geeksforgeeks.org/passing-vector-constructor-c/ clarifications added
@@ -149,9 +151,19 @@ int main()
     }
 
     /****2022FL COSC-1437-58001*** Stack*/
-
-
     //Write comments that help one better understand what the code is doing.
+
+    stack<int> st; //create a new stack object holding integers
+
+    st.push(100); //push the number 100 onto the top of the stack
+    assert(st.size() == 1); //verify one element is on the stack 
+    assert(st.top() == 100); // verify that it is in fact 100, like we set it to
+
+    st.top() = 456; //assign a new value -- not adding a new item, but changing the existing. 100 is now 456.
+    assert(st.top() == 456); //verify the value at the top of the stack is 456
+
+    st.pop(); //remove the element on the top of the stack
+    assert(st.empty() == true); //verify the stack is now empty
 
     /****2022FL COSC-1437-58001**** Set*/
     //Write the code as presented in: 3. std::set
