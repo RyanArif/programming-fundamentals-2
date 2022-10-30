@@ -11,6 +11,7 @@ create a single main.cpp that contains code samples and implementations of each 
 #include <string>
 #include <cassert>
 #include <stack>
+#include <set>
 using namespace std; 
 
 //Credit https://www.geeksforgeeks.org/passing-vector-constructor-c/ clarifications added
@@ -166,9 +167,31 @@ int main()
     assert(st.empty() == true); //verify the stack is now empty
 
     /****2022FL COSC-1437-58001**** Set*/
+    cout << "\nSet\n";
     //Write the code as presented in: 3. std::set
 
     //Write comments that help one better understand what the code is doing.
+
+    set<int> iset; //create a set object named iset that holds integers
+
+    //insert some values into the set
+    iset.insert(11);
+    iset.insert(-11);
+    iset.insert(55);
+    iset.insert(22);
+    iset.insert(22); //22 already exists. So, insert will not actually insert it.
+
+    if(iset.find(55) != iset.end()){ //check if the value is stored. set.find will return the end of the set if the item isn't found.
+        iset.insert(55); //insert 55
+    }
+
+    assert( iset.size() == 4); //verify the size is 4
+
+    set<int>::iterator itSet; //create a new iterator for the set
+    for(itSet = iset.begin(); itSet != iset.end(); itSet++){ //go through the set...
+        cout << *itSet << " "; //... and output each value.
+    }
+
 
     /****2022FL COSC-1437-58001****Pair_Structure*/
     //Write the code as presented in: 4. std::pair structure
