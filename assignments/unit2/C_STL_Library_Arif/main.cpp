@@ -30,6 +30,41 @@ class MyClassVector1
           }    
       } 
 };
+//Credit https://www.geeksforgeeks.org/passing-vector-constructor-c/ clarifications added
+class MyClassVector2
+{ 
+    vector<int> vec;
+ 
+public:
+    MyClassVector2(vector<int> v) : vec(v)
+    {
+    }
+    void print()
+    {
+        /// print the value of vector
+        for (int i = 0; i < vec.size(); i++)
+            cout << vec[i] << " ";
+    }
+};
+//Credit https://www.geeksforgeeks.org/passing-vector-constructor-c/ clarifications added
+class MyClassVector3
+{ 
+    vector<int>& vec;
+ 
+public:
+    // this is the right way to assign
+    // the reference of stl container
+    MyClassVector3(vector<int>& arr)
+        : vec(arr)
+    {
+    }
+    void print()
+    {
+        /// print the value of vector
+        for (int i = 0; i < vec.size(); i++)
+            cout << vec[i] << " ";
+    }
+};
 
 int main() 
 {
@@ -92,6 +127,13 @@ int main()
         obj.print(); 
       
       //Continue with MyClassVector2 and MyClassVector3
+    cout << "\nMyClassVector2\n";
+    MyClassVector2 objTwo(vec);
+    objTwo.print();
+
+    cout << "\nMyClassVector3\n";
+    MyClassVector3 objThree(vec);
+    objThree.print();
 
     /****2022FL COSC-1437-58001***STL_Iterators*/ 
     
