@@ -1,3 +1,6 @@
+//Ryan Arif
+//2022FL COSC-1437-58001
+
 //Dr_T Unit 2 COSC-1437 Starter 
 /* Task -
 
