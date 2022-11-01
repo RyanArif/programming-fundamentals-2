@@ -59,7 +59,8 @@ int main()
             gradesArray[i] = tempGrade; //save that value to the array, and repeat.
         }
 
-        sort(gradesArray,gradesArray+numGrades); //sort the grades array in desc order
+        sort(gradesArray,gradesArray+numGrades); //sort the grades array in ascending order
+        reverse(gradesArray,gradesArray+numGrades); //then reverse it, so they are in the correct order.
 
         saveGradesFile(gradesArray, userName, numGrades); //save the data to the grades file
 
@@ -68,7 +69,7 @@ int main()
         userChoice = validateChar(userChoice);
         if(tolower(userChoice) == 'n'){ //user does not want to continue
             break; //leave the array
-        }else if (tolower(userChoice) == 'y'){
+        }else if (!(tolower(userChoice) == 'y')){
             cout << "Choose y or n, as in YES or NO." << endl;
         }
 
