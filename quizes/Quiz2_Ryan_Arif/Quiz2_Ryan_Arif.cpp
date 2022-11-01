@@ -1,12 +1,19 @@
 /*
 Student: Ryan Arif
 Professor: Dr. Tyson McMillan
-Section:
+Section: 2022FL COSC-1437-58001
 Date: 10/31/2022
 Editor: VSCode, G++ compiler on Ubuntu via WSL2.
 Summary: This code will display the contents of a file of grades, 
 then prompt the user for their name, take in some info about some grades, 
 sort the grades, then write the grades to a file.
+
+I ran out of time during the quiz. I will finish this and then try attempt 2 I guess. 
+Quick Question: Why is the quiz for Unit 2 due before the Revel is due? 
+This makes it so when I opened the quiz up, I had to frantically search the textbook for the answers while doing it.
+It also means I don't know the proper syntax and method for doing this program with the file and stuff. 
+
+I'll finish this, and then start attempt 2. 
 */
 
 #include <iostream> //cout
@@ -16,6 +23,9 @@ sort the grades, then write the grades to a file.
 #include "Input_Validation_Extended.h" //Input Validation!
 
 using namespace std; 
+
+//global variables
+const string GRADE_FILE = "GradeReport.txt";
 
 void printGradesFile(); //prints the values in the grades file, if it exists.
 string getUserName(); //gets the users name
@@ -67,7 +77,13 @@ Output: Nothing? Return void.
 */
 void printGradesFile()
 {
-    
+    ifstream inFile; //create a new ifstream object to read in the file.
+
+    inFile.open(GRADE_FILE); //try to open the file.
+    if(!inFile) return; //if the file doesn't exist, get outta here. Print nothing.
+
+    //loop through the file and print some stuff.
+    //i'm out of time. really cool. really awesome.
 }
 
 /*
@@ -81,6 +97,8 @@ string getUserName()
 
     cout << "What is your first name?" << endl; //ask the user a question
     userName = validateString(userName); //validate the input from the user, and save it so we can...
+
+    cout << "Thank you, " << userName << endl; //display the username back to the user
 
     return userName; //...return it
 }
