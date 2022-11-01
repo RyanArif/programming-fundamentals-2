@@ -26,6 +26,10 @@ using namespace std;
 
 //global variables
 const string GRADE_FILE = "GradeReport.txt";
+const string RESET = "\x1b[0m"; //reset color
+const string COLOR_RED = "\x1b[31;1m"; //red color, used for errors in my program
+const string COLOR_GREEN = "\x1b[32;7m"; //Green, highlighted.
+const string COLOR_YELLOW = "\x1b[33;1m"; //yellow color, used for telling the user what input to type in
 
 void printGradesFile(); //prints the values in the grades file, if it exists.
 string getUserName(); //gets the users name
@@ -46,12 +50,12 @@ int main()
         //Not gonna happen. 
         double gradesArray[numGrades]; //make an array to hold the grades
         for(int i = 0; i < numGrades; i++){ //loop through the grades array
-            cout << "What is the value of the " << i+1 << "th grade?" << endl; //query the user
+            cout << "What is the value of the " << COLOR_YELLOW << i+1 << "th grade" << RESET << "?" << endl; //query the user
             double tempGrade = 0.0;
             while(true){ //validate...
             tempGrade = validateDouble(tempGrade); //and have them ente ra validated value
                 if(tempGrade < 0){ //ensure the user inputs a positive value
-                    cout << "ERROR: Value must be positive!" << endl;
+                    cout << COLOR_RED << "ERROR: Value must be positive!" << RESET << endl;
                 }else{
                     break; //leave the loop if the user enters a positive value.
                 }
@@ -64,13 +68,18 @@ int main()
 
         saveGradesFile(gradesArray, userName, numGrades); //save the data to the grades file
 
-        cout << "Wanna do it again? (y/n)" << endl;
+        cout << "Wanna do it again? " << COLOR_YELLOW << "(y/n)" << RESET << endl;
         char userChoice = 'z';
-        userChoice = validateChar(userChoice);
+        while(true){ //loop infinitely until we break it 
+            userChoice = validateChar(userChoice); //take in user input
+            if((tolower(userChoice) == 'n') || (tolower(userChoice) == 'y')) 
+                break; //leave the loop
+            else //error out
+                cout << COLOR_RED << "Please enter the letter " << COLOR_YELLOW << "y" << COLOR_RED << " or the letter " << COLOR_YELLOW << "n" << COLOR_RED << " only, please." << RESET << endl;
+        };
+
         if(tolower(userChoice) == 'n'){ //user does not want to continue
-            break; //leave the array
-        }else if (!(tolower(userChoice) == 'y')){
-            cout << "Choose y or n, as in YES or NO." << endl;
+            break; //leave the loop
         }
 
     }while(true); //loop infinitely until the user hits y and confirms he wants to leave the loop.
@@ -92,7 +101,7 @@ void printGradesFile()
 
     string userName = "";
     inFile >> userName; //the first line of the file will always be the username.
-    cout << "Previous Session: \n Grades for user: " << userName << endl;
+    cout << "Previous Session: \nGrades for user: " << COLOR_GREEN << userName << RESET << endl;
 
     double input = 0.0; //input to get in from the file
     while(inFile >> input){ //as long as input exists...
@@ -111,10 +120,10 @@ string getUserName()
 {
     string userName = ""; //declare & init a string for the username
 
-    cout << "What is your first name?" << endl; //ask the user a question
+    cout << "What is your " << COLOR_YELLOW << "first name" << RESET << "?" << endl; //ask the user a question
     userName = validateString(userName); //validate the input from the user, and save it so we can...
 
-    cout << "Thank you, " << userName << "." << endl; //display the username back to the user
+    cout << "Thank you, " << COLOR_GREEN << userName << RESET << "." << endl; //display the username back to the user
 
     return userName; //...return it
 }
@@ -128,11 +137,11 @@ int getNumGrades()
 {
     int numGrades = 0; //declare & init the number of grades 
 
-    cout << "How many grades will you be inputting today?" << endl;
+    cout << COLOR_YELLOW << "How many grades" << RESET << " will you be inputting today?" << endl;
     while(true){
         numGrades = validateInt(numGrades); //get the validated input from the user
         if(numGrades < 0){ //verify the user enters a positive value
-            cout << "ERROR: Positive Integer Required!" << endl;
+            cout << COLOR_RED << "ERROR: Positive Integer Required!" << RESET << endl;
         }else{
             break; //leave the loop
         }
