@@ -48,7 +48,14 @@ int main()
         for(int i = 0; i < numGrades; i++){ //loop through the grades array
             cout << "What is the value of the " << i+1 << "th grade?" << endl; //query the user
             double tempGrade = 0.0;
+            while(true){ //validate...
             tempGrade = validateDouble(tempGrade); //and have them ente ra validated value
+                if(tempGrade < 0){ //ensure the user inputs a positive value
+                    cout << "ERROR: Value must be positive!" << endl;
+                }else{
+                    break; //leave the loop if the user enters a positive value.
+                }
+            }
             gradesArray[i] = tempGrade; //save that value to the array, and repeat.
         }
 
@@ -121,7 +128,14 @@ int getNumGrades()
     int numGrades = 0; //declare & init the number of grades 
 
     cout << "How many grades will you be inputting today?" << endl;
-    numGrades = validateInt(numGrades); //get the validated input from the user
+    while(true){
+        numGrades = validateInt(numGrades); //get the validated input from the user
+        if(numGrades < 0){ //verify the user enters a positive value
+            cout << "ERROR: Positive Integer Required!" << endl;
+        }else{
+            break; //leave the loop
+        }
+    }
 
     return numGrades; //return the validated input
 }
