@@ -7,13 +7,6 @@ Editor: VSCode, G++ compiler on Ubuntu via WSL2.
 Summary: This code will display the contents of a file of grades, 
 then prompt the user for their name, take in some info about some grades, 
 sort the grades, then write the grades to a file.
-
-I ran out of time during the quiz. I will finish this and then try attempt 2 I guess. 
-Quick Question: Why is the quiz for Unit 2 due before the Revel is due? 
-This makes it so when I opened the quiz up, I had to frantically search the textbook for the answers while doing it.
-It also means I don't know the proper syntax and method for doing this program with the file and stuff. 
-
-I'll finish this, and then start attempt 2. 
 */
 
 #include <iostream> //cout
@@ -25,12 +18,13 @@ I'll finish this, and then start attempt 2.
 using namespace std; 
 
 //global variables
-const string GRADE_FILE = "GradeReport.txt";
+const string GRADE_FILE = "GradeReport.txt"; //name of the file to read/write grades from/to
 const string RESET = "\x1b[0m"; //reset color
 const string COLOR_RED = "\x1b[31;1m"; //red color, used for errors in my program
 const string COLOR_GREEN = "\x1b[32;7m"; //Green, highlighted.
 const string COLOR_YELLOW = "\x1b[33;1m"; //yellow color, used for telling the user what input to type in
 
+//function prototypes
 void printGradesFile(); //prints the values in the grades file, if it exists.
 string getUserName(); //gets the users name
 int getNumGrades(); //gets how many grades the user wants to enter
@@ -46,8 +40,8 @@ int main()
         int numGrades = getNumGrades(); //gets how many grades there should be from the user
 
         //I was going to make a separate function to get the grades from the user. 
-        //I have like 25 minutes left to finish this.
-        //Not gonna happen. 
+        //I have like 15 minutes left to finish this.
+        //Not gonna happen.
         double gradesArray[numGrades]; //make an array to hold the grades
         for(int i = 0; i < numGrades; i++){ //loop through the grades array
             cout << "What is the value of the " << COLOR_YELLOW << i+1 << "th grade" << RESET << "?" << endl; //query the user
@@ -86,6 +80,8 @@ int main()
 
     return 0;
 }
+
+//function definitions
 
 /*
 Input: Nothing
@@ -156,7 +152,8 @@ int getNumGrades()
 /*
 input: an array of doubles that represents the grades from our user. a string that is our users username. int gradesNum is the total number of grades.
 process: save the array to a file
-output: nothing*/
+output: nothing, return type void
+*/
 void saveGradesFile(double gradesArray[], string userName, int gradesNum)
 {
     ofstream outFile; //output file stream
