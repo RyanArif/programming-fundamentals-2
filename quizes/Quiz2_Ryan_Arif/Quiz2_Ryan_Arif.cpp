@@ -30,7 +30,7 @@ const string GRADE_FILE = "GradeReport.txt";
 void printGradesFile(); //prints the values in the grades file, if it exists.
 string getUserName(); //gets the users name
 int getNumGrades(); //gets how many grades the user wants to enter
-void saveGradesFile(double gradesArray[], string userName); //saves the grades to a file
+void saveGradesFile(double gradesArray[], string userName, int gradesNum); //saves the grades to a file
 
 int main()
 {   
@@ -54,7 +54,7 @@ int main()
 
         sort(gradesArray,gradesArray+numGrades); //sort the grades array in desc order
 
-        saveGradesFile(gradesArray, userName); //save the data to the grades file
+        saveGradesFile(gradesArray, userName, numGrades); //save the data to the grades file
 
         cout << "Wanna do it again? (y/n)" << endl;
         char userChoice = 'z';
@@ -82,8 +82,16 @@ void printGradesFile()
     inFile.open(GRADE_FILE); //try to open the file.
     if(!inFile) return; //if the file doesn't exist, get outta here. Print nothing.
 
-    //loop through the file and print some stuff.
-    //i'm out of time. really cool. really awesome.
+    string userName = "";
+    inFile >> userName; //the first line of the file will always be the username.
+    cout << "Previous Session: \n Grades for user: " << userName << endl;
+
+    double input = 0.0; //input to get in from the file
+    while(inFile >> input){ //as long as input exists...
+        cout << input << endl; //display it
+    };
+
+    inFile.close(); //close the opened file.
 }
 
 /*
@@ -98,7 +106,7 @@ string getUserName()
     cout << "What is your first name?" << endl; //ask the user a question
     userName = validateString(userName); //validate the input from the user, and save it so we can...
 
-    cout << "Thank you, " << userName << endl; //display the username back to the user
+    cout << "Thank you, " << userName << "." << endl; //display the username back to the user
 
     return userName; //...return it
 }
@@ -119,10 +127,19 @@ int getNumGrades()
 }
 
 /*
-input: an array of doubles that represents the grades from our user. a string that is our users username.
+input: an array of doubles that represents the grades from our user. a string that is our users username. int gradesNum is the total number of grades.
 process: save the array to a file
 output: nothing*/
-void saveGradesFile(double gradesArray[], string userName)
+void saveGradesFile(double gradesArray[], string userName, int gradesNum)
 {
+    ofstream outFile; //output file stream
+    outFile.open(GRADE_FILE); //open the grades file
 
+    outFile << userName << endl; //save the username to the file
+
+    for(int i = 0; i < gradesNum; i++){ //for each double inside of the array...
+        outFile << gradesArray[i] << endl; //...output the data to the file.
+    }
+
+    outFile.close(); //close the file
 }
