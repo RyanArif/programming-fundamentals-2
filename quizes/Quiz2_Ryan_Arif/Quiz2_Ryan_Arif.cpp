@@ -142,7 +142,10 @@ int getNumGrades()
         numGrades = validateInt(numGrades); //get the validated input from the user
         if(numGrades <= 0){ //verify the user enters a positive value
             cout << COLOR_RED << "ERROR: Positive Integer Required!" << RESET << endl;
-        }else{
+        }else if(numGrades >100){ //assignment says we can only accept input greater than 100 for specifically grades! This is not a grade!
+            cout << COLOR_RED << "ERROR: Enter a value lower than 100! Accepted values are 0-100 inclusive." << RESET << endl;
+        }
+        else{
             break; //leave the loop
         }
     }
