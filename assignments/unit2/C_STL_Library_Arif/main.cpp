@@ -12,6 +12,7 @@ create a single main.cpp that contains code samples and implementations of each 
 #include <cassert>
 #include <stack>
 #include <set>
+#include <utility>
 using namespace std; 
 
 //Credit https://www.geeksforgeeks.org/passing-vector-constructor-c/ clarifications added
@@ -197,6 +198,18 @@ int main()
     //Write the code as presented in: 4. std::pair structure
 
     //Write comments that help one better understand what the code is doing.
+
+    pair<string, string> strstr; //declare  a pair, consisting of a string and a string, called strstr
+    strstr.first = "Hello"; //set the first value to a string Hello
+    strstr.second = "World"; //initialize the second value to "World"
+
+    pair<int, string> intstr; //declare a pair of two different datatypes
+    intstr.first = 1; //the first one is an integer, the number 1
+    intstr.second = "one"; //and the second one is a string, of value one
+
+    pair<string, int> strint("two", 2); //declare & initialize the pair, in one line!
+    assert(strint.first == "two"); //verify the values are configured correctly
+    assert(strint.second == 2); //side note - I tried changing the values to be wrong. And it's really cool. Either the compiler is doing something cool, or the debugger with VSCode is doing something cool and letting me know this failed. 
 
     /****2022FL COSC-1437-58001**** Map_Insert*/
     //Write the code as presented in: 14. std::map::insert
