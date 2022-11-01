@@ -13,6 +13,8 @@ create a single main.cpp that contains code samples and implementations of each 
 #include <stack>
 #include <set>
 #include <utility>
+#include <map>
+
 using namespace std; 
 
 //Credit https://www.geeksforgeeks.org/passing-vector-constructor-c/ clarifications added
@@ -69,6 +71,13 @@ public:
             cout << vec[i] << " ";
     }
 };
+
+//I have absolutely no idea what these 2 lines do. 
+//Someting with map iterators. What that means, I have no clue.
+typedef map<string, int> MapT; //what does typedef mean? 
+typedef MapT::const_iterator MapIterT;
+
+bool less_than_7(int value); //function prototype
 
 int main() 
 {
@@ -147,10 +156,11 @@ int main()
     }
 
     //output the elements of the vector
-    vector<int>::iterator it;
-    for (it  = vint.begin(); it != vint.end(); ++it){
-        cout << *it << " ";
+    vector<int>::iterator it; //make a new iterator that's gonna act like a pointer to a vector<int>
+    for (it  = vint.begin(); it != vint.end(); ++it){ //the iterator should start at the beginning of the vector int, and end at the end of the vector. 
+        cout << *it << " "; //*it means instead of outputting the memorary address, it will look inside and like idk tell you what that address in memory really is, which is the specific piece within the vector
     }
+    //if this looks like I barely understand how pointers work, it's because I barely understand how pointers work. 
 
     /****2022FL COSC-1437-58001*** Stack*/
     //Write comments that help one better understand what the code is doing.
@@ -189,8 +199,8 @@ int main()
     assert( iset.size() == 4); //verify the size is 4
 
     set<int>::iterator itSet; //create a new iterator for the set
-    for(itSet = iset.begin(); itSet != iset.end(); itSet++){ //go through the set...
-        cout << *itSet << " "; //... and output each value.
+    for(itSet = iset.begin(); itSet != iset.end(); itSet++){ //go through the set
+        cout << *itSet << " "; //... and output each value by de-referencing the pointer (i think that's what it's called?), and tell us what the actual value of the thing is
     }
 
 
@@ -215,21 +225,72 @@ int main()
     //Write the code as presented in: 14. std::map::insert
 
     //Write comments that help one better understand what the code is doing.
+    MapT amap; //new MapT object named amap
+    pair< MapIterT, bool> result = //Create a pair that holds two datatypes - one MapTerT, and a boolean
+        amap.insert(make_pair("Fred", 45)); //insert a pair into the map. This means the map should look like this: amap: ["Fred"] = 45 or something, if that makes sense. 
+        // https://cplusplus.com/reference/map/map/insert/
+        //the insert function seems to return a pair - the first thing being an iterator to the item that was inserted into the map, the second being a boolean - true if inserted into the map.
+    //soo -- we make a pair for the result. The result is a MapIterator, which will be like a pointer for that thing we inserted into the other map, and true/false depending if something was inserted.
+
+    assert(result.second == true); //check if the second piece of the pair is true
+    assert(result.first->second == 45); //result.first will be an iterator of the inserted pair for the map (or the existing pair), -> the second thing in that should be 45.
+
+    result = amap.insert(make_pair("Fred", 54)); //insert a new value into the map. Fred already exists! So, nothing is inserted, the iterator will just be the already existing value, and the second part of the pair for result is false.
+
+    //Fred was already in the map, and result.first simply points there now:
+    assert(result.second == false); //Verify the second part of the pair is false
+    assert(result.first->second == 45); //Because Fred was already in the map, his age should be unchanged and still be 45.
 
     /****2022FL COSC-1437-58001****Map_Summary*/
+    cout << endl << "Map Summary" << endl;
     //Write the code as presented in: 16. Map summary
 
     //Write comments that help one better understand what the code is doing.
+    map<string, string> phone_book; //create a new map, with key being a string, and the data for that key also being a string
+    phone_book["411"] = "Directory"; //At key 411, the value is Directory
+    phone_book["911"] = "Emergency"; //at position 411, the value is emergency
+    phone_book["508-678-2811"] = "BCC";
 
+    if (phone_book.find("411") != phone_book.end()){ //if 411 exists within the map,
+        phone_book.insert( //insert...
+            make_pair( //..a pair...
+                string("411"),
+                string("Directory") //consisting of these 2 string values.
+            )
+        ); //insert a pair of strings into the phonebook map
+    }
+
+    assert(phone_book.size() == 3); //verify the size of the phone book is still 3
+    map<string, string>::const_iterator mapSumIt; //Make an iterator, which is like a pointer for the map.
+    for(mapSumIt = phone_book.begin(); mapSumIt != phone_book.end(); ++mapSumIt){ //output the values of the map
+        cout
+            << " " << mapSumIt->first //mapSumIt is an iterator, which is like a pointer, so access the first part of the thing that is being pointed at with the -> and output it
+            << " " << mapSumIt->second //same as above, but for the second piece
+            << endl;
+    }
     /****2022FL COSC-1437-58001**** Sort_Algorithm*/
     //Write the code as presented in: 23. sort example
 
     //Write comments that help one better understand what the code is doing.
 
+    int arr[100]; //create an integery array of size 100 called arr
+    sort(arr, arr+100); //sort the array from the first address in memory for the array plus 100, which is the end of our array. From start to finish.
+    vector<int> v1; //make a vector called v1 of no datatype jk I declared one, it's an integer vector now because the example doesn't compile
+    sort(v1.begin(), v1.end()); //sort the vector from the start ot the end of it
+
     /****2022FL COSC-1437-58001****Predicate_Algorithm*/
     //Write the code as presented in: 25. count_if and predicate function
-
+    
     //Write comments that help one better understand what the code is doing. 
 
+    vector<int> countIfPredicateVectory; //create a vector of integers
+    int count_less = std::count_if(v1.begin(), v1.end(), less_than_7 ); 
+    //count_less is the number of objects in the vector that satisfy the condition less_than_7. I don't know why you dont have to pass in a value to the function less than 7 that is expecting an integer, but I guess you don't.
+
       return 0; 
+ }
+
+ bool less_than_7(int value) //function, check if a given integer is less than 7 or not
+ {
+    return value < 7; //return the value of the expression value < 7. True if the int is less than 7, false if it's not.
  }
