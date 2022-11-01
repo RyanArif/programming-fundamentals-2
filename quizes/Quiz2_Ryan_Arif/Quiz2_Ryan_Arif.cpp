@@ -55,7 +55,7 @@ int main()
             while(true){ //validate...
             tempGrade = validateDouble(tempGrade); //and have them ente ra validated value
                 if(tempGrade < 0){ //ensure the user inputs a positive value
-                    cout << COLOR_RED << "ERROR: Value must be positive!" << RESET << endl;
+                    cout << COLOR_RED << "ERROR: Value must be positive or 0!" << RESET << endl;
                 }else{
                     break; //leave the loop if the user enters a positive value.
                 }
@@ -140,7 +140,7 @@ int getNumGrades()
     cout << COLOR_YELLOW << "How many grades" << RESET << " will you be inputting today?" << endl;
     while(true){
         numGrades = validateInt(numGrades); //get the validated input from the user
-        if(numGrades < 0){ //verify the user enters a positive value
+        if(numGrades <= 0){ //verify the user enters a positive value
             cout << COLOR_RED << "ERROR: Positive Integer Required!" << RESET << endl;
         }else{
             break; //leave the loop
