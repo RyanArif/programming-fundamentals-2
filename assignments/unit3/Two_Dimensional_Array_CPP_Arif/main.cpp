@@ -14,41 +14,42 @@ using namespace std;
 
 Research Input data: go to http://www.weather.comLinks to an external site.
 
-Pick two cities of your choice. Fill in the temperature for the 7 days of this week of both cities. Fill in this text data table, which will be used in your program.
+Pick two cities of your choice. Fill in the temperature for the 7 days of this week of both cities.
+Fill in this text data table, which will be used in your program.
 
-//City_One = 1, City_Two = 2  Replace City_One and City_Two with the names of your cities
+//Chicago = 1, Fort Worth = 2  
 
 //Data Table
 
 //City X, Day X: Temp
 
-City 1, Day 1: TEMP
+City 1, Day 1: 69 
 
-City 1, Day 2: TEMP
+City 1, Day 2: 71 
 
-City 1, Day 3: TEMP
+City 1, Day 3: 68 
 
-City 1, Day 4: TEMP
+City 1, Day 4: 63 
 
-City 1, Day 5: TEMP
+City 1, Day 5: 62
 
-City 1, Day 6: TEMP
+City 1, Day 6: 59
 
-City 1, Day 7: TEMP
+City 1, Day 7: 61
 
-City 2, Day 1: TEMP
+City 2, Day 1: 76
 
-City 2, Day 2: TEMP
+City 2, Day 2: 80
 
-City 2, Day 3: TEMP
+City 2, Day 3: 75
 
-City 2, Day 4: TEMP
+City 2, Day 4: 70
 
-City 2, Day 5: TEMP
+City 2, Day 5: 75
 
-City 2, Day 6: TEMP
+City 2, Day 6: 76
 
-City 2, Day 7: TEMP
+City 2, Day 7: 80
 
 */
 
