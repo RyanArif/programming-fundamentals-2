@@ -177,8 +177,20 @@ int main()
         };
 
         cityTwo[i] = tempTemp; //fill up the array with a validated input
-    } 
- 
+    }
+
+    //traverse the temperature 2d array 
+    for (int i = 0; i < CITY; ++i)
+    {
+        for(int j = 0; j < WEEK; ++j)
+        {
+            if(i == 0){
+                temperature[i][j] = cityOne[j]; //fill up the data from city 1
+            }else if(i == 1){
+                temperature[i][j] = cityTwo[j]; //fill up city 2 
+            }
+        }
+    }
 
     return 0;
 
