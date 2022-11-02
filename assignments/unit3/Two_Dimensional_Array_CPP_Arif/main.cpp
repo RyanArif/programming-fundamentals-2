@@ -7,6 +7,7 @@
 //A program to practice working with multi-dimensional arrays
 
 #include <iostream>
+#include "Input_Validation_Extended.h"
 
 using namespace std;
 
@@ -87,8 +88,18 @@ int main()
 
             cout << "City " << i + 1 << ", Day " << j + 1 << " : ";
 
-            cin >> temperature[i][j];
-
+            //cin >> temperature[i][j]; //hold it, we can't do this. You should validate this input. Silly goose.
+            int tempTemp = 0;
+            while(true){
+                tempTemp = validateInt(tempTemp); //validate the integer
+                //there is an absolute 0 value that must be acknowledged. The temperature literally cannot fall below this.
+                //Absolute 0 in Farhenheit: −459.67 °F (source: wikipedia)
+                if(tempTemp < -459){ 
+                    cout << "ERROR: Inputted temperature is physically impossible." << endl;
+                }else{ //the inputted value is physically possible...
+                    break; //leave the loop.
+                }
+            };
         }
 
     }
