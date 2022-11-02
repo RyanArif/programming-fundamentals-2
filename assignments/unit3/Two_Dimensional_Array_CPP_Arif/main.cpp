@@ -15,8 +15,7 @@ using namespace std;
 
 Research Input data: go to http://www.weather.comLinks to an external site.
 
-Pick two cities of your choice. Fill in the temperature for the 7 days of this week of both cities.
-Fill in this text data table, which will be used in your program.
+Pick two cities of your choice. Fill in the temperature for the 7 days of this week of both cities. Fill in this text data table, which will be used in your program.
 
 //Chicago = 1, Fort Worth = 2  
 
@@ -90,7 +89,7 @@ int main()
 
             //cin >> temperature[i][j]; //hold it, we can't do this. You should validate this input. Silly goose.
             int tempTemp = 0;
-            while(true){
+            while(true){ //do some input validation
                 tempTemp = validateInt(tempTemp); //validate the integer
                 //there is an absolute 0 value that must be acknowledged. The temperature literally cannot fall below this.
                 //Absolute 0 in Farhenheit: −459.67 °F (source: wikipedia)
@@ -100,6 +99,8 @@ int main()
                     break; //leave the loop.
                 }
             };
+
+            temperature[i][j] = tempTemp;
         }
 
     }
@@ -140,8 +141,24 @@ int main()
 
     */
 
- 
+    int cityOne[7]; //new array for city 1
+    cout << "Enter the temperatures for City 1." << endl;
+    for(int i = 0; i < 7; i++){ //loop through the array and fill it up 
+        cout << "City 1, Day " << i + 1 << " = ";
+        int tempTemp = 0;
+        while(true){ //do some input validation
+            tempTemp = validateInt(tempTemp); //validate the integer
+            //there is an absolute 0 value that must be acknowledged. The temperature literally cannot fall below this.
+            //Absolute 0 in Farhenheit: −459.67 °F (source: wikipedia)
+            if(tempTemp < -459){ 
+                cout << "ERROR: Inputted temperature is physically impossible." << endl;
+            }else{ //the inputted value is physically possible...
+                break; //leave the loop.
+            }
+        };
 
+        cityOne[i] = tempTemp; //fill up the array with a validated input
+    } 
  
 
     return 0;
