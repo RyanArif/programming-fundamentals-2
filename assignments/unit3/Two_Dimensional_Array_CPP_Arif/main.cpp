@@ -13,7 +13,7 @@ using namespace std;
 
 /*
 
-Research Input data: go to http://www.weather.comLinks to an external site.
+Research Input data: go to http://www.weather.com to an external site.
 
 Pick two cities of your choice. Fill in the temperature for the 7 days of this week of both cities. Fill in this text data table, which will be used in your program.
 
@@ -69,6 +69,7 @@ int main()
 
     //Note your input data from the above
 
+/* delete this comment block (starts here at line 72, ends at line 130) if you want to see your original code.
     cout << "Enter all temperature for a week of first city and then second city. \n";
 
  
@@ -126,6 +127,7 @@ int main()
         }
 
     }
+    */
 
    /*For up to 5 Points Extra Credit
 
@@ -192,6 +194,15 @@ int main()
         }
     }
 
+    // Accessing the values from the temperature array
+    for (int i = 0; i < CITY; ++i)
+    {
+        for(int j = 0; j < WEEK; ++j)
+        {
+            cout << "City " << i + 1 << ", Day " << j + 1 << " = " << temperature[i][j] << endl; //print out temperature[city position][week position].
+        }
+    }
+ 
     return 0;
 
 }
