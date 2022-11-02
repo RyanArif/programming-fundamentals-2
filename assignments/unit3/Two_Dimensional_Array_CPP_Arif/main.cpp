@@ -160,6 +160,25 @@ int main()
         cityOne[i] = tempTemp; //fill up the array with a validated input
     } 
  
+    int cityTwo[7]; //new array for city 2
+    cout << "Enter the temperatures for City 2." << endl;
+    for(int i = 0; i < 7; i++){ //loop through the array and fill it up 
+        cout << "City 2, Day " << i + 1 << " = ";
+        int tempTemp = 0;
+        while(true){ //do some input validation
+            tempTemp = validateInt(tempTemp); //validate the integer
+            //there is an absolute 0 value that must be acknowledged. The temperature literally cannot fall below this.
+            //Absolute 0 in Farhenheit: −459.67 °F (source: wikipedia)
+            if(tempTemp < -459){ 
+                cout << "ERROR: Inputted temperature is physically impossible." << endl;
+            }else{ //the inputted value is physically possible...
+                break; //leave the loop.
+            }
+        };
+
+        cityTwo[i] = tempTemp; //fill up the array with a validated input
+    } 
+ 
 
     return 0;
 
