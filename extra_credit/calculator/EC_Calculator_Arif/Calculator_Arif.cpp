@@ -6,10 +6,10 @@ using namespace std; //std::
 
 //globals
 //Colors!
-const string RESET = ""; //reset formatting
-const string COLOR_GREEN = ""; 
-const string COLOR_RED = "";
-const string COLOR_YELLOW = "";
+const string RESET = "\x1b[0m"; //reset formatting
+const string COLOR_GREEN = "\x1b[32;1m"; 
+const string COLOR_RED = "\x1b[31;1m";
+const string COLOR_YELLOW =  "\x1b[33;1m";
 
 //FUNction prototypes
 void mainMenu(); //displays a main menu!
@@ -35,7 +35,7 @@ int main()
 
         displayResult(numOne, numTwo, result, operation); //display the final answer, showing work
         
-    }while(shouldExit());
+    }while(!shouldExit());
 
     return 0;
 }
@@ -128,5 +128,12 @@ bool shouldExit()
             break; //break the loop
         }
     }
+
+    if(yesorno == 'y'){
+        exit = true;
+    }else if (yesorno == 'n'){
+        exit = false;
+    }
+
     return exit;
 }
