@@ -17,7 +17,7 @@ class Scoreboard{
             Team temp;
             homeTeam = temp;
             awayTeam = temp;
-            qtr = 0;
+            qtr = 1;
             down = 0;
             toGo = 0;
             possession = true;

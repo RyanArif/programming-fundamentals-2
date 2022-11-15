@@ -56,7 +56,7 @@ void Scoreboard::print()
     //display coach names
     cout << setw(columnOne) << homeTeam.getCoachName() << setw(columnTwo) << " " << setw(columnThree) << " " << setw(columnFour) << " " << setw(columnFive) << awayTeam.getCoachName() << endl;
 
-    cout << setw(columnOne) << "Downs:" << down << setw(columnTwo) << " " << setw(columnThree) << "" << setw(columnFour) << " " << setw(columnFive) << "To Go: " << toGo << endl;
+    cout << setw(columnOne) << "Downs: " << down << setw(columnTwo) << " " << setw(columnThree) << "" << setw(columnFour) << " " << setw(columnFive) << "To Go: " << toGo << endl;
 
     for (int i = 0; i< 35; i++){
         cout << "*";
