@@ -30,7 +30,7 @@ void Scoreboard::print()
     int columnFour = 1;
     int columnFive = 10;
 
-    for(int i = 0; i < 27; i++){
+    for(int i = 0; i < 35; i++){
         cout << "*";
     }
     cout << endl;
@@ -58,8 +58,10 @@ void Scoreboard::print()
 
     cout << setw(columnOne) << "Downs:" << down << setw(columnTwo) << " " << setw(columnThree) << "" << setw(columnFour) << " " << setw(columnFive) << "To Go: " << toGo << endl;
 
-    for (int i = 0; i< 27; i++){
+    for (int i = 0; i< 35; i++){
         cout << "*";
     }
 
 }
+
+

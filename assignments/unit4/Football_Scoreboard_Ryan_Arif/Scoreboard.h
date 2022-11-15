@@ -22,6 +22,7 @@ class Scoreboard{
             toGo = 0;
             possession = true;
         }
+        
 
         //mutator functions
         void setHomeTeam(Team);
