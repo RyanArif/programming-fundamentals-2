@@ -13,16 +13,8 @@ class Scoreboard{
         bool possession;
     public:
         //default constructor
-        Scoreboard(){
-            Team temp;
-            homeTeam = temp;
-            awayTeam = temp;
-            qtr = 1;
-            down = 0;
-            toGo = 0;
-            possession = true;
-        }
-        
+        Scoreboard();       
+        Scoreboard(Team &, Team &);
 
         //mutator functions
         void setHomeTeam(Team);

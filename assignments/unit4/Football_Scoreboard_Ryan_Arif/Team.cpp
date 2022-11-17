@@ -2,6 +2,25 @@
 #include <string>
 
 using namespace std;
+
+Team::Team(){
+    name = "TEAM_NAME";
+    coachName = "COACH_NAME";
+    city = "CITY";
+    homeStatus = false;
+    score = 0;
+    timeoutCount = 0;
+}
+
+Team::Team(std::string n, std::string cn, std::string ci, bool h){
+    name = n;
+    coachName = cn;
+    city = ci;
+    homeStatus = h;
+    score = 0;
+    timeoutCount = 0;
+} 
+
 //sets the name of the team
 void Team::setName(string n)
 {
@@ -12,6 +31,12 @@ void Team::setName(string n)
 void Team::setCoachName(string cn)
 {
     coachName = cn;
+}
+
+//sets the city name for the team 
+void Team::setCity(string ci)
+{
+    city = ci;
 }
 
 //sets the home status for the team
@@ -42,6 +67,11 @@ string Team::getName() const
 string Team::getCoachName() const
 {
     return coachName;
+}
+
+string Team::getCity() const
+{
+    return city;
 }
 
 //gets the home status for the team

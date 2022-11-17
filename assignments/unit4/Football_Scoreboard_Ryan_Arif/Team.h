@@ -7,35 +7,25 @@ class Team{
     private:
     std::string name;
     std::string coachName;
+    std::string city;
     bool homeStatus;
     int score;
     int timeoutCount;
     public:
-        //default constructor
-        Team(){
-            name = "TEAM_NAME";
-            coachName = "COACH_NAME";
-            homeStatus = false;
-            score = 0;
-            timeoutCount = 0;
-        }
-        //alternative constructor
-        Team(std::string n, std::string c, bool h){
-            name = n;
-            coachName = c;
-            homeStatus = h;
-            score = 0;
-            timeoutCount = 0;
-        }
+        Team();
+        Team(std::string n, std::string cn, std::string ci, bool h);
+
         //mutators
         void setName(std::string);
         void setCoachName(std::string);
+        void setCity(std::string);
         void setHomeStatus(bool);
         void setScore(int);
         void setTimeoutCount(int);
         //accessors
         std::string getName() const;
         std::string getCoachName() const;
+        std::string getCity() const;
         bool getHomeStatus() const;
         int getScore() const;
         int getTimeoutCount() const;

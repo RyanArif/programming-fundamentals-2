@@ -5,6 +5,26 @@
 
 using namespace std; 
 
+Scoreboard::Scoreboard(){
+    Team temp;
+    homeTeam = temp;
+    awayTeam = temp;
+    qtr = 1;
+    down = 0;
+    toGo = 0;
+    possession = true;
+}
+
+Scoreboard::Scoreboard(Team &t1, Team &t2)
+{
+    homeTeam = t1;
+    awayTeam = t2;
+    qtr = 1;
+    down = 0;
+    toGo = 0;
+    possession = true;
+}
+
 //mutator functions
 void Scoreboard::setHomeTeam(Team t){ homeTeam = t;}
 void Scoreboard::setAwayTeam(Team t){ awayTeam = t;}
@@ -35,6 +55,9 @@ void Scoreboard::print()
     }
     cout << endl;
 
+    //print the city names
+    cout << setw(columnOne) << homeTeam.getCity() << setw(columnTwo) << " " << setw(columnThree) << " " << setw(columnFour) << " " << setw(columnFive) << awayTeam.getCity() << endl;
+
     //layout of the scoreboard
     cout << setw(columnOne) << "Home" << setw(columnTwo) << " " << setw(columnThree) << "Qtr" << setw(columnFour) << " " << setw(columnFive) << "Away" << endl;
     
@@ -54,13 +77,18 @@ void Scoreboard::print()
     cout << setw(columnFive) << awayTeam.getName() << endl;
 
     //display coach names
-    cout << setw(columnOne) << homeTeam.getCoachName() << setw(columnTwo) << " " << setw(columnThree) << " " << setw(columnFour) << " " << setw(columnFive) << awayTeam.getCoachName() << endl;
+    cout << setw(columnOne) << homeTeam.getCoachName() << setw(columnTwo) << " " << setw(columnThree) << "Coach" << setw(columnFour) << " " << setw(columnFive) << awayTeam.getCoachName() << endl;
 
+    //scores
+    cout << setw(columnOne) << homeTeam.getScore() << setw(columnTwo) << " " << setw(columnThree) << "Score" << setw(columnFour) << " " 
+        << setw(columnFive) << awayTeam.getScore() << endl;
+    
     cout << setw(columnOne) << "Downs: " << down << setw(columnTwo) << " " << setw(columnThree) << "" << setw(columnFour) << " " << setw(columnFive) << "To Go: " << toGo << endl;
 
     for (int i = 0; i< 35; i++){
         cout << "*";
     }
+    cout << endl;
 
 }
 
