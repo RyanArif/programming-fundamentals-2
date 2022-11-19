@@ -1,13 +1,13 @@
 /*
-TO DO: 
-Create Sub Menus for the update functions
-
-Update Sub-Menu for the Team Info. 
-    create a sub menu just like the otehr ones sound fair? ok sounds good. 
+Student: Ryan Arif
+Professor: Dr. Tyson McMillan
+Date: 11/19/2022
+Assignment: Unit 4 Assignment (Scoreboard)
 */
+
 #include "Input_Validation_Extended.h" //input validation
-#include <iostream>
-#include <string>
+#include <iostream> //cin, cout
+#include <string> //stringz
 
 #include "Team.h" //team class
 #include "Scoreboard.h" //scoreboard class
@@ -30,6 +30,7 @@ void buildTeam(Team&, bool);
 
 int main()
 {
+    //make some teams and fill them up with info from the user 
     Team home, away;
     Scoreboard sb(home, away);
     buildTeams(sb, home , away);
@@ -161,6 +162,7 @@ void updateScore(Scoreboard & sb)
     system("clear"); //get this stuff off the screen and go back to the scoreboard. 
 }
 
+//update info on the teams
 void updateTeams(Scoreboard & sb)
 {
     cout << "Update Team Info" << endl;
@@ -182,6 +184,7 @@ void updateTeams(Scoreboard & sb)
     }
 
     if (userChoice == 'a'){
+        //rebuild the teams (like when the program starts)
         Team tempHome = sb.getHomeTeam();
         Team tempAway = sb.getAwayTeam();
         buildTeams(sb, tempHome, tempAway);
@@ -202,8 +205,10 @@ void updateTeams(Scoreboard & sb)
             cout << "No Change." << endl;
             return; //done!
         } else if (userChoice == 'b'){
+            //swap the teams
             Team oldHome = sb.getHomeTeam();
             Team oldAway = sb.getAwayTeam();
+            //make sure to change the home status
             oldAway.setHomeStatus(true);
             oldHome.setHomeStatus(false);
             sb.setHomeTeam(oldAway);
@@ -425,6 +430,7 @@ void updateGameInfo(Scoreboard &sb)
     }
 }
 
+//build both of the teams
 void buildTeams(Scoreboard & sb, Team& home, Team& away)
 {
 
