@@ -35,6 +35,8 @@ int main()
     buildTeams(sb, home , away);
 
     do{
+        system("clear"); // clear the screen
+
         sb.print(); //print the scoreboard
 
         printMainMenu(); //print out the main menu        
@@ -146,7 +148,6 @@ void updateScore(Scoreboard & sb)
     }else if (userChoice == 'b'){
        tempTeam.setScore(tempTeam.getScore() - temp);
     }else if (userChoice == 'c'){
-        temp = validateInt(temp);
         tempTeam.setScore(temp);
     }
 
@@ -162,35 +163,135 @@ void updateScore(Scoreboard & sb)
 
 void updateTeams(Scoreboard & sb)
 {
-    cout << "Update Team Info:" << endl
-        << "Who is the home team?" << endl
-        << COLOR_YELLOW << "A. " << RESET << sb.getHomeTeam().getName() << " or " << COLOR_YELLOW << "B. " << RESET << sb.getAwayTeam().getName() << "?" << endl;
-        char userChoice = '\0';
+    cout << "Update Team Info" << endl;
+
+    cout << COLOR_YELLOW << "A. " << RESET << "Rebuild Teams" << endl
+        << COLOR_YELLOW << "B. " << RESET << "Set Home Team" << endl
+        << COLOR_YELLOW << "C. " << RESET << "Edit Home Team" << endl
+        << COLOR_YELLOW << "D. " << RESET << "Edit Away Team" << endl;
+
+    char userChoice = '\0';
+    while(true){
+        userChoice = validateChar(userChoice);
+        userChoice = tolower(userChoice);
+        if (userChoice != 'a' && userChoice != 'b' && userChoice != 'c' && userChoice != 'd'){
+            cout << COLOR_RED << "ERROR: Choose a valid option." << RESET << endl;
+        }else{
+            break;
+        }
+    }
+
+    if (userChoice == 'a'){
+        Team tempHome = sb.getHomeTeam();
+        Team tempAway = sb.getAwayTeam();
+        buildTeams(sb, tempHome, tempAway);
+        return; //done!
+    }else if (userChoice == 'b'){
+        cout << COLOR_YELLOW << "A. " << RESET << sb.getHomeTeam().getName() << endl
+            << COLOR_YELLOW << "B. " << RESET << sb.getAwayTeam().getName() << endl;
         while(true){
             userChoice = validateChar(userChoice);
             userChoice = tolower(userChoice);
-            if (userChoice == 'a'){
-                cout << "No Change." << endl;
-                break;
-            }else if (userChoice == 'b'){
-                //swap the teams
-                Team temp = sb.getHomeTeam();
-                sb.setHomeTeam(sb.getAwayTeam());
-                sb.setAwayTeam(temp);
-                cout << "Home Team Updated." << endl;
-                break;
+            if (userChoice != 'a' && userChoice != 'b'){
+                cout << COLOR_RED << "ERROR: CHOOSE VALID OPTION." << RESET << endl;
             }else{
-                cout << COLOR_RED << "ERROR: INVALID INPUT. CHOOSE A OR B." << endl;
+                break;
             }
         }
+        if (userChoice == 'a'){
+            cout << "No Change." << endl;
+            return; //done!
+        } else if (userChoice == 'b'){
+            Team oldHome = sb.getHomeTeam();
+            Team oldAway = sb.getAwayTeam();
+            oldAway.setHomeStatus(true);
+            oldHome.setHomeStatus(false);
+            sb.setHomeTeam(oldAway);
+            sb.setAwayTeam(oldHome);
+            return; //done
+        }
+        return;
+    }else if (userChoice == 'c'){
+        cout << COLOR_YELLOW << "A. " << RESET << "Edit Team Name" << endl
+            << COLOR_YELLOW << "B. " << RESET << "Edit Coach Name" << endl
+            << COLOR_YELLOW << "C. " << RESET << "Edit Team City" << endl;
+        
+        while(true){
+            userChoice = validateChar(userChoice);
+            userChoice = tolower(userChoice);
 
-        Team tempHome, tempAway;
-        tempHome = sb.getHomeTeam();
-        tempAway = sb.getAwayTeam();
-        buildTeams(sb, tempHome, tempAway); //might now work, getTeam i think returns a value not the actual like reference to that team.
-        sb.setHomeTeam(tempHome);
-        sb.setAwayTeam(tempAway);
+            if(userChoice != 'a' && userChoice != 'b' && userChoice != 'c'){
+                cout << COLOR_RED << "ERROR: Invalid Option Selected." << RESET << endl;
+            }else{
+                break;
+            }
+        }
+        if (userChoice == 'a'){
+            cout << "Enter new team name: ";
+            string temp = ""; //temp string variable
+            temp = validateString(temp); //validate input from user
+            Team tempTeam = sb.getHomeTeam(); //copy the team from sb into a temporary variable
+            tempTeam.setName(temp); //modify the temp variable
+            sb.setHomeTeam(tempTeam); //copy the modified version into the scoreboard
+            return; //done! Leave.
+        }else if (userChoice == 'b'){
+            cout << "Enter a new coach name: ";
+            string temp = "";
+            temp = validateString(temp);
+            Team tempTeam = sb.getHomeTeam();
+            tempTeam.setCoachName(temp);
+            sb.setHomeTeam(tempTeam);
+            return;
+        }else if(userChoice == 'c'){
+            cout << "Enter new City Name: ";
+            string temp = "";
+            temp = validateString(temp);
+            Team tempTeam = sb.getHomeTeam();
+            tempTeam.setCity(temp);
+            sb.setHomeTeam(tempTeam);
+            return;
+        }
+    }else if (userChoice == 'd'){
+        cout << COLOR_YELLOW << "A. " << RESET << "Edit Team Name" << endl
+            << COLOR_YELLOW << "B. " << RESET << "Edit Coach Name" << endl
+            << COLOR_YELLOW << "C. " << RESET << "Edit Team City" << endl;
+        
+        while(true){
+            userChoice = validateChar(userChoice);
+            userChoice = tolower(userChoice);
 
+            if(userChoice != 'a' && userChoice != 'b' && userChoice != 'c'){
+                cout << COLOR_RED << "ERROR: Invalid Option Selected." << RESET << endl;
+            }else{
+                break;
+            }
+        }
+        if (userChoice == 'a'){
+            cout << "Enter new team name: ";
+            string temp = ""; //temp string variable
+            temp = validateString(temp); //validate input from user
+            Team tempTeam = sb.getAwayTeam(); //copy the team from sb into a temporary variable
+            tempTeam.setName(temp); //modify the temp variable
+            sb.setAwayTeam(tempTeam); //copy the modified version into the scoreboard
+            return; //done! Leave.
+        }else if (userChoice == 'b'){
+            cout << "Enter a new coach name: ";
+            string temp = "";
+            temp = validateString(temp);
+            Team tempTeam = sb.getAwayTeam();
+            tempTeam.setCoachName(temp);
+            sb.setAwayTeam(tempTeam);
+            return;
+        }else if(userChoice == 'c'){
+            cout << "Enter new City Name: ";
+            string temp = "";
+            temp = validateString(temp);
+            Team tempTeam = sb.getAwayTeam();
+            tempTeam.setCity(temp);
+            sb.setAwayTeam(tempTeam);
+            return;
+        }
+    }
 }
 
 //update the game info as a submenu
@@ -198,7 +299,6 @@ void updateTeams(Scoreboard & sb)
 void updateGameInfo(Scoreboard &sb)
 {
     cout << COLOR_YELLOW << "A. " << RESET << "Update Downs" << endl
-        << COLOR_YELLOW << "A. " << RESET << "Update Downs" << endl
         << COLOR_YELLOW << "B. " << RESET << "Update To Go" << endl
         << COLOR_YELLOW << "C. " << RESET << "Update Quarter" << endl
         << COLOR_YELLOW << "D. " << RESET << "Update Possesion" << endl;
