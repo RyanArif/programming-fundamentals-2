@@ -2,20 +2,8 @@
 TO DO: 
 Create Sub Menus for the update functions
 
-Update Game Info: 
-    A: Possesion
-        A = Home Team, B = Away Team
-    B: Down
-        - limit to 4 
-        A: Increase
-        B: Decrease
-        C: Set
-    C: Quater
-        - limit to 4
-        A: Increase
-        B: Decrease
-        C: Set
-            Int: Set to/Increase by how many?
+Update Sub-Menu for the Team Info. 
+    create a sub menu just like the otehr ones sound fair? ok sounds good. 
 */
 #include "Input_Validation_Extended.h" //input validation
 #include <iostream>
@@ -27,9 +15,9 @@ Update Game Info:
 using namespace std;
 
 //colors!
-string RESET = "";
-string COLOR_YELLOW = "";
-string COLOR_RED = "";
+const string RESET = "\x1b[0m";
+const string COLOR_YELLOW = "\x1b[33;1m";
+const string COLOR_RED =  "\x1b[31;1m";
 
 //function prototypes
 bool handleInput(Scoreboard &);
@@ -333,6 +321,7 @@ void updateGameInfo(Scoreboard &sb)
         }else if (userChoice == 'n'){
             sb.setPosession(false);
         }
+        return; //done!
     }
 }
 
