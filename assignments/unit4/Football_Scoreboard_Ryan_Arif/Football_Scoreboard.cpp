@@ -2,14 +2,6 @@
 TO DO: 
 Create Sub Menus for the update functions
 
-Score: 
-    A: Home
-    B: Away
-        A: Increase
-        B: Decrease
-            Int: By How Many
-        C: Set
-
 Update Game Info: 
     A: Possesion
         A = Home Team, B = Away Team
@@ -34,6 +26,7 @@ Update Game Info:
 
 using namespace std;
 
+//colors!
 string RESET = "";
 string COLOR_YELLOW = "";
 string COLOR_RED = "";
@@ -212,33 +205,135 @@ void updateTeams(Scoreboard & sb)
 
 }
 
+//update the game info as a submenu
+//modifies the scoreboard private instance variables
 void updateGameInfo(Scoreboard &sb)
 {
-    cout << "How Many Downs?" << endl;
-    int iVal = 0;
-    iVal = validateInt(iVal);
-    sb.setDown(iVal);
-    cout << "How Many To Go?" << endl;
-    iVal = validateInt(iVal);
-    sb.setToGo(iVal);
-    cout << "What Quarter?" << endl;
-    iVal = validateInt(iVal);
-    sb.setQtr(iVal);
-    cout << "Does the Home Team have Possession?" << endl;
-    char cVal = '\0';
+    cout << COLOR_YELLOW << "A. " << RESET << "Update Downs" << endl
+        << COLOR_YELLOW << "A. " << RESET << "Update Downs" << endl
+        << COLOR_YELLOW << "B. " << RESET << "Update To Go" << endl
+        << COLOR_YELLOW << "C. " << RESET << "Update Quarter" << endl
+        << COLOR_YELLOW << "D. " << RESET << "Update Possesion" << endl;
+
+    char userChoice = '\0';
     while(true){
-        cVal = validateChar(cVal);
-        cVal = tolower(cVal);
-        if( cVal != 'y' && cVal != 'n'){
-            cout << COLOR_RED << "ERROR: Select Y for Yes and N for No." << RESET << endl;
+        userChoice = validateChar(userChoice);
+        userChoice = tolower(userChoice);
+        if (userChoice != 'a' && userChoice != 'b' && userChoice != 'c' && userChoice != 'd'){
+            cout << COLOR_RED << "ERROR: Pick a valid option." << endl;
+        }else{
+            break;
         }
-        if(cVal == 'y'){
+    }    
+    if(userChoice == 'a'){
+        cout << COLOR_YELLOW << "A. " << RESET << "Increase Downs" << endl
+            << COLOR_YELLOW << "B. " << RESET << "Decrease Downs" << endl
+            << COLOR_YELLOW << "C. " << RESET << "Set Downs" << endl;
+        while(true){
+            userChoice = validateChar(userChoice);
+            userChoice = tolower(userChoice);
+            if (userChoice != 'a' && userChoice != 'b' && userChoice != 'c'){
+                cout << COLOR_RED << "ERROR: Pick a valid option." << endl;
+            }else{
+                break;
+            }
+        }
+        int val;
+        while(true){
+            val = validateInt(val);
+            if (val < 0) {
+                cout << COLOR_RED << "ERROR: Enter a positive integer!" << endl;
+            }else{
+                break;
+            }
+        }
+        if(userChoice == 'a'){
+            sb.setDown(sb.getDown() + val);
+        }else if(userChoice == 'b'){
+            sb.setDown(sb.getDown() - val);
+        }else if (userChoice == 'c'){
+            sb.setDown(val);
+        }
+        return; //down updated, bye bye. 
+            
+    }else if(userChoice == 'b'){
+        cout << COLOR_YELLOW << "A. " << RESET << "Increase To Go" << endl
+            << COLOR_YELLOW << "B. " << RESET << "Decrease To Go" << endl
+            << COLOR_YELLOW << "C. " << RESET << "Set To Go" << endl;
+        while(true){
+            userChoice = validateChar(userChoice);
+            userChoice = tolower(userChoice);
+            if (userChoice != 'a' && userChoice != 'b' && userChoice != 'c'){
+                cout << COLOR_RED << "ERROR: Pick a valid option." << endl;
+            }else{
+                break;
+            }
+        }
+        int val;
+        while(true){
+            val = validateInt(val);
+            if (val < 0) {
+                cout << COLOR_RED << "ERROR: Enter a positive integer!" << endl;
+            }else{
+                break;
+            }
+        }
+        if(userChoice == 'a'){
+            sb.setToGo(sb.getToGo() + val);
+        }else if(userChoice == 'b'){
+            sb.setToGo(sb.getToGo() - val);
+        }else if (userChoice == 'c'){
+            sb.setToGo(val);
+        }
+        return; //to go updated, bye bye. 
+            
+    }else if(userChoice == 'c'){
+        cout << COLOR_YELLOW << "A. " << RESET << "Increase Quarter" << endl
+            << COLOR_YELLOW << "B. " << RESET << "Decrease Quarter" << endl
+            << COLOR_YELLOW << "C. " << RESET << "Set Quarter" << endl;
+        while(true){
+            userChoice = validateChar(userChoice);
+            userChoice = tolower(userChoice);
+            if (userChoice != 'a' && userChoice != 'b' && userChoice != 'c'){
+                cout << COLOR_RED << "ERROR: Pick a valid option." << endl;
+            }else{
+                break;
+            }
+        }
+        int val;
+        while(true){
+            val = validateInt(val);
+            if (val < 0) {
+                cout << COLOR_RED << "ERROR: Enter a positive integer!" << endl;
+            }else{
+                break;
+            }
+        }
+        if(userChoice == 'a'){
+            sb.setQtr(sb.getQtr() + val);
+        }else if(userChoice == 'b'){
+            sb.setQtr(sb.getQtr() - val);
+        }else if (userChoice == 'c'){
+            sb.setQtr(val);
+        }
+        return; //quarter updated, bye bye. 
+            
+    }else if (userChoice == 'd'){
+        cout << "Does the Home Team have possesion? " << COLOR_YELLOW << "(Y/n)" << RESET << endl;
+        while(true){
+            userChoice = validateChar(userChoice);
+            if(userChoice != 'y' && userChoice != 'n'){
+                cout << COLOR_RED << "ERROR!: SELECT Y FOR YES AND N FOR NO." << RESET << endl;
+            }else{
+                break;
+            }
+        }
+        if (userChoice =='y'){
             sb.setPosession(true);
-        }else if (cVal == 'n'){
+        }else if (userChoice == 'n'){
             sb.setPosession(false);
         }
     }
-
 }
 
 void buildTeams(Scoreboard & sb, Team& home, Team& away)
