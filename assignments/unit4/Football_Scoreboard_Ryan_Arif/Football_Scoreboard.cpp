@@ -105,11 +105,80 @@ void printMainMenu()
         << COLOR_YELLOW << "E. " << RESET << "to Exit" << endl;
 }
 
+//update the score
+//queries the user asking for some info on to which team to update the score for 
+//takes in the scoreboard as a referenced parameter
 void updateScore(Scoreboard & sb)
 {
+    //Ask the user -- H for home, A for away.
     cout << "Update " << COLOR_YELLOW << "(H)" << RESET << "ome or " << COLOR_YELLOW << "(A)" << RESET << "way" << endl;
-        cout << "NOT IMPLEMENTED LUL" << endl;
+    char userChoice = '\0';
+    Team tempTeam; //temporary team variable, will be used later.
+    //Multiple Inifnite Loops: 
+    //They validate input. 
+    //They are all broken out only when the conditions are met.
+    while(true){ 
+        userChoice = validateChar(userChoice);
+        userChoice = tolower(userChoice);
+        if(userChoice != 'h' && userChoice != 'a'){
+            cout << COLOR_RED << "ERROR: Choose H for Home and A for Away" << RESET << endl;
+        }else if (userChoice == 'h'){
+            tempTeam = sb.getHomeTeam(); //copy the home team into the temp team
+            break;
+        }else if (userChoice == 'a'){
+            tempTeam = sb.getAwayTeam(); //copy the away team into the temp team
+            break;
+        }
+    }
+
+    cout << COLOR_YELLOW << "A. " << RESET << "Increase Score" << endl
+        << COLOR_YELLOW << "B. " << RESET << "Decrease Score" << endl
+        << COLOR_YELLOW << "C. " << RESET << "Set Score" << endl;
+    while(true){ //validate input
+        userChoice = validateChar(userChoice);
+        userChoice = tolower(userChoice);
+        if (userChoice != 'a' && userChoice != 'b' && userChoice != 'c'){
+            cout << COLOR_RED << "ERROR: Pick a valid option!" << RESET << endl;
+        }else{
+            break;
+        }
+    }
+    
+    
+    int temp = 0;
+    //ensure the user inputs a positive integer
+    //scores generally can't be negative
+    //i dunno anything about football, but i'm pretty sure that's true.
+    while(true){
+        temp = validateInt(temp);
+        if (temp < 0){
+            cout << COLOR_RED << "ERROR: Pick a positive integer." << RESET << endl;
+        }else{
+            break; //leave infinite loop
+        }
+    }
+
+    //A - increase score. B - decrease score. C - set score.
+    if(userChoice == 'a'){
+       tempTeam.setScore( tempTeam.getScore() + temp );
+        
+    }else if (userChoice == 'b'){
+       tempTeam.setScore(tempTeam.getScore() - temp);
+    }else if (userChoice == 'c'){
+        temp = validateInt(temp);
+        tempTeam.setScore(temp);
+    }
+
+    //finally, copy the orignaly copied team back to where it was, but with the updated score.
+    if(tempTeam.getHomeStatus()){
+        sb.setHomeTeam(tempTeam);
+    }else{
+        sb.setAwayTeam(tempTeam);
+    }
+
+    system("clear"); //get this stuff off the screen and go back to the scoreboard. 
 }
+
 void updateTeams(Scoreboard & sb)
 {
     cout << "Update Team Info:" << endl
