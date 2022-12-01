@@ -22,6 +22,8 @@ class Menu : protected MenuItem
     //getters
     std::string getMenuName() const;
     std::vector<MenuItem> getMenuItems() const;
+    //other really cool FUNctions!
+    void showMenu(); //prints the menu
 };
 
 #endif
