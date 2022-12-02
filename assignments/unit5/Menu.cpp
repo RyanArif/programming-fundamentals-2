@@ -38,7 +38,7 @@ std::vector<MenuItem> Menu::getMenuItems() const { return menuItems; }
 void Menu::showMenu()
 {
   std::cout << std::fixed << std::setprecision(2); //set doubles to 2 decimal places
-  std::cout << menuName << std::endl;
+  std::cout << ANSI_BLUE << menuName << ANSI_RESET << std::endl;
   std::cout << "ADD \tNAME \t COST \tREMOVE\tCOUNT\tDESC" << std::endl;
 
   for(int i = 0; i < menuItems.size(); i++)
@@ -107,6 +107,23 @@ void Menu::acceptOrder()
   }while(option != 'x' && option != 'X');
 
 
+  //check if the user actually input anything
+  bool didOrder = false;
+  for(int i = 0; i < menuItems.size(); i++)
+  {
+    if (menuItems[i].getCount() > 0)
+    {
+      didOrder = true;
+      break; //they ordered, no need to make any more comparisons.
+    }
+  }
+
+  if(!didOrder) //if you did not order...
+  {
+    std::cout << ANSI_RED << "\n Ok cool story bro, get out of the way for the paying customers.\n" << ANSI_RESET << std::endl;
+    return; //stop the process.
+  }
+
   std::cout << "\nThank you for placing your order." << std::endl;
 
   //handle the tip process here
@@ -159,6 +176,8 @@ void Menu::acceptOrder()
 
 }
 
+//Input: the subtotal, tip, total, payment type, and tender (required, but it'll be 0 if it's credit), so it isn't calculated twice.
+//Process & Output: Outputs to the file for the receipt
 void Menu::printReceipt(double subtotal, double tip, double total, std::string paymentType, double tender)
 {
   std::ofstream outfile;

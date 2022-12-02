@@ -20,6 +20,7 @@ char validateChar(char &);
 
 void populateMenuItems(std::vector<MenuItem> &);
 void printReceipt(Menu &);
+
 int main()
 {
   //create a vector of menu items and populate the data
@@ -29,7 +30,9 @@ int main()
   //create the menu object and put our items into the menu
   Menu m("Big Belly Burger", menuItems);
 
+  //loop through the menu
   do{
+    std::cout << "\033[2J\033[1;1H"; //clear screen
     m.showMenu(); //print the menu to the screen
     m.acceptOrder(); //accepts the order
 
@@ -47,8 +50,10 @@ int main()
     if(userChoice == 'y'){
       //reset the menu.
       for(int i = 0; i < menuItems.size(); i++)
+      {
         menuItems[i].setCount(0); //reset the count of the itmes
-      m.setMenuItems(menuItems);
+      }
+      m.setMenuItems(menuItems); //and then save them into the menu
       continue; //restart the loop
     }else if(userChoice == 'n'){
       break; //leave the loop, done taking orders.

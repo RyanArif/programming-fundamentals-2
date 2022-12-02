@@ -25,7 +25,7 @@ class Menu : protected MenuItem
     //other really cool FUNctions!
     void showMenu(); //prints the menu
     void acceptOrder(); //accepts an order from da user
-    void printReceipt(double subtotal, double tip, double total, std::string paymentType, double tender);
+    void printReceipt(double subtotal, double tip, double total, std::string paymentType, double tender); //prints the receipt
 };
 
 #endif
