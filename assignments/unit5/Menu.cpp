@@ -3,6 +3,7 @@
 #include<iostream>
 #include<iomanip>
 #include "Input_Validation_Extended.h"
+#include "String_Manipulation.h"
 
 Menu::Menu()
 {
@@ -111,6 +112,22 @@ void Menu::acceptOrder()
   std::cout << "Subtotal: $" << subtotal << std::endl;
   std::cout << "Tax: $" << (subtotal * taxRate) << std::endl;
   std::cout << "\nTotal: $" << total << std::endl;
+
+  //Accept Payment Type
+  std::cout << "Payment Type: Cash or Credit: ";
+  string paymentType = "";
+  while(true)
+  {
+    paymentType = validateString(paymentType);
+    paymentType = stringToLower(paymentType); //converts the string to all lowercase
+    if( (paymentType != "cash" || paymentType != "credit") ){
+        std::cout << "ERROR: Please choose Cash or Credit!" << std::endl;
+    }else{
+      break; //leave the loop, input is valid!
+    }
+  }
+  //note: while it asks the user what to pay with, it literally does nothing. It's empty functionality. I could ask you for a credit card number, but I think that's beyond the scope of what this is asking me to do.
+
 
   //handle reciept generation here
 }
