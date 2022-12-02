@@ -1,0 +1,12 @@
+*** RECEIPT ***
+Big Belly Burger
+7 Green Tea @ 3.00
+2 Item 3 @ 5.00
+Subtotal: $31.00
+Tax: $2.56
+Tip: $30.00
+Total: $63.56
+
+Payment Method: cash
+Cash Recieved: $70.00
+Change: $6.44
