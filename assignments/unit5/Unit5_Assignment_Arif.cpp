@@ -65,6 +65,5 @@ void populateMenuItems(std::vector<MenuItem> &entireMenu)
     entireMenu[i].setCount(0); //initialze all counts to 0
     entireMenu[i].setDesc("delicious"); //set all default desc to "delicous"
   }
-
-
 }
+

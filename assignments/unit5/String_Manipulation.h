@@ -1,3 +1,6 @@
+#ifndef STRING_MANIPULATION_H
+#define STRING_MANIPULATION_H
+
 #include <string>
 
 string stringToLower(string word); //convert a string into all lowercase
@@ -55,3 +58,5 @@ void enterToContinue()
     }
     */
 }
+#endif
+

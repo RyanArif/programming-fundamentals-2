@@ -113,6 +113,7 @@ void Menu::acceptOrder()
   total = subtotal + tip + (subtotal * taxRate);
   std::cout << "Subtotal: $" << subtotal << std::endl;
   std::cout << "Tax: $" << (subtotal * taxRate) << std::endl;
+  std::cout << "Tip: $" << tip << std::endl;
   std::cout << "\nTotal: $" << total << std::endl;
 
   //Accept Payment Type
@@ -121,7 +122,7 @@ void Menu::acceptOrder()
   {
     paymentType = validateString(paymentType);
     paymentType = stringToLower(paymentType); //converts the string to all lowercase
-    if( (paymentType != "cash" || paymentType != "credit") ){
+    if( (paymentType != "cash" && paymentType != "credit") ){
         std::cout << "ERROR: Please choose Cash or Credit!" << std::endl;
     }else{
       break; //leave the loop, input is valid!
@@ -129,19 +130,21 @@ void Menu::acceptOrder()
   }
   //note: while it asks the user what to pay with, it literally does nothing. It's empty functionality. I could ask you for a credit card number, but I think that's beyond the scope of what this is asking me to do.
 
-  //Accept tender amount from user
-  std::cout << "Please Insert Tender: $";
-  tender = validateDouble(tender);
-  if(tender < total){
-    std::cout << "Nice try, come back when you've got the scratch." << std::endl;
-    return; //sorry, only paying customers allowed!
-  }else if(tender < 0) { //if the tender is negative...
-    std::cout << "Nice try, bucko. You ain't robbing me today. This is Texas..." << std::endl;
-    return; //robbers go bye bye
-  }
-  //if cash calculate change
-  if(paymentType == "cash" && tender > total){
+  //Accept tender amount from user, if cash:
+  if(paymentType == "cash"){
+    std::cout << "Please Insert Tender: ";
+    tender = validateDouble(tender);
+    if(tender < total){
+      std::cout << "Nice try, come back when you've got the scratch." << std::endl;
+      return; //sorry, only paying customers allowed!
+    }else if(tender < 0) { //if the tender is negative...
+      std::cout << "Nice try, bucko. You ain't robbing me today. This is Texas..." << std::endl;
+      return; //robbers go bye bye
+    }else if(tender > total){
     std::cout << "Your change is: $" << tender - total << std::endl;
+    }
+  }else if(paymentType == "credit"){ //or just process the pretend credit card
+    std::cout << "Pretend Credit Card Processor go brrrrrrrr" << std::endl;
   }
 
   //handle reciept generation here
