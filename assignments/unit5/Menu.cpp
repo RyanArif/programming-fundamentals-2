@@ -2,6 +2,7 @@
 #include "Menu.h"
 #include<iostream>
 #include<iomanip>
+#include<fstream>
 #include "Input_Validation_Extended.h"
 #include "String_Manipulation.h"
 
@@ -44,14 +45,18 @@ void Menu::acceptOrder()
 {
   char option = '\0';
   double subtotal = 0.0;
+  double tip = 0.0;
   double total = 0.0; //total after tax and tip and everything
-  double taxRate = 0.0825; //8.25% sales tax in (most) of Texas
-  double tip = 0.0; //if you tip 0 at a restauraunt you go straight to heck
   std::string paymentType = ""; //the payment type the user makes
   double tender = 0.0; //the amount of money the user is actually inputting.
 
+  std::string ANSI_RESET = "\x1b[0m"; //reset the ansi color codez
+  std::string ANSI_BLUE = "\x1b[36;1m";
+  std::string ANSI_RED = "\x1b[31;1m";
+  std::string ANSI_GREEN = "\x1b[32;1m";
+
   do{
-    std::cout << "\nPlease choose an item (x to Exit): ";
+    std::cout << ANSI_GREEN << "\nPlease choose an item (x to Exit): " << ANSI_RESET;
     option = validateChar(option);
 
     for(int i = 0; i < menuItems.size(); i++)
@@ -147,6 +152,42 @@ void Menu::acceptOrder()
     std::cout << "Pretend Credit Card Processor go brrrrrrrr" << std::endl;
   }
 
-  //handle reciept generation here
+  printReceipt(subtotal, tip, total, paymentType, tender);
+
+}
+
+void Menu::printReceipt(double subtotal, double tip, double total, std::string paymentType, double tender)
+{
+  std::ofstream outfile;
+  outfile.open("receipt.txt");
+  outfile << std::fixed << std::setprecision(2); //set doubles to 2 decimal places
+  outfile << "*** RECEIPT ***" << std::endl;
+  outfile << menuName << std::endl;
+
+  //print the items selected
+  for(int i = 0; i < menuItems.size(); i++)
+  {
+    if(menuItems[i].getCount() > 0)
+    {
+      outfile << menuItems[i].getCount() << " " << menuItems[i].getName() << " @ " << menuItems[i].getItemCost() << std::endl;
+    }
+  }
+
+  //print out the totals
+  outfile << "Subtotal: $" << subtotal << std::endl
+    << "Tax: $" << (subtotal * taxRate) << std::endl
+    << "Tip: $" << tip << std::endl
+    << "Total: $" << total << std::endl << std::endl;
+
+  //print out the payment info
+  outfile << "Payment Method: " << paymentType << std::endl;
+  if (paymentType == "cash")
+  {
+    outfile << "Cash Recieved: $" << tender << std::endl
+      << "Change: $" << tender - total << std::endl; //tender - total > 0 verified outside of this because lol
+  }else{
+    outfile << "Credit Card Info Concealed for Privacy!" << std::endl;
+  }
+
 }
 

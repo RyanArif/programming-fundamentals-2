@@ -1,7 +1,7 @@
 /*
 Author: Ryan Arif
 Professor: Dr. Tyson McMillan
-Date: 12/1/2022
+Date: 12/2/2022
 Unit 5 Assignment
 */
 
@@ -9,10 +9,12 @@ Unit 5 Assignment
 #include<string>
 #include<vector>
 #include<iomanip>
+#include<fstream>
 #include "Menu.h"
 #include "MenuItem.h"
 
 void populateMenuItems(std::vector<MenuItem> &);
+void printReceipt(Menu &);
 
 int main()
 {
@@ -21,7 +23,7 @@ int main()
   populateMenuItems(menuItems);
 
   //create the menu object and put our items into the menu
-  Menu m("Big Menu", menuItems);
+  Menu m("Big Belly Burger", menuItems);
 
   m.showMenu(); //print the menu to the screen
 

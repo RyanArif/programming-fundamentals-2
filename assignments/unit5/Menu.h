@@ -11,7 +11,7 @@ class Menu : protected MenuItem
   private:
     std::string menuName;
     std::vector<MenuItem> menuItems;
-    int totalItems; //not accessible outside of this class. It isn't necessary, at all. Setters/Getters not required.
+  double taxRate = 0.0825;
   public:
     //constructors
     Menu(); //default
@@ -25,6 +25,7 @@ class Menu : protected MenuItem
     //other really cool FUNctions!
     void showMenu(); //prints the menu
     void acceptOrder(); //accepts an order from da user
+    void printReceipt(double subtotal, double tip, double total, std::string paymentType, double tender);
 };
 
 #endif

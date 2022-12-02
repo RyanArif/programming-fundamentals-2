@@ -1,0 +1,12 @@
+*** RECEIPT ***
+Big Belly Burger
+1 Green Tea @ 3.00
+1 Burrito @ 4.00
+1 Item 3 @ 5.00
+Subtotal: $12.00
+Tax: $0.99
+Tip: $3.00
+Total: $15.99
+
+Payment Method: credit
+Credit Card Info Concealed for Privacy!
