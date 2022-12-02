@@ -29,9 +29,8 @@ int main()
   //create the menu object and put our items into the menu
   Menu m("Big Belly Burger", menuItems);
 
-  m.showMenu(); //print the menu to the screen
-
   do{
+    m.showMenu(); //print the menu to the screen
     m.acceptOrder(); //accepts the order
 
     std::cout << "Take another order? (Y/n)" << std::endl;
@@ -46,6 +45,10 @@ int main()
       }
     }
     if(userChoice == 'y'){
+      //reset the menu.
+      for(int i = 0; i < menuItems.size(); i++)
+        menuItems[i].setCount(0); //reset the count of the itmes
+      m.setMenuItems(menuItems);
       continue; //restart the loop
     }else if(userChoice == 'n'){
       break; //leave the loop, done taking orders.

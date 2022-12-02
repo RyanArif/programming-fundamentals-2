@@ -1,16 +1,12 @@
 *** RECEIPT ***
 Big Belly Burger
-1 Green Tea @ 3.00
-1 Burrito @ 4.00
-1 Item 3 @ 5.00
+2 Green Tea @ 3.00
+3 Burrito @ 4.00
 1 Item 4 @ 6.00
-1 Item 5 @ 7.00
-1 Item 6 @ 8.00
-1 Item 7 @ 9.00
-Subtotal: $42.00
-Tax: $3.47
-Tip: $8.40
-Total: $53.87
+Subtotal: $24.00
+Tax: $1.98
+Tip: $10.00
+Total: $35.98
 
 Payment Method: credit
 Credit Card Info Concealed for Privacy!

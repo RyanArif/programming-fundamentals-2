@@ -6,6 +6,13 @@
 #include "Input_Validation_Extended.h"
 #include "String_Manipulation.h"
 
+
+//colors
+const std::string ANSI_RESET = "\x1b[0m"; //reset the ansi color codez
+const std::string ANSI_BLUE = "\x1b[36;1m";
+const std::string ANSI_RED = "\x1b[31;1m";
+
+std::string ANSI_GREEN = "\x1b[32;1m";
 Menu::Menu()
 {
   menuName = "DefaultName";
@@ -50,10 +57,6 @@ void Menu::acceptOrder()
   std::string paymentType = ""; //the payment type the user makes
   double tender = 0.0; //the amount of money the user is actually inputting.
 
-  std::string ANSI_RESET = "\x1b[0m"; //reset the ansi color codez
-  std::string ANSI_BLUE = "\x1b[36;1m";
-  std::string ANSI_RED = "\x1b[31;1m";
-  std::string ANSI_GREEN = "\x1b[32;1m";
 
   do{
     std::cout << ANSI_GREEN << "\nPlease choose an item (x to Exit): " << ANSI_RESET;
@@ -66,7 +69,7 @@ void Menu::acceptOrder()
         std::cout << "\n Menu Item " << menuItems[i].getAddLetter() << " selected.";
         menuItems[i].setCount(menuItems[i].getCount() + 1); //increment the count by 1
         std::cout << "\033[2J\033[1;1H"; //clear screen
-        std::cout << "\n1 UP on " << menuItems[i].getName() << std::endl;
+        std::cout << ANSI_GREEN << "\n1 UP on " << menuItems[i].getName() << ANSI_RESET << std::endl;
         subtotal += menuItems[i].getItemCost(); //increment subtotal by the cost of the item
         showMenu(); //show the menu
         std::cout << "\nSubtotal: $" << subtotal << std::endl;
@@ -78,7 +81,7 @@ void Menu::acceptOrder()
         {
           menuItems[i].setCount(menuItems[i].getCount() - 1); //decrement the count by 1
           std::cout << "\033[2J\033[1;1H"; //clear screen
-          std::cout << "\n1 DOWN on " << menuItems[i].getName() << std::endl;
+          std::cout << ANSI_RED << "\n1 DOWN on " << menuItems[i].getName() << ANSI_RESET << std::endl;
           subtotal -= menuItems[i].getItemCost(); //decrement the subtotal by the cost of the item
           showMenu(); //show the updated menu
           std::cout << "\nSubtotal: $" << subtotal << std::endl;
@@ -97,7 +100,7 @@ void Menu::acceptOrder()
             {
               if(i == 0)
               {
-                std::cout << "\nInvalid input (" << option << "). Please try again." << std::endl;
+                std::cout << ANSI_RED << "\nInvalid input (" << option << "). Please try again." << ANSI_RESET << std::endl;
               }
             }
     }
@@ -107,10 +110,10 @@ void Menu::acceptOrder()
   std::cout << "\nThank you for placing your order." << std::endl;
 
   //handle the tip process here
-  std::cout << "\nPlease enter a tip (20 percent Gratuity: $" << (subtotal * 0.20) << "): ";
+  std::cout << "\nPlease enter a tip" << ANSI_GREEN << " (20 percent Gratuity: $" << (subtotal * 0.20) << ")" << ANSI_RESET << ": ";
   tip = validateDouble(tip);
   if(tip == 0.0){
-    std::cout << "\nYou're actually a dirtbag, get out of my store. Order somewhere else." << std::endl;
+    std::cout << ANSI_RED << "\nYou're actually a dirtbag, get out of my store. Order somewhere else." << std::endl << ANSI_RESET;
     return; //stiffers get sent away in my restaurant.
   }
 
@@ -119,7 +122,7 @@ void Menu::acceptOrder()
   std::cout << "Subtotal: $" << subtotal << std::endl;
   std::cout << "Tax: $" << (subtotal * taxRate) << std::endl;
   std::cout << "Tip: $" << tip << std::endl;
-  std::cout << "\nTotal: $" << total << std::endl;
+  std::cout << ANSI_BLUE << "\nTotal: $" << total << std::endl << ANSI_RESET;
 
   //Accept Payment Type
   std::cout << "Payment Type: Cash or Credit: ";
@@ -128,7 +131,7 @@ void Menu::acceptOrder()
     paymentType = validateString(paymentType);
     paymentType = stringToLower(paymentType); //converts the string to all lowercase
     if( (paymentType != "cash" && paymentType != "credit") ){
-        std::cout << "ERROR: Please choose Cash or Credit!" << std::endl;
+        std::cout << ANSI_RED << "ERROR: Please choose Cash or Credit!" << std::endl << ANSI_RESET;
     }else{
       break; //leave the loop, input is valid!
     }
@@ -140,16 +143,16 @@ void Menu::acceptOrder()
     std::cout << "Please Insert Tender: ";
     tender = validateDouble(tender);
     if(tender < total){
-      std::cout << "Nice try, come back when you've got the scratch." << std::endl;
+      std::cout << ANSI_RED << "Nice try, come back when you've got the scratch." << std::endl << ANSI_RESET;
       return; //sorry, only paying customers allowed!
     }else if(tender < 0) { //if the tender is negative...
-      std::cout << "Nice try, bucko. You ain't robbing me today. This is Texas..." << std::endl;
+      std::cout << ANSI_RED << "Nice try, bucko. You ain't robbing me today. This is Texas..." << std::endl << ANSI_RESET;
       return; //robbers go bye bye
     }else if(tender > total){
-    std::cout << "Your change is: $" << tender - total << std::endl;
+    std::cout << "Your change is: " << ANSI_GREEN << "$" << tender - total << std::endl << ANSI_RESET;
     }
   }else if(paymentType == "credit"){ //or just process the pretend credit card
-    std::cout << "Pretend Credit Card Processor go brrrrrrrr" << std::endl;
+    std::cout << ANSI_BLUE << "Pretend Credit Card Processor go brrrrrrrr" << std::endl << ANSI_RESET;
   }
 
   printReceipt(subtotal, tip, total, paymentType, tender);
