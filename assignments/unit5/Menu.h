@@ -24,6 +24,7 @@ class Menu : protected MenuItem
     std::vector<MenuItem> getMenuItems() const;
     //other really cool FUNctions!
     void showMenu(); //prints the menu
+    void acceptOrder(); //accepts an order from da user
 };
 
 #endif
