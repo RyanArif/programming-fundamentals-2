@@ -47,6 +47,8 @@ void Menu::acceptOrder()
   double total = 0.0; //total after tax and tip and everything
   double taxRate = 0.0825; //8.25% sales tax in (most) of Texas
   double tip = 0.0; //if you tip 0 at a restauraunt you go straight to heck
+  std::string paymentType = ""; //the payment type the user makes
+  double tender = 0.0; //the amount of money the user is actually inputting.
 
   do{
     std::cout << "\nPlease choose an item (x to Exit): ";
@@ -115,7 +117,6 @@ void Menu::acceptOrder()
 
   //Accept Payment Type
   std::cout << "Payment Type: Cash or Credit: ";
-  string paymentType = "";
   while(true)
   {
     paymentType = validateString(paymentType);
@@ -128,6 +129,13 @@ void Menu::acceptOrder()
   }
   //note: while it asks the user what to pay with, it literally does nothing. It's empty functionality. I could ask you for a credit card number, but I think that's beyond the scope of what this is asking me to do.
 
+  //Accept tender amount from user
+  std::cout << "Please Insert Tender: $";
+  tender = validateDouble(tender);
+  if(tender < total){
+    std::cout << "Nice try, come back when you've got the scratch." << std::endl;
+    return; //sorry, only paying customers allowed!
+  }
 
   //handle reciept generation here
 }
