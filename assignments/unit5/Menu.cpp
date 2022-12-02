@@ -139,6 +139,10 @@ void Menu::acceptOrder()
     std::cout << "Nice try, bucko. You ain't robbing me today. This is Texas..." << std::endl;
     return; //robbers go bye bye
   }
+  //if cash calculate change
+  if(paymentType == "cash" && tender > total){
+    std::cout << "Your change is: $" << tender - total << std::endl;
+  }
 
   //handle reciept generation here
 }
