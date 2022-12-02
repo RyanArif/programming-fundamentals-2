@@ -43,6 +43,9 @@ void Menu::acceptOrder()
 {
   char option = '\0';
   double subtotal = 0.0;
+  double total = 0.0; //total after tax and tip and everything
+  double taxRate = 0.0825; //8.25% sales tax in (most) of Texas
+  double tip = 0.0; //if you tip 0 at a restauraunt you go straight to heck
 
   do{
     std::cout << "\nPlease choose an item (x to Exit): ";
@@ -91,8 +94,24 @@ void Menu::acceptOrder()
             }
     }
   }while(option != 'x' && option != 'X');
+
+
   std::cout << "\nThank you for placing your order." << std::endl;
+
   //handle the tip process here
+  std::cout << "\nPlease enter a tip (20 percent Gratuity: $" << (subtotal * 0.20) << "): ";
+  tip = validateDouble(tip);
+  if(tip == 0.0){
+    std::cout << "\nYou're actually a dirtbag, get out of my store. Order somewhere else." << std::endl;
+    return; //stiffers get sent away in my restaurant.
+  }
+
+  //Calculate Total
+  total = subtotal + tip + (subtotal * taxRate);
+  std::cout << "Subtotal: $" << subtotal << std::endl;
+  std::cout << "Tax: $" << (subtotal * taxRate) << std::endl;
+  std::cout << "\nTotal: $" << total << std::endl;
+
   //handle reciept generation here
 }
 
