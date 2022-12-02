@@ -135,6 +135,9 @@ void Menu::acceptOrder()
   if(tender < total){
     std::cout << "Nice try, come back when you've got the scratch." << std::endl;
     return; //sorry, only paying customers allowed!
+  }else if(tender < 0) { //if the tender is negative...
+    std::cout << "Nice try, bucko. You ain't robbing me today. This is Texas..." << std::endl;
+    return; //robbers go bye bye
   }
 
   //handle reciept generation here
