@@ -189,5 +189,7 @@ void Menu::printReceipt(double subtotal, double tip, double total, std::string p
     outfile << "Credit Card Info Concealed for Privacy!" << std::endl;
   }
 
+  std::cout << "\nReceipt saved to receipt.txt\n" << std::endl;
+
 }
 

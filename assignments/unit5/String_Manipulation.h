@@ -2,6 +2,7 @@
 #define STRING_MANIPULATION_H
 
 #include <string>
+using namespace std;
 
 string stringToLower(string word); //convert a string into all lowercase
 string stringToUpper(string word); //convert a string into all uppercase

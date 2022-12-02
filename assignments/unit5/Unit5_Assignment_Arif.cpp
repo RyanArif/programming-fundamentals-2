@@ -13,9 +13,13 @@ Unit 5 Assignment
 #include "Menu.h"
 #include "MenuItem.h"
 
+//interesting error: Because I need this header for multiple files, that are also being included or compiled into this program, I get big errors. However, this file, that is to say this scope, does not have the function definitions.
+//so, because this is included elsewhere, we won't include it here. But, I still need the function definition for the char I need ot validate (suddently, it works lol)
+//#include "Input_Validation_Extended.h"
+char validateChar(char &);
+
 void populateMenuItems(std::vector<MenuItem> &);
 void printReceipt(Menu &);
-
 int main()
 {
   //create a vector of menu items and populate the data
@@ -27,7 +31,26 @@ int main()
 
   m.showMenu(); //print the menu to the screen
 
-  m.acceptOrder(); //accepts the order
+  do{
+    m.acceptOrder(); //accepts the order
+
+    std::cout << "Take another order? (Y/n)" << std::endl;
+    char userChoice = '\0';
+    while(true){
+      userChoice = validateChar(userChoice);
+      userChoice = tolower(userChoice);
+      if (userChoice != 'y' && userChoice != 'n'){
+        std::cout << "ERROR! Input Y for yes, or N for no." << std::endl;
+      }else{
+        break; //input validated - leave loop
+      }
+    }
+    if(userChoice == 'y'){
+      continue; //restart the loop
+    }else if(userChoice == 'n'){
+      break; //leave the loop, done taking orders.
+    }
+  }while(true); //loop infinitely until the user inputs the character N.
 
   return 0;
 }

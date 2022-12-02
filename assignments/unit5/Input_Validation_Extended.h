@@ -1,9 +1,12 @@
-//From: http://stackoverflow.com/questions/514420/how-to-validate-numeric-input-c 
-#include <ios>  // Provides ios_base::failure
-#include <iostream>  // Provides cin
+#ifndef INPUT_VALIDATION_EXTENDED_H
+#define INPUT_VALIDATION_EXTENDED_H
+
+//From: http://stackoverflow.com/questions/514420/how-to-validate-numeric-input-c
+#include<ios>  // Provides ios_base::failure
+#include<iostream>  // Provides cin
 #include<string> //for string manipulation
 #include<sstream> //for string manipulation and comparison
-using namespace std; 
+using namespace std;
 
 //Function Prototypes
 int validateInt(int &); //use the validation method to vaildate and return a data type integer pass by reference &
@@ -128,3 +131,6 @@ string validateString(string &stringInput)
     
     return stringInput; 
 }
+
+#endif
+
