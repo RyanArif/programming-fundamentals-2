@@ -14,7 +14,6 @@ using namespace std;
 
 void towerOfHanoi(int, char, char, char);
 int factorialR(int);
-int factorialMultiplication(int);
 int getPosInt(int &);
 
 int main()
